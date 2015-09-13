@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'CraftoLibrary',
+                   'Implementation-Version': version
+    }
+}
+
+sourceSets {
+	main.java.srcDir "src/java"
+	main.resources.srcDir "src/resources"
+	test.java.srcDir "test/java"
+	test.resources.srcDir "test/resources"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile 'com.google.guava:guava:18.0'
+}
