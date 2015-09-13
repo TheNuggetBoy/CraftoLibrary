@@ -51,10 +51,10 @@ public class Test {
 
 				// STARTSERVER
 				else if (input.toLowerCase().startsWith("startserver")) {
-					if (listener != null) { System.out.println("> Error: The server is already active."); continue; }
+					if (listener != null) { System.err.println("> Error: The server is already active."); continue; }
 					args = input.split(" ");
-					if (args.length < 2) { System.out.println("> Error: You have to specifiy a port for the server!"); continue; }
-					if (!Check.isInt(args[1])) { System.out.println("> Error: The specified port is not a number!"); continue; }
+					if (args.length < 2) { System.err.println("> Error: You have to specifiy a port for the server!"); continue; }
+					if (!Check.isInt(args[1])) { System.err.println("> Error: The specified port is not a number!"); continue; }
 
 					listener = new TCPListener(Integer.parseInt(args[1]), client -> {
 						clients.add(client);
@@ -64,8 +64,8 @@ public class Test {
 
 						client.send("Welcome to the server!");
 
-						client.onMessage(message -> System.out.println("Client " + clients.indexOf(client) + ": " + message));
-						client.onDisconnect(() -> System.out.println("Client " + clients.indexOf(client) + " disconnected from the server."));
+						client.onMessage(message -> System.err.println("Client " + clients.indexOf(client) + ": " + message));
+						client.onDisconnect(() -> System.err.println("Client " + clients.indexOf(client) + " disconnected from the server."));
 					});
 
 					System.out.println("> Server started successfully.");
@@ -74,15 +74,15 @@ public class Test {
 				// STARTCLIENT
 				else if (input.toLowerCase().startsWith("startclient")) {
 					args = input.split(" ");
-					if (args.length < 3) { System.out.println("> Error: You have to specify a ip and port!"); continue; }
+					if (args.length < 3) { System.err.println("> Error: You have to specify a ip and port!"); continue; }
 					final String ip = args[1];
-					if (!Check.isInt(args[2])) { System.out.println("> Error: The specified port is not a number!"); continue; }
+					if (!Check.isInt(args[2])) { System.err.println("> Error: The specified port is not a number!"); continue; }
 
 					final TCPClient client = new TCPClient(ip, Integer.parseInt(args[2]));
 					clients.add(client);
 
-					client.onMessage(message -> System.out.println("Server of client " + clients.indexOf(client) + ": " + message));
-					client.onDisconnect(() -> System.out.println("Client " + clients.indexOf(client) + " disconnected."));
+					client.onMessage(message -> System.err.println("Server of client " + clients.indexOf(client) + ": " + message));
+					client.onDisconnect(() -> System.err.println("Client " + clients.indexOf(client) + " disconnected."));
 
 					System.out.println("> Client " + clients.indexOf(client) + " connected successfully.");
 				}
@@ -90,10 +90,10 @@ public class Test {
 				// DISCONNECT
 				else if (input.toLowerCase().startsWith("disconnect")) {
 					args = input.split(" ");
-					if (args.length < 2) { System.out.println("> Error: You have to specifiy a id for the client!"); continue; }
-					if (!Check.isInt(args[1])) { System.out.println("> Error: The specified id is not a number!"); continue; }
+					if (args.length < 2) { System.err.println("> Error: You have to specifiy a id for the client!"); continue; }
+					if (!Check.isInt(args[1])) { System.err.println("> Error: The specified id is not a number!"); continue; }
 					final int id = Integer.parseInt(args[1]);
-					if (id >= clients.size()) { System.out.println("> Error: The specified id is too high!"); continue; }
+					if (id >= clients.size()) { System.err.println("> Error: The specified id is too high!"); continue; }
 
 					final TCPClient client = clients.get(Integer.parseInt(args[1]));
 					client.disconnect();
@@ -106,7 +106,7 @@ public class Test {
 				// BROADCAST
 				else if (input.toLowerCase().startsWith("broadcast")) {
 					args = input.split(" ");
-					if (args.length < 2) { System.out.println("> Error: You have to specify a message first!"); continue; }
+					if (args.length < 2) { System.err.println("> Error: You have to specify a message first!"); continue; }
 					final String message = StringUtils.join(" ", 1, args.length, args);
 					connectedClients.forEach(client -> client.send(message));
 
@@ -116,10 +116,10 @@ public class Test {
 				// SEND
 				else if (input.toLowerCase().startsWith("send")) {
 					args = input.split(" ");
-					if (args.length < 2) { System.out.println("> Error: You have to specifiy a id for the client!"); continue; }
-					if (!Check.isInt(args[1])) { System.out.println("> Error: The specified id is not a number!"); continue; }
+					if (args.length < 2) { System.err.println("> Error: You have to specifiy a id for the client!"); continue; }
+					if (!Check.isInt(args[1])) { System.err.println("> Error: The specified id is not a number!"); continue; }
 					final int id = Integer.parseInt(args[1]);
-					if (id >= clients.size()) { System.out.println("> Error: The specified id is too high!"); continue; }
+					if (id >= clients.size()) { System.err.println("> Error: The specified id is too high!"); continue; }
 
 					final TCPClient client = clients.get(Integer.parseInt(args[1]));
 					if (args.length < 3) { System.out.println("> Error: You have to specify a message!"); continue; }
@@ -145,7 +145,7 @@ public class Test {
 				}
 
 				// UNKNOWN
-				else { System.out.println("> Error: Specified unknown command!"); }
+				else { System.err.println("> Error: Specified unknown command!"); }
 
 				Thread.sleep(8);
 				System.out.print("> ");
