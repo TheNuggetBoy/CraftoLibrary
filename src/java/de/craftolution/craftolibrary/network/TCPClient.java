@@ -29,9 +29,9 @@ public class TCPClient implements ToStringable {
 	private final BufferedReader in;
 	private final AtomicBoolean listening;
 
-
 	private final LinkedBlockingQueue<String> newMessageQueue = new LinkedBlockingQueue<>();
-	private final AtomicBoolean disconnectInformed = new AtomicBoolean(false);
+
+	@Nullable private Boolean disconnectInformed = null;
 
 	@Nullable private Consumer<String> logger;
 	@Nullable private Consumer<Exception> exceptionHandler;
@@ -85,7 +85,7 @@ public class TCPClient implements ToStringable {
 	/** TODO: Documentation */
 	public TCPClient onDisconnect(final Runnable disconnectHandler) {
 		this.disconnectHandler = disconnectHandler;
-		if (this.disconnectHandler != null && !this.isConnected() && !this.disconnectInformed.get()) {
+		if (this.disconnectHandler != null && !this.isConnected() && this.disconnectInformed != null && this.disconnectInformed == false) {
 			this.disconnectHandler.run();
 		}
 		return this;
@@ -104,9 +104,14 @@ public class TCPClient implements ToStringable {
 
 	/** TODO: Documentation */
 	public void disconnect() {
-		if (!this.disconnectInformed.get() && this.disconnectHandler != null) {
-			try { this.disconnectHandler.run(); } catch (final Exception e) { this.report(e); }
-			this.disconnectInformed.set(true);
+		if (this.disconnectHandler == null) {
+			if (this.disconnectInformed == null) { this.disconnectInformed = false; }
+		}
+		else {
+			if (this.disconnectInformed == null || this.disconnectInformed == false) {
+				try { this.disconnectHandler.run(); } catch (final Exception e) { this.report(e); }
+				this.disconnectInformed = true;
+			}
 		}
 
 		this.listening.set(false);
@@ -147,7 +152,7 @@ public class TCPClient implements ToStringable {
 		}
 
 		this.disconnect();
-		this.log("Stopped listening for new messages on socket " + this.socket.getInetAddress().getHostAddress() + ":" + this.socket.getPort() + "... " + this.socket.isConnected());
+		this.log("Stopped listening for new messages on socket " + this.socket.getInetAddress().getHostAddress() + ":" + this.socket.getPort() + "... ");
 	}
 
 	private void newMessage(final String message) {
