@@ -86,6 +86,9 @@ public class TCPListener implements ToStringable {
 
 	// --- Public methods ---
 
+	/** TOOD: Documentation */
+	public int getPort() { return this.port; }
+
 	/** TODO: Documentation */
 	public boolean isListening() { return this.listening.get(); }
 

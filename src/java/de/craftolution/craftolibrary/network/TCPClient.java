@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.Executor;
@@ -91,6 +92,12 @@ public class TCPClient implements ToStringable {
 	}
 
 	// --- Public methods ---
+
+	/** TODO: Documentation */
+	public InetAddress getInetAddress() { return this.socket.getInetAddress(); }
+
+	/** TODO: Documentation */
+	public int getPort() { return this.socket.getPort(); }
 
 	/** TODO: Documentation */
 	public boolean isConnected() { return this.socket.isClosed(); }
