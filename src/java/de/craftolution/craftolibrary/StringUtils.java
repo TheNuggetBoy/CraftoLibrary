@@ -55,6 +55,20 @@ public class StringUtils {
 	}
 
 	/** TODO: Documentation */
+	public static boolean doesStringFollow(final char[] array, final int start, final String target) {
+		int targetIndex = 0;
+		final char[] targetArray = target.toCharArray();
+		for (int i = start; i < start + target.length(); i++) {
+			final char targetChar = targetArray[targetIndex];
+			if (array[i] != targetChar) {
+				return false;
+			}
+			targetIndex++;
+		}
+		return true;
+	}
+
+	/** TODO: Documentation */
 	public static String generateRandomString(final int length) {
 		Check.isTrue(length > 0, "The length must be greater than 0");
 

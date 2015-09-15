@@ -7,7 +7,8 @@ version = '1.0'
 jar {
     manifest {
         attributes 'Implementation-Title': 'CraftoLibrary',
-                   'Implementation-Version': version
+                   'Implementation-Version': version,
+                   'Main-Class': 'de.craftolution.craftolibrary.Main'
     }
 }
 
@@ -26,4 +27,5 @@ dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     compile 'com.google.guava:guava:18.0'
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
+	compile 'log4j:log4j:1.2.17'
 }
