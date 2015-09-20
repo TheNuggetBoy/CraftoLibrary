@@ -23,38 +23,14 @@ import de.craftolution.craftolibrary.Check;
  */
 public class Logger {
 
-	public static void main(final String[] args) {
-		final Logger logger = Logger.builder("TestLogger")
-				.dateFormatter("dd.MM.yyyy HH:mm:ss:SSS")
-				.formatter(record -> {
-					return new StringBuilder()
-							.append("[")
-							.append(record.getLogger().getDateFormatter().format(record.getDate()))
-							.append("] [")
-							.append(record.getLogger().getName())
-							.append("] [")
-							.append(record.getLevel().toString())
-							.append("]: ")
-							.append(record.getMessage()).toString();
-				})
-				.output(System.out, Level.INFO)
-				.output(System.err, Level.ERROR)
-				.build();
-
-		logger.log(Level.INFO, "Hello World!");
-		logger.log(Level.ERROR, "What sup!");
-	}
-
 	// --- Static fields ---
-	
+
 	private static final Object[] EMPTY_ARRAY = new Object[0];
 	private static final ConcurrentHashMap<String, Logger> loggerMap = new ConcurrentHashMap<>();
 
 	private static final LogWriter defaultSystemWriter = new LogWriter()
-			.provideOutput(Level.FATAL, System.err)
-			.provideOutput(Level.ERROR, System.err)
-			.provideOutput(Level.WARN, System.err)
-			.provideOutput(Level.INFO, System.out);
+			.provideOutput(System.err, Level.FATAL, Level.ERROR, Level.WARN)
+			.provideOutput(System.out, Level.INFO);
 
 	private static final LogFormatter defaultFormatter = record -> {
 		return new StringBuilder()
@@ -71,13 +47,13 @@ public class Logger {
 	private static final SimpleDateFormat defaultDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS");
 
 	/** TODO: Documentation */
-	public static LogWriter getDefaultSystemWriter() { return defaultSystemWriter; }
+	public static LogWriter getDefaultSystemWriter() { return Logger.defaultSystemWriter; }
 
 	/** TODO: Documentation */
-	public static LogFormatter getDefaultFormatter() { return defaultFormatter; }
+	public static LogFormatter getDefaultFormatter() { return Logger.defaultFormatter; }
 
 	/** TODO: Documentation */
-	public static SimpleDateFormat getDefaultDateFormatter() { return defaultDateFormatter; }
+	public static SimpleDateFormat getDefaultDateFormatter() { return Logger.defaultDateFormatter; }
 
 	// --- Factory methods ---
 
@@ -101,7 +77,7 @@ public class Logger {
 	// --- Fields ---
 
 	private final String name;
-	private final LogWriter worker;
+	private final LogWriter writer;
 	private final SimpleDateFormat dateFormatter;
 	private final LogFormatter formatter;
 
@@ -112,7 +88,7 @@ public class Logger {
 
 	Logger(final Logger logger, final String channelName) {
 		this.name = channelName;
-		this.worker = logger.worker;
+		this.writer = logger.writer;
 		this.dateFormatter = logger.dateFormatter;
 		this.formatter = logger.formatter;
 		this.levelListeners = logger.levelListeners;
@@ -122,7 +98,7 @@ public class Logger {
 	Logger(final String name, final LogWriter worker, final SimpleDateFormat dateFormatter, final LogFormatter formatter) {
 		Check.notNull("The name/worker/dateFormatter/formatter cannot be null!", name, worker, dateFormatter, formatter);
 		this.name = name;
-		this.worker = worker;
+		this.writer = worker;
 		this.dateFormatter = dateFormatter;
 		this.formatter = formatter;
 		this.levelListeners = new HashMap<>();
@@ -135,10 +111,10 @@ public class Logger {
 	public String getName() { return this.name; }
 
 	/** TODO: Documentation */
-	public Set<Level> getSupportedLevels() { return this.worker.getSupportedLevels(); }
+	public Set<Level> getSupportedLevels() { return this.writer.getSupportedLevels(); }
 
 	/** TODO: Documentation */
-	public boolean supportsLevel(final Level level) { return this.worker.supportsLevel(level); }
+	public boolean supportsLevel(final Level level) { return this.writer.supportsLevel(level); }
 
 	/** TODO: Documentation */
 	public SimpleDateFormat getDateFormatter() { return this.dateFormatter; }
@@ -160,7 +136,7 @@ public class Logger {
 
 	/** TODO: Documentation */
 	public Logger addListener(final Consumer<LogRecord> listener) {
-		Check.notNull(listener, "The listener cannot be null!");
+		Check.notNull("The listener cannot be null!", listener);
 		this.listeners.add(listener);
 		return this;
 	}
@@ -170,7 +146,7 @@ public class Logger {
 	/** TODO: Documentation */
 	public Logger log(final Level level, final CharSequence message, @Nullable final Object... replacements) {
 		Check.notNull("The level/message cannot be null!", level, message);
-		if (!this.worker.supportsLevel(level)) { return this; }
+		if (!this.writer.supportsLevel(level)) { return this; }
 
 		// Replace replacements
 		String stringMessage = message.toString();
@@ -191,7 +167,7 @@ public class Logger {
 			this.levelListeners.get(level).forEach(handler -> handler.accept(record));
 		}
 
-		this.worker.insertRecord(record);
+		this.writer.insertRecord(record);
 		return this;
 	}
 

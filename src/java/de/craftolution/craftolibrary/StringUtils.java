@@ -91,7 +91,7 @@ public class StringUtils {
 	 * @return Returns a map containing all parameters found in the given array.
 	 */
 	public static Map<String, String> getParameters(final String... params){
-		Check.notNull(params, "The parameter-array cannot be null!");
+		Check.notNull("The params cannot be null!", (Object[]) params);
 		final Map<String, String> map = new HashMap<String, String>();
 		for (final String parameter : params) {
 			if (parameter != null && parameter.length() > 2 && parameter.contains(":")) {

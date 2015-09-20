@@ -91,13 +91,13 @@ public class Routine implements ToStringable {
 	}
 
 	public Routine after(final Routine routine) {
-		Check.notNull(routine, "The routine cannot be null!");
+		Check.notNull("The routine cannot be null!", routine);
 		if (!this.equals(routine)) { this.executeAfter = Optional.of(routine); }
 		return this;
 	}
 
 	public Routine after(final Runnable r) {
-		Check.notNull(r, "The runnable cannot be null!");
+		Check.notNull("The runnable cannot be null!", r);
 		this.executeAfter = Optional.of(new Routine(r, ThreadType.ASYNC));
 		return this.executeAfter.get();
 	}
@@ -109,13 +109,13 @@ public class Routine implements ToStringable {
 	}
 
 	public Routine during(final Routine routine) {
-		Check.notNull(routine, "The routine cannot be null!");
+		Check.notNull("The routine cannot be null!", routine);
 		if (!this.equals(routine)) { this.executeDuring = Optional.of(routine); }
 		return this;
 	}
 
 	public Routine during(final Runnable r) {
-		Check.notNull(r, "The runnable cannot be null!");
+		Check.notNull("The runnable cannot be null!", r);
 		this.executeDuring = Optional.of(new Routine(r, ThreadType.ASYNC));
 		return this;
 	}

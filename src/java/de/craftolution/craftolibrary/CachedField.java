@@ -37,7 +37,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	 * @throws IllegalArgumentException If the specified duration is {@code null}.
 	 */
 	public CachedField(final Duration duration) throws IllegalArgumentException {
-		Check.notNull(duration, "The duration cannot be null!");
+		Check.notNull("The duration cannot be null!", duration);
 		this.lastAccess = 0;
 		this.duration = duration;
 		this.value = this.get();
@@ -46,10 +46,10 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	/**
 	 * Initilaizes a new {@link CachedField} with the given predicate.
 	 * @param predicate - The predicate to define when the cached value should be reset.
-	 * @throws IllegalArgumentException If the specified duration is {@code null}.
+	 * @throws IllegalArgumentException If the specified predicate is {@code null}.
 	 */
 	public CachedField(final Predicate<E> predicate) throws IllegalArgumentException {
-		Check.notNull(predicate, "The predicate cannot be null!");
+		Check.notNull("The predicate cannot be null!", predicate);
 		this.lastAccess = 0;
 		this.duration = null;
 		this.predicate = predicate;
@@ -62,8 +62,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	 * @throws IllegalArgumentException If the given duration or predicate are {@code null}.
 	 */
 	public CachedField(final Duration duration, final Predicate<E> predicate) throws IllegalArgumentException {
-		Check.notNull(duration, "The duration cannot be null!");
-		Check.notNull(predicate, "The predicate cannot be null!");
+		Check.notNull("The duration/predicate cannot be null!", duration, predicate);
 		this.lastAccess = 0;
 		this.duration = duration;
 		this.predicate = predicate;

@@ -199,7 +199,7 @@ public final class Duration implements Supplier<Long>, com.google.common.base.Su
 	 * @return Returns a new duration.
 	 */
 	public static Duration of(final Duration duration) {
-		Check.notNull(duration, "The duration cannot be null!");
+		Check.notNull("The duration cannot be null!", duration);
 		return new Duration(duration.inMillis());
 	}
 
@@ -336,61 +336,56 @@ public final class Duration implements Supplier<Long>, com.google.common.base.Su
 	 * @param end - The second timestamp.
 	 * @return Returns the duration between these two timestamps.
 	 */
-	public static Duration between(final Timestamp start, final Timestamp end) {
-		Check.notNull(start, "The start cannot be null!");
-		Check.notNull(end, "The end timestamp cannot be null!");
+	public static Duration between(final Timestamp start, final Timestamp end) throws IllegalArgumentException {
+		Check.notNull("The start/end cannot be null!", start, end);
 		return Duration.ofMillis(end.getTime() - start.getTime());
 	}
 
 	/** TODO: Documentation */
-	public static Duration sum(final Pair<Duration, Duration> durations) {
-		Check.notNull(durations, "The durations pair cannot be null!");
+	public static Duration sum(final Pair<Duration, Duration> durations) throws IllegalArgumentException {
+		Check.notNull("The durations pair cannot be null!", durations);
 		return Duration.sum(durations.getFirst(), durations.getSecond());
 	}
 
 	/** TODO: Documentation */
-	public static Duration sum(final Duration first, final Duration second) {
-		Check.notNull(first, "The first duration cannot be null!");
-		Check.notNull(second, "The second duration cannot be null!");
+	public static Duration sum(final Duration first, final Duration second) throws IllegalArgumentException {
+		Check.notNull("The first/second duration cannot be null!", first);
 		return Duration.ofTicks(first.get() + second.get());
 	}
 
 	/** TODO: Documentation */
-	public static Duration diff(final Pair<Duration, Duration> durations) {
-		Check.notNull(durations, "The durations pair cannot be null!");
+	public static Duration diff(final Pair<Duration, Duration> durations) throws IllegalArgumentException {
+		Check.notNull("The durations pair cannot be null!", durations);
 		return Duration.diff(durations.getFirst(), durations.getSecond());
 	}
 
 	/** TODO: Documentation */
-	public static Duration diff(final Duration first, final Duration second) {
-		Check.notNull(first, "The first duration cannot be null!");
-		Check.notNull(second, "The second duration cannot be null!");
+	public static Duration diff(final Duration first, final Duration second) throws IllegalArgumentException {
+		Check.notNull("The first/second duration cannot be null!", first, second);
 		return Duration.ofTicks(first.get() - second.get());
 	}
 
 	/** TODO: Documentation */
-	public static Duration prod(final Pair<Duration, Duration> durations) {
-		Check.notNull(durations, "The durations pair cannot be null!");
+	public static Duration prod(final Pair<Duration, Duration> durations) throws IllegalArgumentException {
+		Check.notNull("The durations pair cannot be null!", durations);
 		return Duration.prod(durations.getFirst(), durations.getSecond());
 	}
 
 	/** TODO: Documentation */
-	public static Duration prod(final Duration first, final Duration second) {
-		Check.notNull(first, "The first duration cannot be null!");
-		Check.notNull(second, "The second duration cannot be null!");
+	public static Duration prod(final Duration first, final Duration second) throws IllegalArgumentException {
+		Check.notNull("The first/second duration cannot be null!", first, second);
 		return Duration.ofTicks(first.get() * second.get());
 	}
 
 	/** TODO: Documentation */
-	public static Duration quot(final Pair<Duration, Duration> durations) {
-		Check.notNull(durations, "The durations pair cannot be null!");
+	public static Duration quot(final Pair<Duration, Duration> durations) throws IllegalArgumentException {
+		Check.notNull("The durations pair cannot be null!", durations);
 		return Duration.quot(durations.getFirst(), durations.getSecond());
 	}
 
 	/** TODO: Documentation */
-	public static Duration quot(final Duration first, final Duration second) {
-		Check.notNull(first, "The first duration cannot be null!");
-		Check.notNull(second, "The second duration cannot be null!");
+	public static Duration quot(final Duration first, final Duration second) throws IllegalArgumentException {
+		Check.notNull("The first/second duration cannot be null!", first, second);
 		return Duration.ofTicks(first.get() / second.get());
 	}
 }

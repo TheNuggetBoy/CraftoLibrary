@@ -308,6 +308,8 @@ public class Check {
 		return StringUtils.isUUID(s);
 	}
 
+	// --- Argument checks ---
+
 	/**
 	 * Checks that the specified object is not {@code null}.
 	 * Otherwise throws a {@link IllegalArgumentException} with the specified message.
@@ -317,8 +319,25 @@ public class Check {
 	 * @return Returns the given {@code object}.
 	 * @throws IllegalArgumentException If the specified object is {@code null}.
 	 */
-	public static <T> T notNull(final T object, final String message) throws IllegalArgumentException {
-		if (message == null) { throw new IllegalArgumentException("Check#notNull(object, string)  was called with a absent message o_O"); }
+	public static <T> T notNull(final String message, final T object) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object)  was called with a absent message o_O"); }
+		if (object == null) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+
+	/**
+	 * Checks that the specified object is not {@code null}.
+	 * Otherwise throws a {@link IllegalArgumentException} with the specified message.
+	 *
+	 * @param object - The object to check
+	 * @param message - The exception message
+	 * @return Returns the given {@code object}.
+	 * @throws IllegalArgumentException If the specified object is {@code null}.
+	 * @deprecated Use {@link #notNull(String, Object)} instead!
+	 */
+	@Deprecated
+	public static <T> T notNullOld(final T object, final String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object)  was called with a absent message o_O"); }
 		if (object == null) { throw new IllegalArgumentException(message); }
 		return object;
 	}
@@ -349,6 +368,7 @@ public class Check {
 	public static void notNull(final String message, final Object... objects) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object[]) was called with a absent message o_O"); }
 		if (objects.length <= 0) { throw new IllegalArgumentException("Check#notNull(string, object[]) was called with an empty array!"); }
+		if (objects.length == 1) { Check.notNull(message, objects[0]); }
 
 		// Fast check, dont need to process all that stuff down there if all objects are present anyway
 		boolean allPresent = true;
@@ -357,40 +377,38 @@ public class Check {
 		}
 		if (allPresent) { return; }
 
-		if (objects.length > 1) {
-			String[] identifiers = null;
-			String wordThatContainsTheIdentifiers = null;
-			for (final String word : message.split(" ")) {
-				if (word.contains("/")) {
-					final String[] wordIdentifiers = word.split("/");
-					if (wordIdentifiers.length >= objects.length) {
-						identifiers = wordIdentifiers;
-						wordThatContainsTheIdentifiers = word;
-						break;
-					}
+		// Atleast one element is null
+		String[] identifiers = null;
+		String wordThatContainsTheIdentifiers = null;
+		for (final String word : message.split(" ")) {
+			if (word.contains("/")) {
+				final String[] wordIdentifiers = word.split("/");
+				if (wordIdentifiers.length >= objects.length) {
+					identifiers = wordIdentifiers;
+					wordThatContainsTheIdentifiers = word;
+					break;
 				}
-			}
-
-			final StringBuilder nullIdentifiers = new StringBuilder();
-			boolean foundNullObject = false;
-
-			for (int i = 0; i < objects.length; i++) {
-				if (objects[i] == null) {
-					foundNullObject = true;
-					if (identifiers != null && wordThatContainsTheIdentifiers != null && identifiers.length > i) {
-						nullIdentifiers.append(identifiers[i]);
-						nullIdentifiers.append(" and ");
-					}
-					else { throw new IllegalArgumentException(message); }
-				}
-			}
-
-			if (foundNullObject) {
-				nullIdentifiers.delete(nullIdentifiers.length()-5, nullIdentifiers.length());
-				throw new IllegalArgumentException(message.replace(wordThatContainsTheIdentifiers, nullIdentifiers.toString()));
 			}
 		}
-		else { Check.notNull(objects[0], message); }
+
+		final StringBuilder nullIdentifiers = new StringBuilder();
+		boolean foundNullObject = false;
+
+		for (int i = 0; i < objects.length; i++) {
+			if (objects[i] == null) {
+				foundNullObject = true;
+				if (identifiers != null && wordThatContainsTheIdentifiers != null && identifiers.length > i) {
+					nullIdentifiers.append(identifiers[i]);
+					nullIdentifiers.append(" and ");
+				}
+				else { throw new IllegalArgumentException(message); }
+			}
+		}
+
+		if (foundNullObject) {
+			nullIdentifiers.delete(nullIdentifiers.length() - 5, nullIdentifiers.length());
+			throw new IllegalArgumentException(message.replace(wordThatContainsTheIdentifiers, nullIdentifiers.toString()));
+		}
 	}
 
 	/**
@@ -417,6 +435,12 @@ public class Check {
 	public static String notEmpty(final String string, final String message) throws IllegalArgumentException {
 		if (string == null || string.isEmpty()) { throw new IllegalArgumentException(message); }
 		return string;
+	}
+
+	/** TODO: Documentation */
+	public static <T> T[] notEmpty(final T[] array, final String message) throws IllegalArgumentException {
+		if (array == null || array.length <= 0) { throw new IllegalArgumentException(message); }
+		return array;
 	}
 
 	/**

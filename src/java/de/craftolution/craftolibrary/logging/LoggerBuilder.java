@@ -1,5 +1,7 @@
 package de.craftolution.craftolibrary.logging;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
@@ -71,12 +73,16 @@ public class LoggerBuilder implements Builder<Logger>, Cloneable {
 	}
 
 	/** TODO: Documentation */
-	public LoggerBuilder output(final OutputStream output, final Level... levels) {
-		if (levels != null && levels.length > 0) {
-			for (final Level level : levels) {
-				this.writer.provideOutput(level, output);
-			}
-		}
+	public LoggerBuilder output(final OutputStream output, final Level... levels) throws IllegalArgumentException {
+		this.writer.provideOutput(output, levels);
+		return this;
+	}
+
+	/** TODO: Documentation
+	 * @throws FileNotFoundException
+	 * @throws IllegalArgumentException */
+	public LoggerBuilder output(final File output, final Level... levels) throws IllegalArgumentException, FileNotFoundException {
+		this.writer.provideOutput(output, levels);
 		return this;
 	}
 

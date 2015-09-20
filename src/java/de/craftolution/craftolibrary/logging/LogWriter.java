@@ -1,6 +1,9 @@
 package de.craftolution.craftolibrary.logging;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -15,6 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Level;
+
+import de.craftolution.craftolibrary.Check;
 
 /**
  * TODO: Documentation
@@ -47,16 +52,27 @@ public class LogWriter implements Runnable {
 
 	/** TODO: Documentation */
 	public LogWriter insertRecord(final LogRecord record) {
+		//Check.notnul
 		try { this.queue.put(record); }
 		catch (final InterruptedException e) { e.printStackTrace(); }
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public LogWriter provideOutput(final Level level, final OutputStream output) {
-		if (!this.outputMap.containsKey(level)) { this.outputMap.put(level, new ArrayList<Writer>()); }
-		this.outputMap.get(level).add(this.createWriter(output));
+	public LogWriter provideOutput(final OutputStream output, final Level... levels) throws IllegalArgumentException {
+		Check.notNull("The output/levels cannot be null!", output, levels);
+		Check.notEmpty(levels, "The given array of levels cannot be empty!");
+		for (final Level level : levels) {
+			if (!this.outputMap.containsKey(level)) { this.outputMap.put(level, new ArrayList<Writer>()); }
+			this.outputMap.get(level).add(this.createWriter(output));
+		}
 		return this;
+	}
+
+	/** TODO: Documentation
+	 * @throws FileNotFoundException */
+	public LogWriter provideOutput(final File file, final Level... levels) throws IllegalArgumentException, FileNotFoundException {
+		return this.provideOutput(new FileOutputStream(file, true), levels);
 	}
 
 	/** TODO: Documentation */
