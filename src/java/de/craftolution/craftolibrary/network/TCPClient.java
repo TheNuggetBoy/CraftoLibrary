@@ -1,9 +1,8 @@
 package de.craftolution.craftolibrary.network;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -24,25 +23,29 @@ import de.craftolution.craftolibrary.ToStringable;
  */
 public class TCPClient implements ToStringable {
 
+	private static final int DEFAULT_BYTE_ARRAY_TRESHOLD = 2048;
+
 	private final Socket socket;
-	private final PrintWriter out;
-	private final BufferedReader in;
+	private final DataOutputStream out;
+	private final DataInputStream in;
 	private final AtomicBoolean listening;
 
-	private final LinkedBlockingQueue<String> newMessageQueue = new LinkedBlockingQueue<>();
+	private final LinkedBlockingQueue<byte[]> newMessageQueue = new LinkedBlockingQueue<>();
+
+	private int byteArrayTreshold = TCPClient.DEFAULT_BYTE_ARRAY_TRESHOLD;
 
 	@Nullable private Boolean disconnectInformed = null;
 
 	@Nullable private Consumer<String> logger;
 	@Nullable private Consumer<Exception> exceptionHandler;
-	@Nullable private Consumer<String> messageHandler;
+	@Nullable private Consumer<byte[]> messageHandler;
 	@Nullable private Runnable disconnectHandler;
 
 	/** TODO: Documentation */
 	public TCPClient(final Socket socket, @Nullable final Executor executor) throws IOException {
 		this.socket = socket;
-		this.out = new PrintWriter(socket.getOutputStream(), true);
-		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		this.out = new DataOutputStream(socket.getOutputStream());
+		this.in = new DataInputStream(socket.getInputStream());
 		this.listening = new AtomicBoolean(true);
 
 		// Start listen()
@@ -74,10 +77,10 @@ public class TCPClient implements ToStringable {
 	public TCPClient onException(final Consumer<Exception> exceptionHandler) { this.exceptionHandler = exceptionHandler; return this; }
 
 	/** TODO: Documentation */
-	public TCPClient onMessage(final Consumer<String> messageHandler) {
+	public TCPClient onMessage(final Consumer<byte[]> messageHandler) {
 		this.messageHandler = messageHandler;
 		while (this.messageHandler != null && !this.newMessageQueue.isEmpty()) {
-			this.messageHandler.accept(this.newMessageQueue.poll());
+			try { this.messageHandler.accept(this.newMessageQueue.poll()); } catch (final Exception e) { this.report(e); }
 		}
 		return this;
 	}
@@ -86,10 +89,13 @@ public class TCPClient implements ToStringable {
 	public TCPClient onDisconnect(final Runnable disconnectHandler) {
 		this.disconnectHandler = disconnectHandler;
 		if (this.disconnectHandler != null && !this.isConnected() && this.disconnectInformed != null && this.disconnectInformed == false) {
-			this.disconnectHandler.run();
+			try { this.disconnectHandler.run(); } catch (final Exception e) { this.report(e); }
 		}
 		return this;
 	}
+
+	/** TODO: Documentation */
+	public TCPClient setByteArrayTreshold(final int length) { this.byteArrayTreshold = length; return this; }
 
 	// --- Public methods ---
 
@@ -100,7 +106,7 @@ public class TCPClient implements ToStringable {
 	public int getPort() { return this.socket.getPort(); }
 
 	/** TODO: Documentation */
-	public boolean isConnected() { return this.socket.isClosed(); }
+	public boolean isConnected() { return !this.socket.isClosed(); }
 
 	/** TODO: Documentation */
 	public void disconnect() {
@@ -116,7 +122,8 @@ public class TCPClient implements ToStringable {
 
 		this.listening.set(false);
 
-		this.out.close();
+		try { this.out.close(); }
+		catch (final IOException ignore) { }
 
 		try { this.in.close(); }
 		catch (final IOException ignore) { }
@@ -126,10 +133,20 @@ public class TCPClient implements ToStringable {
 	}
 
 	/** TODO: Documentation */
-	public void send(final String message) {
+	public boolean send(final byte[] bytes) {
 		if (this.socket.isConnected()) {
-			this.out.println(message);
+			try {
+				this.out.write(bytes, 0, bytes.length);
+				this.out.flush();
+				return true;
+			}
+			catch (final IOException e) {
+				if (!this.socket.isClosed()) {
+					this.report(e);
+				}
+			}
 		}
+		return false;
 	}
 
 	// --- Private methods ---
@@ -137,12 +154,19 @@ public class TCPClient implements ToStringable {
 	private void listen() {
 		this.log("Started listening for new messages on socket " + this.socket.getInetAddress().getHostAddress() + ":" + this.socket.getPort() + "...");
 
-		String message = null;
+		final byte[] bytes = new byte[this.byteArrayTreshold];
+		int affectedBytes = 0;
+
 		try {
-			while (this.listening.get() && (message = this.in.readLine()) != null) { // readLine() is blocking
+			while (this.listening.get() && (affectedBytes = this.in.read(bytes)) > -1) { // readLine() is blocking
 				if (!this.listening.get()) { break; }
 
-				this.newMessage(message);
+				if (affectedBytes > 0) {
+					final byte[] realBytes = new byte[affectedBytes];
+					System.arraycopy(bytes, 0, realBytes, 0, realBytes.length);
+
+					this.newMessage(realBytes);
+				}
 			}
 		}
 		catch (final IOException e) {
@@ -151,11 +175,11 @@ public class TCPClient implements ToStringable {
 			}
 		}
 
-		this.disconnect();
 		this.log("Stopped listening for new messages on socket " + this.socket.getInetAddress().getHostAddress() + ":" + this.socket.getPort() + "... ");
+		this.disconnect();
 	}
 
-	private void newMessage(final String message) {
+	private void newMessage(final byte[] message) {
 		if (this.messageHandler == null) { this.newMessageQueue.add(message); }
 		else { try { this.messageHandler.accept(message); } catch (final Exception e) { this.report(e); } }
 	}
@@ -172,12 +196,12 @@ public class TCPClient implements ToStringable {
 
 	@Override
 	public String toString() {
-		return this.buildToString()
-				.with("ip", this.socket.getInetAddress().getHostAddress())
-				.with("port", this.socket.getPort())
-				.with("listening", this.listening.get())
-				.with("connected", this.socket.isConnected())
-				.toString();
-		//		return "TCPClient{'"+this.socket.getInetAddress().getHostAddress()+":"+this.socket.getPort()+"'}";
+		//		return this.buildToString()
+		//				.with("ip", this.socket.getInetAddress().getHostAddress())
+		//				.with("port", this.socket.getPort())
+		//				.with("listening", this.listening.get())
+		//				.with("connected", this.socket.isConnected())
+		//				.toString();
+		return "TCPClient{'"+this.socket.getInetAddress().getHostAddress()+":"+this.socket.getPort()+"'}";
 	}
 }
