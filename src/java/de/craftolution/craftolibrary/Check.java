@@ -44,7 +44,7 @@ public class Check {
 	}
 
 	/**
-	 * Checks wether or not the given object is an instance of the given class.
+	 * Checks whether or not the given object is an instance of the given class.
 	 * @param o - The object to check.
 	 * @param clazz - The class to check.
 	 * @return Returns {@code true} if the object is not {@code null} and is an instance of the given class.
