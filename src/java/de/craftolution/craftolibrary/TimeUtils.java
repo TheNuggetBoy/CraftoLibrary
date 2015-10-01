@@ -44,7 +44,7 @@ public class TimeUtils {
 	 * @return Returns the current time in the given format.
 	 */
 	public static String getCurrentTime(final String format) {
-		Check.notNullOld(format, "The format must not be null.");
+		Check.notNull("The format must not be null.", format);
 		TimeUtils.checkFormat(format);
 		synchronized (TimeUtils.df) { return TimeUtils.df.format(new Date(System.currentTimeMillis())); }
 	}
@@ -90,7 +90,7 @@ public class TimeUtils {
 	 * @return Returns a string version of the given time in the specified format.
 	 */
 	public static String getTime(final long time, final String format) {
-		Check.notNullOld(format, "The format must not be null.");
+		Check.notNull("The format must not be null.", format);
 		TimeUtils.checkFormat(format);
 		synchronized (TimeUtils.df) { return TimeUtils.df.format(new Date(time)); }
 	}
@@ -122,7 +122,7 @@ public class TimeUtils {
 	}
 
 	private static void checkFormat(final String format) {
-		Check.notNullOld(format, "The format must not be null");
+		Check.notNull("The format must not be null", format);
 		synchronized (TimeUtils.df) {
 			if (!TimeUtils.df.toPattern().equalsIgnoreCase(format)) {
 				TimeUtils.df = new SimpleDateFormat(format, Locale.GERMANY);
