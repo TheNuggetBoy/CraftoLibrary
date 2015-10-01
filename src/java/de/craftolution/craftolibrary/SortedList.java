@@ -87,6 +87,21 @@ public class SortedList<E> extends AbstractList<E> {
 		Collections.sort(this.internalList, this.comparator);
 	}
 
+	/** TODO: Documentation */
+	public void addWithoutSort(final int position, final E e) {
+		this.internalList.add(position, e);
+	}
+
+	/** TODO: Documentation */
+	public void addWithoutSort(final E e) {
+		this.internalList.add(e);
+	}
+
+	/** TODO: Documentation */
+	public void sort() {
+		Collections.sort(this.internalList, this.comparator);
+	}
+
 	@Override
 	public E set(final int index, final E element) {
 		final E e = this.internalList.set(index, element);
