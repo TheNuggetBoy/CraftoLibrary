@@ -9,6 +9,7 @@ package de.craftolution.craftolibrary;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -186,6 +187,24 @@ public class Check {
 					Integer.parseInt(o.toString());
 					return true;
 				} catch (final Exception e) { }
+			}
+		}
+		return false;
+	}
+
+	/** TODO: Documentation */
+	public static final boolean parseInt(final Object o, final Consumer<Integer> consumer) {
+		if (o != null) {
+			if (o instanceof Integer) {
+				consumer.accept((Integer) o);
+				return true;
+			}
+			else if (o.toString().matches("-?[0-9]+")) {
+				try {
+					int i = Integer.parseInt(o.toString());
+					consumer.accept(i);
+					return true;
+				} catch (Exception e) { }
 			}
 		}
 		return false;
