@@ -35,6 +35,12 @@ public class Check {
 		return o != null;
 	}
 
+	/** TODO: Documentation */
+	public static final <T> boolean ifPresent(final T object, final Consumer<T> consumer) {
+		if (object != null) { consumer.accept(object); return true; }
+		return false;
+	}
+
 	/**
 	 * Checks whether or not the given object is {@code null}.
 	 * @param o - The object to check.
