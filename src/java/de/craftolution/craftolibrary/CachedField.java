@@ -76,8 +76,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	protected abstract E set(@Nullable final E oldValue);
 
 	/** @return Returns the value of this cached field. */
-	@Override
-	@Nullable public E get() {
+	@Override @Nullable public E get() {
 		if (this.needsNewValue()) {
 			this.value = this.set(this.value);
 			synchronized (this) { this.notifyAll(); }

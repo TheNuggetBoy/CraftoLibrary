@@ -8,6 +8,7 @@ package de.craftolution.craftolibrary;
  */
 public interface Builder<T> {
 
+	/** TODO: Documentation */
 	T build();
 
 }
