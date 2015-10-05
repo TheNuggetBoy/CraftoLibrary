@@ -37,6 +37,8 @@ public class StringUtils {
 	public static final String MASKED_BACKSLASH = StringUtils.BACKSLASH + "" + StringUtils.BACKSLASH;
 	public static final String QUOTE = "\'";
 	public static final String MASKED_QUOTE = StringUtils.BACKSLASH + "" + StringUtils.QUOTE;
+	public static final String DOUBLE_QUOTE = "\"";
+	public static final String MASKED_DOUBLE_QUOTE = StringUtils.BACKSLASH + "" + StringUtils.DOUBLE_QUOTE;
 	public static final char[] LETTERS = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q',
 			'r', 's', 't', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', };
 
@@ -82,7 +84,7 @@ public class StringUtils {
 
 	/** TODO: Documentation */
 	public static String escapeJson(final String string) {
-		return string.replace(StringUtils.BACKSLASH, StringUtils.MASKED_BACKSLASH).replace(StringUtils.QUOTE, StringUtils.MASKED_QUOTE);
+		return string.replace(StringUtils.BACKSLASH, StringUtils.MASKED_BACKSLASH).replace(StringUtils.QUOTE, StringUtils.MASKED_QUOTE).replace(StringUtils.DOUBLE_QUOTE, StringUtils.MASKED_DOUBLE_QUOTE);
 	}
 
 	/**
