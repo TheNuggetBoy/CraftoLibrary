@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -182,7 +183,7 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 
 	private void computeDelayed(final Duration delay) {
 		// Wait
-		try { Thread.sleep(delay.inMillis()); }
+		try { Thread.sleep(delay.toMillis()); }
 		catch (final InterruptedException e) {
 			this.exception = new ExecutionException("The scheduled result " + this.toString() + " was interrupted on computation.", e);
 			this.cancelled.set(true);

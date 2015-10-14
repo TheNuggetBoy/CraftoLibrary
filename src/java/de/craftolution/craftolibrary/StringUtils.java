@@ -34,11 +34,11 @@ public class StringUtils {
 
 	public static final String BULLET = String.valueOf('\u25cf'); //String.valueOf((char) 9679);
 	public static final String BACKSLASH = "\\";
-	public static final String MASKED_BACKSLASH = StringUtils.BACKSLASH + "" + StringUtils.BACKSLASH;
+	public static final String MASKED_BACKSLASH = StringUtils.BACKSLASH + StringUtils.BACKSLASH;
 	public static final String QUOTE = "\'";
-	public static final String MASKED_QUOTE = StringUtils.BACKSLASH + "" + StringUtils.QUOTE;
+	public static final String MASKED_QUOTE = StringUtils.BACKSLASH + StringUtils.QUOTE;
 	public static final String DOUBLE_QUOTE = "\"";
-	public static final String MASKED_DOUBLE_QUOTE = StringUtils.BACKSLASH + "" + StringUtils.DOUBLE_QUOTE;
+	public static final String MASKED_DOUBLE_QUOTE = StringUtils.BACKSLASH + StringUtils.DOUBLE_QUOTE;
 	public static final char[] LETTERS = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q',
 			'r', 's', 't', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', };
 

@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

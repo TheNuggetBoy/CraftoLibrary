@@ -60,7 +60,4 @@ public class ContextualStringReplacer<Context> {
 		return b.toString();
 	}
 
-	static String currentName = "Peter";
-	static String currentAge = "17";
-
 }

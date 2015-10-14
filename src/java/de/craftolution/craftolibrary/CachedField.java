@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -94,6 +95,6 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	}
 
 	private boolean checkDuration() {
-		return this.duration != null && this.lastAccess + this.duration.inMillis() < System.currentTimeMillis();
+		return this.duration != null && this.lastAccess + this.duration.toMillis() < System.currentTimeMillis();
 	}
 }
