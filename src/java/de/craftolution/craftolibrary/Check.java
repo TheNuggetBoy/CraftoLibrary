@@ -207,10 +207,64 @@ public class Check {
 			}
 			else if (o.toString().matches("-?[0-9]+")) {
 				try {
-					int i = Integer.parseInt(o.toString());
+					final int i = Integer.parseInt(o.toString());
 					consumer.accept(i);
 					return true;
-				} catch (Exception e) { }
+				} catch (final Exception e) { }
+			}
+		}
+		return false;
+	}
+
+	/** TODO: Documentation */
+	public static final boolean parseFloat(final Object o, final Consumer<Float> consumer) {
+		if (o != null) {
+			if (o instanceof Float) {
+				consumer.accept((Float) o);
+				return true;
+			}
+			else if (o.toString().matches("-?[0-9]*(\\.)?[0-9]*(f|F)?")) {
+				try {
+					final float i = Float.parseFloat(o.toString());
+					consumer.accept(i);
+					return true;
+				} catch (final Exception e) { }
+			}
+		}
+		return false;
+	}
+
+	/** TODO: Documentation */
+	public static final boolean parseDouble(final Object o, final Consumer<Double> consumer) {
+		if (o != null) {
+			if (o instanceof Double) {
+				consumer.accept((Double) o);
+				return true;
+			}
+			else if (o.toString().matches("-?[0-9]*(\\.)?[0-9]*")) {
+				try {
+					final double i = Double.parseDouble(o.toString());
+					consumer.accept(i);
+					return true;
+				} catch (final Exception e) { }
+			}
+		}
+		return false;
+	}
+
+	/** TODO: Documentation */
+	public static final boolean parseBoolean(final Object o, final Consumer<Boolean> consumer) {
+		if (o != null) {
+			if (o instanceof Boolean) {
+				consumer.accept((Boolean) o);
+				return true;
+			}
+			else if (o.toString().matches("(true)|(false)|1|0")) {
+				try {
+					final boolean i = Boolean.parseBoolean(o.toString());
+					consumer.accept(i);
+					return true;
+				} catch (final Exception e) { }
 			}
 		}
 		return false;
