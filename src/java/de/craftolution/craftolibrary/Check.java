@@ -199,75 +199,67 @@ public class Check {
 	}
 
 	/** TODO: Documentation */
-	public static final boolean parseInt(final Object o, final Consumer<Integer> consumer) {
+	public static final Integer parseInt(final Object o, final int defaultValue) {
 		if (o != null) {
 			if (o instanceof Integer) {
-				consumer.accept((Integer) o);
-				return true;
+				return (Integer) o;
 			}
 			else if (o.toString().matches("-?[0-9]+")) {
 				try {
 					final int i = Integer.parseInt(o.toString());
-					consumer.accept(i);
-					return true;
+					return i;
 				} catch (final Exception e) { }
 			}
 		}
-		return false;
+		return defaultValue;
 	}
 
 	/** TODO: Documentation */
-	public static final boolean parseFloat(final Object o, final Consumer<Float> consumer) {
+	public static final float parseFloat(final Object o, final float defaultValue) {
 		if (o != null) {
 			if (o instanceof Float) {
-				consumer.accept((Float) o);
-				return true;
+				return (Float) o;
 			}
 			else if (o.toString().matches("-?[0-9]*(\\.)?[0-9]*(f|F)?")) {
 				try {
 					final float i = Float.parseFloat(o.toString());
-					consumer.accept(i);
-					return true;
+					return i;
 				} catch (final Exception e) { }
 			}
 		}
-		return false;
+		return defaultValue;
 	}
 
 	/** TODO: Documentation */
-	public static final boolean parseDouble(final Object o, final Consumer<Double> consumer) {
+	public static final double parseDouble(final Object o, final double defaultValue) {
 		if (o != null) {
 			if (o instanceof Double) {
-				consumer.accept((Double) o);
-				return true;
+				return (Double) o;
 			}
 			else if (o.toString().matches("-?[0-9]*(\\.)?[0-9]*")) {
 				try {
 					final double i = Double.parseDouble(o.toString());
-					consumer.accept(i);
-					return true;
+					return i;
 				} catch (final Exception e) { }
 			}
 		}
-		return false;
+		return defaultValue;
 	}
 
 	/** TODO: Documentation */
-	public static final boolean parseBoolean(final Object o, final Consumer<Boolean> consumer) {
+	public static final boolean parseBoolean(final Object o, final boolean defaultValue) {
 		if (o != null) {
 			if (o instanceof Boolean) {
-				consumer.accept((Boolean) o);
-				return true;
+				return (Boolean) o;
 			}
 			else if (o.toString().matches("(true)|(false)|1|0")) {
 				try {
 					final boolean i = Boolean.parseBoolean(o.toString());
-					consumer.accept(i);
-					return true;
+					return i;
 				} catch (final Exception e) { }
 			}
 		}
-		return false;
+		return defaultValue;
 	}
 
 	/**
