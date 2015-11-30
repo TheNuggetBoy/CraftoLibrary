@@ -89,9 +89,9 @@ public class StringReplacer {
 
 		// --- Results ---
 		final long duration = end - start;
-		System.out.println("StringReplacer took " + (end - start) / 1000 / 1000 + " ms. Thats " + duration / runs + " nanoseconds for every replace!");
+		System.out.println("StringReplacer took " + (end - start) / 1000 / 1000 + " ms. That's " + duration / runs + " nanoseconds for every replace!");
 
 		final long duration2 = end2 - start2;
-		System.out.println("Standard string replacing took " + duration2 / 1000 / 1000 + " ms. Thats " + duration2 / runs + " nanoseconds for every replace!");
+		System.out.println("Standard string replacing took " + duration2 / 1000 / 1000 + " ms. That's " + duration2 / runs + " nanoseconds for every replace!");
 	}
 }
