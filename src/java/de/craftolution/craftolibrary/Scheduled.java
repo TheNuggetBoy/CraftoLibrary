@@ -47,9 +47,6 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 	private final ArrayList<Consumer<E>> consumerListeners;
 	private final ArrayList<Runnable> runnableListeners;
 
-	private final ArrayList<Consumer<E>> syncConsumerListeners;
-	private final ArrayList<Runnable> syncRunnableListeners;
-
 	private final ArrayList<Pair<Runnable, Executor>> executorRunnableListener;
 
 	private final ArrayList<Pair<Consumer<E>, Consumer<Runnable>>> consumerExecutorConsumerListener;
@@ -59,126 +56,56 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 	private final AtomicBoolean done;
 	private final AtomicBoolean cancelled;
 
-	private Scheduled(final Supplier<E> resultSupplier) {
+	private Scheduled(final Duration delay, final Consumer<Runnable> executor, final Supplier<E> resultSupplier, @Nullable final Consumer<E> firstListener, @Nullable final Runnable secondListener) {
 		this.resultSupplier = resultSupplier;
 		this.computationRunning = new AtomicBoolean(false);
 
 		this.consumerListeners = new ArrayList<>(1);
 		this.runnableListeners = new ArrayList<>(1);
-		this.syncConsumerListeners = new ArrayList<>(1);
-		this.syncRunnableListeners = new ArrayList<>(1);
 		this.executorRunnableListener = new ArrayList<>(1);
 		this.consumerExecutorConsumerListener = new ArrayList<>(1);
 		this.consumerExecutorRunnableListener = new ArrayList<>(1);
 
 		this.done = new AtomicBoolean(false);
 		this.cancelled = new AtomicBoolean(false);
+
+		if (firstListener != null) { this.consumerListeners.add(firstListener); }
+		if (secondListener != null) { this.runnableListeners.add(secondListener); }
+
+		if (delay.isZero()) {
+			executor.accept(() -> this.compute());
+		}
+		else { executor.accept(() -> this.computeDelayed(delay)); }
 	}
 
 	/** TODO: Documentation */
 	public Scheduled(final Duration delay, final Consumer<Runnable> executor, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-
-		if (delay.isZero()) {
-			executor.accept(() -> this.compute());
-		}
-		else { executor.accept(() -> this.computeDelayed(delay)); }
+		this(delay, executor, resultSupplier, null, null);
 	}
 
 	/** TODO: Documentation */
-	public Scheduled(final Duration delay, final Consumer<Runnable> executor, final Consumer<E> listener, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-		this.consumerListeners.add(listener);
-
-		if (delay.isZero()) {
-			executor.accept(() -> this.compute());
-		}
-		else { executor.accept(() -> this.computeDelayed(delay)); }
+	public Scheduled(final Duration delay, final Consumer<Runnable> executor, final Supplier<E> resultSupplier, final Consumer<E> listener) {
+		this(delay, executor, resultSupplier, listener, null);
 	}
 
 	/** TODO: Documentation */
-	public Scheduled(final Duration delay, final Consumer<Runnable> executor, final Runnable listener, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-		this.runnableListeners.add(listener);
-
-		if (delay.isZero()) {
-			executor.accept(() -> this.compute());
-		}
-		else { executor.accept(() -> this.computeDelayed(delay)); }
+	public Scheduled(final Duration delay, final Consumer<Runnable> executor, final Supplier<E> resultSupplier, final Runnable listener) {
+		this(delay, executor, resultSupplier, null, listener);
 	}
 
 	/** TODO: Documentation */
 	public Scheduled(final Duration delay, final boolean async, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-
-		//		if (CraftoPlugin.instance() != null && Utility.isClassPresent("org.bukkit.Bukkit")) {
-		//			if (async) {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTaskAsynchronously(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLaterAsynchronously(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//			else {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTask(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLater(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//		}
+		this(delay, async ? Threads::go : r -> r.run(), resultSupplier, null, null);
 	}
 
 	/** TODO: Documentation */
-	public Scheduled(final Duration delay, final boolean async, final Consumer<E> listener, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-		this.consumerListeners.add(listener);
-
-		//		if (CraftoPlugin.instance() != null && Utility.isClassPresent("org.bukkit.Bukkit")) {
-		//			if (async) {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTaskAsynchronously(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLaterAsynchronously(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//			else {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTask(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLater(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//		}
+	public Scheduled(final Duration delay, final boolean async, final Supplier<E> resultSupplier, final Consumer<E> listener) {
+		this(delay, async ? Threads::go : r -> r.run(), resultSupplier, listener, null);
 	}
 
 	/** TODO: Documentation */
-	public Scheduled(final Duration delay, final boolean async, final Runnable listener, final Supplier<E> resultSupplier) {
-		this(resultSupplier);
-		this.runnableListeners.add(listener);
-
-		//		if (CraftoPlugin.instance() != null && Utility.isClassPresent("org.bukkit.Bukkit")) {
-		//			if (async) {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTaskAsynchronously(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLaterAsynchronously(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//			else {
-		//				if (delay.isZero()) {
-		//					Bukkit.getScheduler().runTask(CraftoPlugin.instance(), () -> this.compute());
-		//				}
-		//				else {
-		//					Bukkit.getScheduler().runTaskLater(CraftoPlugin.instance(), () -> this.compute(), delay.inTicks());
-		//				}
-		//			}
-		//		}
+	public Scheduled(final Duration delay, final boolean async, final Supplier<E> resultSupplier, final Runnable listener) {
+		this(delay, async ? Threads::go : r -> r.run(), resultSupplier, null, listener);
 	}
 
 	private void computeDelayed(final Duration delay) {
@@ -213,12 +140,6 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 	private void notifyListeners() {
 		this.consumerListeners.forEach(c -> c.accept(this.result));
 		this.runnableListeners.forEach(r -> r.run());
-		//		if (!this.syncConsumerListeners.isEmpty() || !this.syncRunnableListeners.isEmpty()) {
-		//			Bukkit.getScheduler().runTask(CraftoPlugin.instance(), () -> {
-		//				Scheduled.this.syncConsumerListeners.forEach(c -> c.accept(Scheduled.this.result));
-		//				Scheduled.this.syncRunnableListeners.forEach(r -> r.run());
-		//			});
-		//		}
 		this.executorRunnableListener.forEach(pair -> pair.getSecond().execute(pair.getFirst()));
 		this.consumerExecutorConsumerListener.forEach(pair -> pair.getSecond().accept(() -> pair.getFirst().accept(this.result)));
 		this.consumerExecutorRunnableListener.forEach(pair -> pair.getSecond().accept(() -> pair.getFirst().run()));
@@ -257,18 +178,6 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 	public void addListener(final Runnable listener) {
 		Check.notNull("The listener cannot be null!", listener);
 		this.runnableListeners.add(listener);
-	}
-
-	/** TODO: Documentation */
-	public void addSyncListener(final Consumer<E> listener) {
-		Check.notNull("The listener cannot be null!", listener);
-		this.syncConsumerListeners.add(listener);
-	}
-
-	/** TODO: Documentation */
-	public void addSyncListener(final Runnable listener) {
-		Check.notNull("The listener cannot be null!", listener);
-		this.syncRunnableListeners.add(listener);
 	}
 
 	@Override
