@@ -3,6 +3,7 @@ package de.craftolution.craftolibrary.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 import de.craftolution.craftolibrary.Check;
@@ -23,8 +24,8 @@ public class Test {
 
 		final BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
 
-		final ArrayList<TCPClient> clients = new ArrayList<TCPClient>();
-		final ArrayList<TCPClient> connectedClients = new ArrayList<>();
+		final ArrayList<TCPConnection> clients = new ArrayList<TCPConnection>();
+		final ArrayList<TCPConnection> connectedClients = new ArrayList<>();
 
 		System.out.println(">>>>>> Inputreader ready! Available commands:");
 		System.out.println("> exit                    // Closes the application");
@@ -67,19 +68,19 @@ public class Test {
 						continue;
 					}
 
-					listener = new TCPListener(Integer.parseInt(args[1]), client -> {
-						clients.add(client);
-						connectedClients.add(client);
+					listener = TCPListener.builder()
+							.port(Integer.parseInt(args[1]))
+							.onNewConnection(connection -> {
+								clients.add(connection);
+								connectedClients.add(connection);
 
-						System.out.println("A new client (" + clients.indexOf(client) + ") connected to the server!");
+								connection.onDisconnect(() -> System.err.println("Client " + clients.indexOf(connection) + ": disconnected from the server."));
 
-						client.send("Welcome to the server!".getBytes());
+								connection.onPacket(bytes -> System.out.println("Client " + clients.indexOf(connection) + ": " + new String(bytes)));
 
-						client.onMessage(message -> System.out
-								.println("Client " + clients.indexOf(client) + ": " + new String(message)));
-						client.onDisconnect(() -> System.err
-								.println("Client " + clients.indexOf(client) + " disconnected from the server."));
-					});
+								connection.send("Welcome to the server!".getBytes());
+							})
+							.build();
 
 					System.out.println("> Server started successfully.");
 				}
@@ -97,13 +98,14 @@ public class Test {
 						continue;
 					}
 
-					final TCPClient client = new TCPClient(ip, Integer.parseInt(args[2]));
-					clients.add(client);
+					final TCPConnection connection = new TCPConnection(InetAddress.getByName(ip), Integer.parseInt(args[2]));
+					connection.onPacket(bytes -> System.out.println("Server of client " + clients.indexOf(connection) + ": " + new String(bytes)))
+					.onDisconnect(() -> System.err.println("Client " + clients.indexOf(connection) + " disconnected."))
+					.connect();
 
-					client.onMessage(message -> System.out.println("Server of client " + clients.indexOf(client) + ": " + new String(message)));
-					client.onDisconnect(() -> System.err.println("Client " + clients.indexOf(client) + " disconnected."));
+					clients.add(connection);
 
-					System.out.println("> Client " + clients.indexOf(client) + " connected successfully.");
+					System.out.println("> Client " + clients.indexOf(connection) + " connected successfully.");
 				}
 
 				// DISCONNECT
@@ -123,7 +125,7 @@ public class Test {
 						continue;
 					}
 
-					final TCPClient client = clients.get(Integer.parseInt(args[1]));
+					final TCPConnection client = clients.get(Integer.parseInt(args[1]));
 					client.disconnect();
 
 					clients.remove(id);
@@ -161,7 +163,7 @@ public class Test {
 						continue;
 					}
 
-					final TCPClient client = clients.get(Integer.parseInt(args[1]));
+					final TCPConnection client = clients.get(Integer.parseInt(args[1]));
 					if (args.length < 3) {
 						System.out.println("> Error: You have to specify a message!");
 						continue;
@@ -177,7 +179,7 @@ public class Test {
 					}
 					else {
 						for (int clientId = 0; clientId < clients.size(); clientId++) {
-							final TCPClient client = clients.get(clientId);
+							final TCPConnection client = clients.get(clientId);
 							final StringBuilder b = new StringBuilder("Client " + clientId + " ("
 									+ client.getInetAddress().getHostAddress() + ":" + client.getPort() + ")");
 							if (connectedClients.contains(client)) {
