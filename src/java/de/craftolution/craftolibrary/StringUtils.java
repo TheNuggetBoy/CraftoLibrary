@@ -53,7 +53,7 @@ public class StringUtils {
 
 	/** TODO: Documentation */
 	public static boolean isReallyEmpty(final String string) {
-		return string.replace(" ", "").isEmpty();
+		return string == null || string.replace(" ", "").isEmpty();
 	}
 
 	/** TODO: Documentation */
@@ -175,10 +175,7 @@ public class StringUtils {
 	 * @return Returns a string representation of the object or an empty string if the given object is {@code null}.
 	 */
 	public static String toString(@Nullable final Object object) {
-		if (object != null) {
-			return object.toString();
-		}
-		else { return ""; }
+		return String.valueOf(object);
 	}
 
 	/**
