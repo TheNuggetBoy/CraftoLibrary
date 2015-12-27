@@ -20,7 +20,7 @@ sourceSets {
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
@@ -28,4 +28,20 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
 	compile 'log4j:log4j:1.2.17'
+}
+
+javadoc {
+	options {
+		encoding = 'UTF-8'
+		charSet = 'UTF-8'
+		overview "${rootDir.path}/overview.html"
+	}
+
+    // Disable the crazy super-strict doclint tool in Java 8
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
 }
