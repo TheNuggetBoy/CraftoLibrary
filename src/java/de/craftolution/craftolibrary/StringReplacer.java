@@ -61,16 +61,17 @@ public class StringReplacer {
 		return b.toString();
 	}
 
-	static String currentName = "Peter";
-	static String currentAge = "17";
-
 	public static void main(final String[] args) {
 		final int runs = 100000;
+		System.out.println("Launching the StringReplacer.java Test with " + runs + "...");
 
+		final String currentName = "Peter";
+		final String currentAge = "17";
+		
 		// --- String replacer ---
-		final HashMap<String, Supplier<String>> map = new HashMap<>();
-		map.put("name", () -> StringReplacer.currentName);
-		map.put("age", () -> StringReplacer.currentAge);
+		final Map<String, Supplier<String>> map = new HashMap<>();
+		map.put("name", () -> currentName);
+		map.put("age", () -> currentAge);
 
 		final StringReplacer replacer = new StringReplacer(map);
 		final long start = System.nanoTime();
@@ -80,10 +81,14 @@ public class StringReplacer {
 		final long end = System.nanoTime();
 
 		// --- Original replacing ---
-		final String original = "Hello World, im $name and im $age years old.";
 		final long start2 = System.nanoTime();
+		
+		final String firstToken = "$name";
+		final String secondToken = "$age";
+		
 		for (int i = 0; i < 100000; i++) {
-			original.replace("$name", StringReplacer.currentName).replace("$age", StringReplacer.currentAge);
+			String sentence = "Hello World, im $name and im $age years old.";
+			sentence.replace(firstToken, currentName).replace(secondToken, currentAge);
 		}
 		final long end2 = System.nanoTime();
 
