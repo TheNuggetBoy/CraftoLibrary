@@ -29,7 +29,7 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
 
 	/** TODO: Documentation */
 	public static <K, V> MapBuilder<K, V> create(final K key, final V value) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
-		return new MapBuilder<K, V>();
+		return new MapBuilder<K, V>().put(key, value);
 	}
 
 }
