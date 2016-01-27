@@ -34,17 +34,19 @@ public class PacketBuilder implements Builder<Packet> {
 	/** TODO: Documentation */
 	public PacketBuilder packetId(final byte[] packetId) { this.packetId = packetId; return this; }
 	/** TODO: Documentation */
-	public PacketBuilder packetId(final int packetId) { return this.packetId(ByteUtils.intToBytes(packetId, Packet.PACKET_ID_BYTES)); }
+	public PacketBuilder packetId(final int packetId) { return this.packetId(ByteUtils.intToBytes(packetId, Packet.PACKET_ID_BYTECOUNT)); }
 
 	/** TODO: Documentation */
 	public PacketBuilder content(final byte... content) { this.content = content; return this; }
 	/** TODO: Documentation */
 	public PacketBuilder content(final String content) { return this.content(content.getBytes()); }
 
+	/** TODO: Documentation */
 	@Override
-	public Packet build() {
-		Check.notNull("The packetIdarray/contentarray cannot be null!", packetId, content);
-		return new Packet(this.serviceId, this.typeId, this.packetId, this.content);
+	public Packet build() throws InvalidPacketException, IllegalArgumentException {
+		Check.notNull("The packetIdarray/contentarray cannot be null!", this.packetId, this.content);
+		final byte[] packetLength = ByteUtils.intToBytes(Packet.PACKET_SENDER_BYTECOUNT + Packet.PACKET_TYPE_BYTECOUNT + Packet.PACKET_ID_BYTECOUNT + this.content.length, Packet.PACKET_LENGTH_BYTECOUNT);
+		return new Packet(packetLength, this.serviceId, this.typeId, this.packetId, this.content);
 	}
 
 }

@@ -3,13 +3,18 @@ package de.craftolution.craftolibrary.craftocore;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
+import de.craftolution.craftolibrary.Check;
 import de.craftolution.craftolibrary.Scheduled;
 import de.craftolution.craftolibrary.ToStringable;
 import de.craftolution.craftolibrary.network.TCPConnection;
@@ -23,9 +28,15 @@ import de.craftolution.craftolibrary.network.TCPConnection;
 public class Service implements ToStringable {
 
 	private final byte serviceId;
+	private final String serviceName;
 	private final InetAddress coreAddress;
 	private final int corePort;
 	private final AtomicInteger packetCount = new AtomicInteger();
+	/** Whether or not the core is available for network now. Initiated by the CONNECT packet. */
+	private boolean available;
+	@SuppressWarnings("unused")
+	private final List<PacketType> subscribedPackets = new ArrayList<>();
+	private final Queue<Packet> packetQueue = new LinkedBlockingQueue<>(); // TODO: Maybe use a better queue type?
 
 	/** TODO: Documentation */
 	@Nullable private TCPConnection connection;
@@ -33,11 +44,12 @@ public class Service implements ToStringable {
 	// Listeners
 	@Nullable private Consumer<String> logMessageHandler;
 	@Nullable private Consumer<Exception> exceptionHandler;
-	@Nullable private Consumer<byte[]> packetHandler;
+	@Nullable private Consumer<Packet> packetHandler;
 	@Nullable private Runnable disconnectHandler;
 	@Nullable private Executor executor;
 
-	Service(final byte serviceId, final InetAddress coreAddress, final int corePort) {
+	Service(final byte serviceId, String serviceName, final InetAddress coreAddress, final int corePort) {
+		this.serviceName = serviceName;
 		this.serviceId = serviceId;
 		this.coreAddress = coreAddress;
 		this.corePort = corePort;
@@ -54,9 +66,15 @@ public class Service implements ToStringable {
 
 	/**
 	 * Returns whether or not this {@link TCPConnection} is still connected.
-	 * @return {@code True} if still connected.
+	 * @return {@code True} if still connected
 	 */
 	public boolean isConnected() { return this.connection != null && this.connection.isConnected(); }
+
+	/**
+	 * Checks whether or not he CraftoCore is now available.
+	 * @return {@code True} if available
+	 */
+	public boolean isAvailable() { return this.available; }
 
 	/** TODO: Documentation */
 	public Service connect() throws IOException {
@@ -68,10 +86,41 @@ public class Service implements ToStringable {
 					.withExecutor(this.executor);
 
 			this.connection.onPacket(bytes -> {
-				Packet packet = Packet.ofBytes(bytes);
+				final Packet packet = Packet.ofBytes(bytes);
+
+				if (this.packetHandler != null) {
+					try {
+						this.packetHandler.accept(packet);
+					}
+					catch (Exception e) {
+						
+					}
+				}
+				// Alles falsch :(
+//				if (!this.available && packet.getType().equals(PacketTypes.CONNECT)) {
+//					this.available = true;
+//
+//					final Packet oldPacket = this.packetQueue.poll();
+//					while (!this.packetQueue.isEmpty()) {
+//						this.connection.send(oldPacket.toByteArray());
+//					}
+//				}
+//				if (this.available && packet.getType().equals(PacketTypes.DISCONNECT)) {
+//					this.available = false;
+//				}
+//				if (packet.getType().equals(PacketTypes.ASK_TUNNEL)) {
+//
+//				}
+//				if (packet.getType().equals(PacketTypes.SYNC_TIME)) {
+//
+//				}
 			});
 
 			this.connection.connect();
+			
+			byte[] serviceName = this.serviceName.getBytes();
+			byte serviceNameByteLength = (byte) serviceName.length;
+			
 		}
 		return this;
 	}
@@ -101,7 +150,7 @@ public class Service implements ToStringable {
 
 		if (this.connection != null) { this.connection.disconnect(); }
 	}
-	
+
 	/**
 	 * Sends a byte array to the inputstream on the other end of this connection.
 	 *
@@ -114,27 +163,36 @@ public class Service implements ToStringable {
 	 * @param bytes - The byte array to send.
 	 * @return Returns an {@link IOException} if one occured.
 	 */
-	public Optional<IOException> send(PacketType type, byte[] bytes) {
+	public Optional<IOException> send(final PacketType type, final byte[] bytes) throws IllegalArgumentException {
+		Check.notNull("The packetType/bytes cannot be null!", type, bytes);
+		
 		if (this.isConnected()) {
+
 			final Packet packet = Packet.builder().service(this.serviceId).type(type.getId()).packetId(this.packetCount.getAndIncrement()).content(bytes).build();
-			return this.connection.send(packet.toByteArray());
+
+			if (!this.isAvailable()) {
+				this.packetQueue.add(packet);
+			}
+			else {
+				return this.connection.send(packet.toByteArray());
+			}
 		}
 		return Optional.empty();
 	}
 
-	public void subscribe(byte serviceId) {
-		
+	public void subscribe(final byte serviceId) {
+
 	}
 
-	public void unsubscribe(byte serviceId) {
-		
+	public void unsubscribe(final byte serviceId) {
+
 	}
 
-	public Scheduled<Optional<Integer>> askTunnel(byte serviceId) {
+	public Scheduled<Optional<Integer>> askTunnel(final byte serviceId) {
 		return null;
 	}
 
-	public Scheduled<Optional<Long>> syncTime(byte serviceId) {
+	public Scheduled<Optional<Long>> syncTime(final byte serviceId) {
 		return null;
 	}
 
@@ -163,7 +221,7 @@ public class Service implements ToStringable {
 	 * @param packetHandler - The consumer that accepts packets.
 	 * @return Returns itself.
 	 */
-	public Service onPacket(final Consumer<byte[]> packetHandler) {
+	public Service onPacket(final Consumer<Packet> packetHandler) {
 		this.packetHandler = packetHandler;
 		return this;
 	}
