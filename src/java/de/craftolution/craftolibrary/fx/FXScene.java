@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * TODO: Documentation
@@ -21,6 +25,8 @@ public class FXScene {
 	Optional<Controller> controller;
 	/** The loader that reads the scene from a given resource. */
 	FXMLLoader loader;
+	/** TODO: Documentation */
+	@Nullable Scene scene;
 
 	/** TODO: Documentation */
 	public FXScene(URL fxmlFile) throws IOException {
@@ -41,5 +47,11 @@ public class FXScene {
 
 	/** TODO: Documentation */
 	public boolean hasController() { return this.getController().isPresent(); }
+
+	/** TODO: Documentation */
+	public void displayTo(Stage stage) {
+		if (this.scene == null) { this.scene = new Scene(this.container); }
+		stage.setScene(this.scene);
+	}
 
 }
