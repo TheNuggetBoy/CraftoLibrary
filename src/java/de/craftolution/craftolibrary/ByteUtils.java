@@ -21,7 +21,7 @@ public class ByteUtils {
 	public static String displayBytes(byte... byteArray) {
 		final StringBuilder builder = new StringBuilder();
 		for (byte b : byteArray) {
-			builder.append(((int) b) + " ");
+			builder.append(((int) b)).append(' ');
 		}
 		return builder.toString().trim();
 	}
@@ -30,7 +30,7 @@ public class ByteUtils {
 	public static String displayBits(byte... byteArray) {
 		final StringBuilder builder = new StringBuilder();
 		for (byte b : byteArray) {
-			builder.append(Integer.toBinaryString(b) + " ");
+			builder.append(Integer.toBinaryString(b)).append(' ');
 		}
 		return builder.toString().trim();
 	}
