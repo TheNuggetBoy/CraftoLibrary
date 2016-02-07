@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Implementation-Title: CraftoLibrary
-Implementation-Version: 1.1.2
+Implementation-Version: 1.1.3
 Main-Class: de.craftolution.craftolibrary.Main
 
