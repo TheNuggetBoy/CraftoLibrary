@@ -34,7 +34,7 @@ public class Logger {
 
 	private static final LogFormatter defaultFormatter = record -> {
 		return new StringBuilder()
-				.append("[")
+				.append('[')
 				.append(record.getLogger().getDateFormatter().format(record.getDate()))
 				.append("] [")
 				.append(record.getLogger().getName())
@@ -59,9 +59,13 @@ public class Logger {
 
 	/** TODO: Documentation */
 	public static Logger of(final String name) {
-		final Logger logger = Logger.loggerMap.get(name);
-		if (logger != null) { return logger; }
-		else { return Logger.builder(name).build(); }
+		Logger logger = Logger.loggerMap.get(name);
+		if (logger == null) {
+			logger = Logger.builder(name).build();
+			Logger.loggerMap.put(name, logger);
+		}
+
+		return logger;
 	}
 
 	/** TODO: Documentation */
@@ -83,8 +87,6 @@ public class Logger {
 
 	private final Map<Level, List<Consumer<LogRecord>>> levelListeners;
 	private final List<Consumer<LogRecord>> listeners;
-
-	// --- Constructors ---
 
 	Logger(final Logger logger, final String channelName) {
 		this.name = channelName;
