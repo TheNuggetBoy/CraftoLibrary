@@ -1,6 +1,7 @@
 package de.craftolution.craftolibrary;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ListBuilder<T> implements Builder<List<T>> {
@@ -14,11 +15,23 @@ public class ListBuilder<T> implements Builder<List<T>> {
 	public List<T> build() { return this.list; }
 	
 	/** TODO: Documentation */
-	ListBuilder<T> add(T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+	public ListBuilder<T> add(T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		this.list.add(element);
 		return this;
 	}
+	
+	public ListBuilder<T> addAll(Collection<? extends T> elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+		this.list.addAll(elements);
+		return this;
+	}
 
+	public ListBuilder<T> addAll(T[] elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+		for (T element : elements) {
+			this.list.add(element);
+		}
+		return this;
+	}
+	
 	/** TODO: Documentation */
 	public static <T> ListBuilder<T> create(T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		return new ListBuilder<T>().add(element);
