@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -17,7 +18,6 @@ import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
 import de.craftolution.craftolibrary.database.query.PreparedQuery;
 import de.craftolution.craftolibrary.database.query.Query;
 import de.craftolution.craftolibrary.database.query.TriPreparedQuery;
-import de.craftolution.craftolibrary.database.result.QueryResult;
 import de.craftolution.craftolibrary.database.table.Table;
 
 /**
@@ -172,20 +172,39 @@ public interface Database {
 		@Nullable private transient String hostname = "localhost";
 		@Nullable private DatabaseType type = DatabaseType.MYSQL;
 
+		@Nullable private Consumer<Exception> exceptionHandler;
+		@Nullable private Consumer<Query> queryHandler;
+
 		Builder() { }
 
+		/** TODO: Documentation */
 		public Builder username(final String username) { this.username = username; return this; }
 
-		public Builder password(final String username) { this.username = username; return this; }
+		/** TODO: Documentation */
+		public Builder password(final String password) { this.password = password; return this; }
 
-		public Builder databaseName(final String username) { this.username = username; return this; }
+		/** TODO: Documentation */
+		public Builder databaseName(final String databaseName) { this.databaseName = databaseName; return this; }
 
-		public Builder port(final String username) { this.username = username; return this; }
+		/** TODO: Documentation */
+		public Builder port(final String port) { this.port = port; return this; }
 
-		public Builder hostname(final String username) { this.username = username; return this; }
+		/** TODO: Documentation */
+		public Builder port(final int port) { this.port = String.valueOf(port); return this; }
 
+		/** TODO: Documentation */
+		public Builder hostname(final String hostname) { this.hostname = hostname; return this; }
+
+		/** TODO: Documentation */
 		public Builder type(final DatabaseType type) { this.type = type; return this; }
 
+		/** TODO: Documentation */
+		public Builder onException(Consumer<Exception> exceptionHandler) { this.exceptionHandler = exceptionHandler; return this; }
+
+		/** TODO: Documentation */
+		public Builder onQuery(Consumer<Query> queryHandler) { this.queryHandler = queryHandler; return this; }
+
+		/** TODO: Documentation */
 		public Database connect() throws IllegalStateException, SQLException, ClassNotFoundException {
 			if (!this.isValid(this.username)) { throw new IllegalStateException("The username isn't valid."); }
 			if (!this.isValid(this.databaseName)) { throw new IllegalStateException("The databaseName isn't valid."); }
@@ -196,7 +215,7 @@ public interface Database {
 
 			switch (this.type) {
 				case MYSQL:
-				default: return new MySQL(this.username, this.databaseName, this.password, this.port, this.hostname);
+				default: return new MySQL(this.username, this.databaseName, this.password, this.port, this.hostname, this.exceptionHandler, this.queryHandler);
 			}
 		}
 

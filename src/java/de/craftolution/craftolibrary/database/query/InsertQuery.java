@@ -88,9 +88,11 @@ public class InsertQuery implements Query {
 			for (final String value : this.onDuplicateKey) {
 				b.append(value).append(", ");
 			}
+
+			b.delete(b.length() - 2, b.length());
 		}
 
-		b.delete(b.length() - 2, b.length()).append(';');
+		b.append(';');
 
 		return b.toString();
 	}

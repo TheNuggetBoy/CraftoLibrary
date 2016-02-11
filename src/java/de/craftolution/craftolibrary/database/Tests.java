@@ -1,16 +1,19 @@
 package de.craftolution.craftolibrary.database;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.UUID;
 
+import de.craftolution.craftolibrary.Tokens;
 import de.craftolution.craftolibrary.database.Database.Builder.DatabaseType;
 import de.craftolution.craftolibrary.database.query.Order;
+import de.craftolution.craftolibrary.database.query.PreparedQuery;
 import de.craftolution.craftolibrary.database.query.Query;
-import de.craftolution.craftolibrary.database.result.QueryResult;
-import de.craftolution.craftolibrary.database.result.Row;
 import de.craftolution.craftolibrary.database.table.CharSet;
 import de.craftolution.craftolibrary.database.table.Engine;
 import de.craftolution.craftolibrary.database.table.IndexType;
 import de.craftolution.craftolibrary.database.table.Table;
+import de.craftolution.craftolibrary.fx.FXScene;
 
 /**
  * TODO: Documentation
@@ -20,7 +23,7 @@ import de.craftolution.craftolibrary.database.table.Table;
  */
 public class Tests {
 
-	public static void main(final String[] args) throws IllegalStateException, ClassNotFoundException, SQLException {
+	public static void main(final String[] args) throws IllegalStateException, ClassNotFoundException, SQLException, IOException {
 
 		// Simple Insert Query
 		final Query insertQuery1 = Query.insert("cp_users_test").columns("name", "age", "gender").values("Peter", "4", "MALE").onDuplicateKey("`id` = `id`");
@@ -34,12 +37,16 @@ public class Tests {
 		final Query selectQuery = Query.select("name", "age").from("cp_users_test").where("`gender` = 'MALE'").orderBy("age", Order.ASCENDING).limit(4);
 		System.out.println(selectQuery);
 
-		// TODO: RemoveQuery
+		// RemoveQuery
+		final Query removeQuery = Query.remove("cp_users_test").where("age = 5", "name = 'Peter'").where("gender = 'FEMALE'");
+		System.out.println(removeQuery);
 
-		// TODO: UpdateQuery
+		// UpdateQuery
+		final Query updateQuery = Query.update("cp_users_test").columns("gender = 'MALE'").where("name = 'Peter'", "age = 40").where("name = 'Ralf'");
+		System.out.println(updateQuery);
 
 		// Raw query
-		final Query rawQuery = Query.of("SELECT * FROM `cp_users_test`");
+		final Query rawQuery = Query.of("SELECT * FROM `cp_users_test`;");
 		System.out.println(rawQuery);
 
 		// Table creation
@@ -86,7 +93,14 @@ public class Tests {
 			final Exception exception = result.getException().get();
 			exception.printStackTrace();
 		}
+		
+		
+		// A PreparedQuery
+		//PreparedQuery<FXScene> selectSceneQuery = db.prepareQuery(Query.of("SELECT * FROM `cp_scene_meta` WHERE `scene_id` = ?"), scene -> Tokens.of(scene.getContainer().getId()));
 
+		//QueryResult otherResult = selectSceneQuery.execute(new FXScene(null));
+
+		// ...
 	}
 
 }

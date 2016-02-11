@@ -1,15 +1,29 @@
 package de.craftolution.craftolibrary.database.query;
 
-import de.craftolution.craftolibrary.database.result.QueryResult;
+import java.util.function.Function;
 
-public interface PreparedQuery<Input> {
+import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.database.Database;
+import de.craftolution.craftolibrary.database.QueryResult;
 
-	Query getQuery();
+public class PreparedQuery<Input> {
 
-	boolean isClosed();
+	private final Database database;
+	private final Query query;
+	private final Function<Input, Tokens<Object>> converter;
+	
+	PreparedQuery(Database database, Query query, Function<Input, Tokens<Object>> converter) {
+		this.database = database;
+		this.query = query;
+		this.converter = converter;
+	}
 
-	void close();
+	Query getQuery() { return null; }
 
-	QueryResult execute(Input input);
+	boolean isClosed() { return false; }
+
+	void close() { }
+
+	QueryResult execute(Input input) { return null; }
 
 }

@@ -63,19 +63,19 @@ public class SelectQuery implements Query {
 
 		// Order by
 		if (this.orderByColumn != null && this.orderByOrder != null) {
-			b.append(" ORDER BY ").append(this.orderByColumn).append(" ").append(this.orderByOrder.toString());
+			b.append(" ORDER BY `").append(this.orderByColumn).append("` ").append(this.orderByOrder.toString());
 		}
 
 		// Limit
 		if (this.firstLimit != Integer.MIN_VALUE) {
-			b.append("LIMIT");
+			b.append(" LIMIT");
 			if (this.secondLimit == Integer.MIN_VALUE) {
 				b.append(' ').append(this.firstLimit);
 			}
 			else { b.append('(').append(this.firstLimit).append(',').append(this.secondLimit).append(')'); }
 		}
 
-		return b.toString();
+		return b.append(";").toString();
 	}
 
 }

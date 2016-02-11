@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.craftolution.craftolibrary.Result;
@@ -14,7 +15,6 @@ import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
 import de.craftolution.craftolibrary.database.query.PreparedQuery;
 import de.craftolution.craftolibrary.database.query.Query;
 import de.craftolution.craftolibrary.database.query.TriPreparedQuery;
-import de.craftolution.craftolibrary.database.result.QueryResult;
 import de.craftolution.craftolibrary.database.table.Table;
 
 /**
@@ -25,8 +25,8 @@ import de.craftolution.craftolibrary.database.table.Table;
  */
 public class MySQL implements Database {
 
-	MySQL(final String username, final String dbName, final String password, final String port, final String hostname) throws SQLException, ClassNotFoundException {
-
+	MySQL(final String username, final String dbName, final String password, final String port, final String hostname, Consumer<Exception> exceptionHandler, Consumer<Query> queryHandler) throws SQLException, ClassNotFoundException {
+		
 	}
 
 	@Override

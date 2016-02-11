@@ -1,6 +1,6 @@
 package de.craftolution.craftolibrary.database.query;
 
-import de.craftolution.craftolibrary.database.result.QueryResult;
+import de.craftolution.craftolibrary.database.QueryResult;
 
 public interface TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 
