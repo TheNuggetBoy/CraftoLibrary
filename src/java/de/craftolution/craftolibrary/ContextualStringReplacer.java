@@ -23,12 +23,12 @@ public class ContextualStringReplacer<Context> {
 	}
 
 	@Beta
-	public String apply(final String input, Context context) {
+	public String apply(final String input, final Context context) {
 		return this.apply(input.toCharArray(), context);
 	}
 
 	@Beta
-	public String apply(final char[] input, Context context) {
+	public String apply(final char[] input, final Context context) {
 		final StringBuilder b = new StringBuilder();
 		for (int i = 0; i < input.length; i++) {
 			final char c = input[i];

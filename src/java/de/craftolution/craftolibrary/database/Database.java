@@ -199,10 +199,10 @@ public interface Database {
 		public Builder type(final DatabaseType type) { this.type = type; return this; }
 
 		/** TODO: Documentation */
-		public Builder onException(Consumer<Exception> exceptionHandler) { this.exceptionHandler = exceptionHandler; return this; }
+		public Builder onException(final Consumer<Exception> exceptionHandler) { this.exceptionHandler = exceptionHandler; return this; }
 
 		/** TODO: Documentation */
-		public Builder onQuery(Consumer<Query> queryHandler) { this.queryHandler = queryHandler; return this; }
+		public Builder onQuery(final Consumer<Query> queryHandler) { this.queryHandler = queryHandler; return this; }
 
 		/** TODO: Documentation */
 		public Database connect() throws IllegalStateException, SQLException, ClassNotFoundException {

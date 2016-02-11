@@ -22,8 +22,8 @@ public class Packet {
 
 	/** TODO: Documentation */
 	public static Packet ofBytes(final byte... bytes) throws InvalidPacketException {
-		if (bytes.length > PACKET_LENGTH_LIMIT) { 
-			throw new InvalidPacketException("The byte array is bigger than the maximum allowed bytecount! (" + bytes.length + " > " + PACKET_LENGTH_LIMIT + ")"); 
+		if (bytes.length > Packet.PACKET_LENGTH_LIMIT) {
+			throw new InvalidPacketException("The byte array is bigger than the maximum allowed bytecount! (" + bytes.length + " > " + Packet.PACKET_LENGTH_LIMIT + ")");
 		}
 
 		int index = 0;
@@ -54,11 +54,11 @@ public class Packet {
 
 	Packet(final byte[] packetLength, final byte serviceId, final byte typeId, final byte[] packetId, final byte[] content) throws InvalidPacketException {
 		Check.nonNulls("The packetIdarray/contentarray cannot be null!", packetId, content);
-		if (packetLength.length != Packet.PACKET_LENGTH_BYTECOUNT) { 
-			throw new InvalidPacketException("The packetLength-array doesnt match the PACKET_LENGTH_BYTECOUNT constant! (" + packetLength.length + " != " + PACKET_LENGTH_BYTECOUNT + ")");
+		if (packetLength.length != Packet.PACKET_LENGTH_BYTECOUNT) {
+			throw new InvalidPacketException("The packetLength-array doesnt match the PACKET_LENGTH_BYTECOUNT constant! (" + packetLength.length + " != " + Packet.PACKET_LENGTH_BYTECOUNT + ")");
 		}
 		if (packetId.length != Packet.PACKET_ID_BYTECOUNT) {
-			throw new InvalidPacketException("The packetID-array doesnt match the PACKET_ID_BYTECOUNT constant! (" + packetId.length + " != " + PACKET_ID_BYTECOUNT +")");
+			throw new InvalidPacketException("The packetID-array doesnt match the PACKET_ID_BYTECOUNT constant! (" + packetId.length + " != " + Packet.PACKET_ID_BYTECOUNT +")");
 		}
 
 		this.packetLength = packetLength;

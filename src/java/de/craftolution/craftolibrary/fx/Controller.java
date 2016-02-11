@@ -11,7 +11,7 @@ import javafx.application.Application;
 public interface Controller {
 
 	/** Called when the application has loaded this controller. */
-	default void onInit(Application application) { }
+	default void onInit(final Application application) { }
 
 	default void onShown() { }
 

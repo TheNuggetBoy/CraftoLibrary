@@ -6,15 +6,15 @@ public class Row {
 
 	private final QueryResult result;
 	private final int rowIndex;
-	
-	Row(QueryResult result, int rowIndex) {
+
+	Row(final QueryResult result, final int rowIndex) {
 		this.result = result;
 		this.rowIndex = rowIndex;
 	}
-	
-	int getInt(String columnName) throws NoSuchElementException { return 0; }
 
-	String getString(String columnName) throws NoSuchElementException { return null; }
+	int getInt(final String columnName) throws NoSuchElementException { return 0; }
+
+	String getString(final String columnName) throws NoSuchElementException { return null; }
 
 	// ...
 }

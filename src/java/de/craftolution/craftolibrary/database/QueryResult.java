@@ -28,50 +28,50 @@ public class QueryResult {
 	@Nullable private Exception exception;
 
 	@Nullable private List<Integer> generatedKeys;
-	
-	QueryResult(Database database, int affectedRows, Statement statement, ResultSet result, Exception exception, Consumer<Exception> exceptionReporter) {
+
+	QueryResult(final Database database, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter) {
 		Check.notNull(database, "The database cannot be null!");
 		this.affectedRows = affectedRows;
 		this.statement = statement;
 		this.result = result;
 		this.exception = exception;
-		
+
 		if (result != null) {
 			try {
 				for (int i = 0; i < this.result.getMetaData().getColumnCount(); i++) {
 					this.columns.add(this.result.getMetaData().getColumnLabel(i + 1));
 				}
 
-				Instant instant = new Instant();
+				final Instant instant = new Instant();
 				for (int i = 0; result.next() && !instant.hasPassed(Duration.ofSeconds(1)); i++) {
 					this.rows.add(new Row(this, i));
 					this.affectedRows++;
 				}
-				
+
 				result.beforeFirst();
 			}
-			catch (Exception e) { if (this.exception == null) { this.exception = e; } exceptionReporter.accept(e); }
+			catch (final Exception e) { if (this.exception == null) { this.exception = e; } exceptionReporter.accept(e); }
 		}
 	}
 
 	/** TODO: Documentation */
 	public List<Integer> getGeneratedKeys() {
 		if (this.generatedKeys != null) { return this.generatedKeys; }
-		
+
 		if (this.statement != null) {
 			try {
-				ResultSet generatedKeys = this.statement.getGeneratedKeys();
-				List<Integer> keyList = Lists.newArrayList();
+				final ResultSet generatedKeys = this.statement.getGeneratedKeys();
+				final List<Integer> keyList = Lists.newArrayList();
 
-				Instant instant = new Instant();
+				final Instant instant = new Instant();
 				for (int index = 1; generatedKeys.next() && !instant.hasPassed(Duration.ofSeconds(1)); index++) {
 					keyList.add(generatedKeys.getInt(index));
 				}
-				
+
 				this.generatedKeys = keyList;
 				return this.generatedKeys;
 			}
-			catch (SQLException ignore) { }
+			catch (final SQLException ignore) { }
 		}
 		return Collections.emptyList();
 	}

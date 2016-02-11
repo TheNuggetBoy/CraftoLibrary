@@ -21,28 +21,28 @@ public class SceneContainer {
 	private final StackPane pane = new StackPane();
 
 	/** TODO: Documentation */
-	public SceneContainer add(FXScene scene) {
+	public SceneContainer add(final FXScene scene) {
 		this.pane.getChildren().add(scene.getContainer());
 		this.scenes.add(scene);
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public SceneContainer addAll(FXScene... scenes) {
-		for (FXScene scene : scenes) { this.add(scene); }
+	public SceneContainer addAll(final FXScene... scenes) {
+		for (final FXScene scene : scenes) { this.add(scene); }
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public SceneContainer displayTo(Stage stage) {
+	public SceneContainer displayTo(final Stage stage) {
 		if (this.scene == null) { this.scene = new Scene(this.pane); }
 		stage.setScene(this.scene);
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public SceneContainer switchScene(FXScene newScene) {
-		for (FXScene scene : scenes) {
+	public SceneContainer switchScene(final FXScene newScene) {
+		for (final FXScene scene : this.scenes) {
 			if (scene.equals(newScene)) {
 				scene.getContainer().setOpacity(1);
 				scene.getContainer().setDisable(false);

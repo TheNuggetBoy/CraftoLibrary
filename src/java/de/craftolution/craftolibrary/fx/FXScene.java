@@ -29,8 +29,8 @@ public class FXScene {
 	@Nullable Scene scene;
 
 	/** TODO: Documentation */
-	public FXScene(URL fxmlFile) throws IOException {
-		FXMLLoader loader = new FXMLLoader(fxmlFile);
+	public FXScene(final URL fxmlFile) throws IOException {
+		final FXMLLoader loader = new FXMLLoader(fxmlFile);
 		this.container = loader.load();
 		this.controller = Optional.ofNullable(loader.getController());
 		this.loader = loader;
@@ -49,7 +49,7 @@ public class FXScene {
 	public boolean hasController() { return this.getController().isPresent(); }
 
 	/** TODO: Documentation */
-	public void displayTo(Stage stage) {
+	public void displayTo(final Stage stage) {
 		if (this.scene == null) { this.scene = new Scene(this.container); }
 		stage.setScene(this.scene);
 	}

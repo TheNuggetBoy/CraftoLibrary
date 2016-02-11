@@ -10,15 +10,15 @@ public class InvalidPacketException extends RuntimeException {
 
 	private static final long serialVersionUID = 5704813079216008197L;
 
-	InvalidPacketException(String message) {
+	InvalidPacketException(final String message) {
 		super(message);
 	}
 
-	InvalidPacketException(Throwable cause) {
+	InvalidPacketException(final Throwable cause) {
 		super(cause);
 	}
-	
-	InvalidPacketException(String message, Throwable cause) {
+
+	InvalidPacketException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

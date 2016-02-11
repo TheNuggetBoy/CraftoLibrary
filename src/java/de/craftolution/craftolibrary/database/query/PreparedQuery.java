@@ -11,8 +11,8 @@ public class PreparedQuery<Input> {
 	private final Database database;
 	private final Query query;
 	private final Function<Input, Tokens<Object>> converter;
-	
-	PreparedQuery(Database database, Query query, Function<Input, Tokens<Object>> converter) {
+
+	PreparedQuery(final Database database, final Query query, final Function<Input, Tokens<Object>> converter) {
 		this.database = database;
 		this.query = query;
 		this.converter = converter;
@@ -24,6 +24,6 @@ public class PreparedQuery<Input> {
 
 	void close() { }
 
-	QueryResult execute(Input input) { return null; }
+	QueryResult execute(final Input input) { return null; }
 
 }

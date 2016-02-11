@@ -13,27 +13,27 @@ public class ListBuilder<T> implements Builder<List<T>> {
 	/** TODO: Documentation */
 	@Override
 	public List<T> build() { return this.list; }
-	
+
 	/** TODO: Documentation */
-	public ListBuilder<T> add(T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+	public ListBuilder<T> add(final T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		this.list.add(element);
 		return this;
 	}
-	
-	public ListBuilder<T> addAll(Collection<? extends T> elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+
+	public ListBuilder<T> addAll(final Collection<? extends T> elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		this.list.addAll(elements);
 		return this;
 	}
 
-	public ListBuilder<T> addAll(T[] elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
-		for (T element : elements) {
+	public ListBuilder<T> addAll(final T[] elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+		for (final T element : elements) {
 			this.list.add(element);
 		}
 		return this;
 	}
-	
+
 	/** TODO: Documentation */
-	public static <T> ListBuilder<T> create(T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+	public static <T> ListBuilder<T> create(final T element) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		return new ListBuilder<T>().add(element);
 	}
 

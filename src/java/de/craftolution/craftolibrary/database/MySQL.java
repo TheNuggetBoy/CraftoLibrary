@@ -25,8 +25,8 @@ import de.craftolution.craftolibrary.database.table.Table;
  */
 public class MySQL implements Database {
 
-	MySQL(final String username, final String dbName, final String password, final String port, final String hostname, Consumer<Exception> exceptionHandler, Consumer<Query> queryHandler) throws SQLException, ClassNotFoundException {
-		
+	MySQL(final String username, final String dbName, final String password, final String port, final String hostname, final Consumer<Exception> exceptionHandler, final Consumer<Query> queryHandler) throws SQLException, ClassNotFoundException {
+
 	}
 
 	@Override

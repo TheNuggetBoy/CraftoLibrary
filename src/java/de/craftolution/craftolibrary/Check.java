@@ -399,35 +399,35 @@ public class Check {
 	}
 
 	/** TODO: Documentation */
-	public static String notNullNotEmpty(String object, String message) throws IllegalArgumentException {
+	public static String notNullNotEmpty(final String object, final String message) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
 		if (object == null || object.isEmpty() || object.replace(" ", "").isEmpty()) { throw new IllegalArgumentException(message); }
 		return object;
 	}
 
 	/** TODO: Documentation */
-	public static <T> Collection<T> notNullNotEmpty(Collection<T> object, String message) throws IllegalArgumentException {
-		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
-		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
-		return object;
-	}
-	
-	/** TODO: Documentation */
-	public static <T> List<T> notNullNotEmpty(List<T> object, String message) throws IllegalArgumentException {
+	public static <T> Collection<T> notNullNotEmpty(final Collection<T> object, final String message) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
 		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
 		return object;
 	}
 
 	/** TODO: Documentation */
-	public static <T> Set<T> notNullNotEmpty(Set<T> object, String message) throws IllegalArgumentException {
+	public static <T> List<T> notNullNotEmpty(final List<T> object, final String message) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
 		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
 		return object;
 	}
 
 	/** TODO: Documentation */
-	public static <T> T[] notNullNotEmpty(T[] object, String message) throws IllegalArgumentException {
+	public static <T> Set<T> notNullNotEmpty(final Set<T> object, final String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+
+	/** TODO: Documentation */
+	public static <T> T[] notNullNotEmpty(final T[] object, final String message) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
 		if (object == null || object.length < 1) { throw new IllegalArgumentException(message); }
 		return object;

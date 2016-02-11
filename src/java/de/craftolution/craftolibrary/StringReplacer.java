@@ -67,7 +67,7 @@ public class StringReplacer {
 
 		final String currentName = "Peter";
 		final String currentAge = "17";
-		
+
 		// --- String replacer ---
 		final Map<String, Supplier<String>> map = new HashMap<>();
 		map.put("name", () -> currentName);
@@ -82,12 +82,12 @@ public class StringReplacer {
 
 		// --- Original replacing ---
 		final long start2 = System.nanoTime();
-		
+
 		final String firstToken = "$name";
 		final String secondToken = "$age";
-		
+
 		for (int i = 0; i < 100000; i++) {
-			String sentence = "Hello World, im $name and im $age years old.";
+			final String sentence = "Hello World, im $name and im $age years old.";
 			sentence.replace(firstToken, currentName).replace(secondToken, currentAge);
 		}
 		final long end2 = System.nanoTime();

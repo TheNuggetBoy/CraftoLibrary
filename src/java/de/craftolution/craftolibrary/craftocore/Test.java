@@ -10,16 +10,16 @@ import de.craftolution.craftolibrary.ByteUtils;
  */
 public class Test {
 
-	public static void main(String[] args) {
-		testPackets();
+	public static void main(final String[] args) {
+		Test.testPackets();
 	}
-	
-	static void testPackets() {		
-		Packet p = Packet.builder().service(3).type(PacketTypes.ASK_TUNNEL).packetId(27438).content("Ok.").build();
+
+	static void testPackets() {
+		final Packet p = Packet.builder().service(3).type(PacketTypes.ASK_TUNNEL).packetId(27438).content("Ok.").build();
 		final byte[] bytes = p.toByteArray();
 
 		System.out.println((byte) 8);
-		
+
 		System.out.println(ByteUtils.displayBytes(bytes));
 	}
 }

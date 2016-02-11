@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 @FunctionalInterface
 public interface EventListener<T extends Event> extends Consumer<T> {
 
+	@Override
 	void accept(T event);
 
 }

@@ -48,7 +48,7 @@ public class Service implements ToStringable {
 	@Nullable private Runnable disconnectHandler;
 	@Nullable private Executor executor;
 
-	Service(final byte serviceId, String serviceName, final InetAddress coreAddress, final int corePort) {
+	Service(final byte serviceId, final String serviceName, final InetAddress coreAddress, final int corePort) {
 		this.serviceName = serviceName;
 		this.serviceId = serviceId;
 		this.coreAddress = coreAddress;
@@ -92,35 +92,35 @@ public class Service implements ToStringable {
 					try {
 						this.packetHandler.accept(packet);
 					}
-					catch (Exception e) {
-						
+					catch (final Exception e) {
+
 					}
 				}
 				// Alles falsch :(
-//				if (!this.available && packet.getType().equals(PacketTypes.CONNECT)) {
-//					this.available = true;
-//
-//					final Packet oldPacket = this.packetQueue.poll();
-//					while (!this.packetQueue.isEmpty()) {
-//						this.connection.send(oldPacket.toByteArray());
-//					}
-//				}
-//				if (this.available && packet.getType().equals(PacketTypes.DISCONNECT)) {
-//					this.available = false;
-//				}
-//				if (packet.getType().equals(PacketTypes.ASK_TUNNEL)) {
-//
-//				}
-//				if (packet.getType().equals(PacketTypes.SYNC_TIME)) {
-//
-//				}
+				//				if (!this.available && packet.getType().equals(PacketTypes.CONNECT)) {
+				//					this.available = true;
+				//
+				//					final Packet oldPacket = this.packetQueue.poll();
+				//					while (!this.packetQueue.isEmpty()) {
+				//						this.connection.send(oldPacket.toByteArray());
+				//					}
+				//				}
+				//				if (this.available && packet.getType().equals(PacketTypes.DISCONNECT)) {
+				//					this.available = false;
+				//				}
+				//				if (packet.getType().equals(PacketTypes.ASK_TUNNEL)) {
+				//
+				//				}
+				//				if (packet.getType().equals(PacketTypes.SYNC_TIME)) {
+				//
+				//				}
 			});
 
 			this.connection.connect();
-			
-			byte[] serviceName = this.serviceName.getBytes();
-			byte serviceNameByteLength = (byte) serviceName.length;
-			
+
+			final byte[] serviceName = this.serviceName.getBytes();
+			final byte serviceNameByteLength = (byte) serviceName.length;
+
 		}
 		return this;
 	}
@@ -165,7 +165,7 @@ public class Service implements ToStringable {
 	 */
 	public Optional<IOException> send(final PacketType type, final byte[] bytes) throws IllegalArgumentException {
 		Check.nonNulls("The packetType/bytes cannot be null!", type, bytes);
-		
+
 		if (this.isConnected()) {
 
 			final Packet packet = Packet.builder().service(this.serviceId).type(type.getId()).packetId(this.packetCount.getAndIncrement()).content(bytes).build();

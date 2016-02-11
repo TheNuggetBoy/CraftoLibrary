@@ -33,7 +33,7 @@ public class Test2 {
 		conn.connect();
 
 		System.out.println("Lets get ready to send 100 packets:");
-		
+
 		// 100 Packete schicken
 		for (int i = 0; i < Test2.count; i++) {
 			conn.send(("Hello " + i).getBytes());
@@ -52,7 +52,7 @@ public class Test2 {
 		final String msg = new String(bytesFromClient);
 		System.out.println("From client: " + msg);
 
-		String indexAsString = msg.replace("Hello ", "");
+		final String indexAsString = msg.replace("Hello ", "");
 		if (Check.isInt(indexAsString)) {
 			final int index = Integer.parseInt(msg.replace("Hello ", ""));
 

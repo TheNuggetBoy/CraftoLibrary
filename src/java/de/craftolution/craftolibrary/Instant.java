@@ -16,8 +16,8 @@ public class Instant {
 	public Instant() { }
 
 	/** TODO: Documentation */
-	public boolean hasPassed(Duration duration) {
-		return System.currentTimeMillis() - instant > duration.toMillis();
+	public boolean hasPassed(final Duration duration) {
+		return System.currentTimeMillis() - this.instant > duration.toMillis();
 	}
 
 }

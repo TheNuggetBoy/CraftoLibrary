@@ -2,18 +2,14 @@ package de.craftolution.craftolibrary.database;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.UUID;
 
-import de.craftolution.craftolibrary.Tokens;
 import de.craftolution.craftolibrary.database.Database.Builder.DatabaseType;
 import de.craftolution.craftolibrary.database.query.Order;
-import de.craftolution.craftolibrary.database.query.PreparedQuery;
 import de.craftolution.craftolibrary.database.query.Query;
 import de.craftolution.craftolibrary.database.table.CharSet;
 import de.craftolution.craftolibrary.database.table.Engine;
 import de.craftolution.craftolibrary.database.table.IndexType;
 import de.craftolution.craftolibrary.database.table.Table;
-import de.craftolution.craftolibrary.fx.FXScene;
 
 /**
  * TODO: Documentation
@@ -93,8 +89,8 @@ public class Tests {
 			final Exception exception = result.getException().get();
 			exception.printStackTrace();
 		}
-		
-		
+
+
 		// A PreparedQuery
 		//PreparedQuery<FXScene> selectSceneQuery = db.prepareQuery(Query.of("SELECT * FROM `cp_scene_meta` WHERE `scene_id` = ?"), scene -> Tokens.of(scene.getContainer().getId()));
 
