@@ -5,6 +5,7 @@ import de.craftolution.craftolibrary.StringUtils;
 public class SelectQuery implements Query {
 
 	private final String[] columns;
+	private boolean selectAll;
 
 	private String fromTable;
 	private String[] whereClauses;
@@ -15,7 +16,10 @@ public class SelectQuery implements Query {
 	private int firstLimit = Integer.MIN_VALUE;
 	private int secondLimit = Integer.MIN_VALUE;
 
-	SelectQuery(final String... columns) { this.columns = columns; }
+	SelectQuery(final String... columns) {
+		this.columns = columns;
+		if (this.columns.length == 1 && columns[0].equals("*")) { this.selectAll = true; }
+	}
 
 	public SelectQuery from(final String table) { this.fromTable = table; return this; }
 
@@ -37,10 +41,13 @@ public class SelectQuery implements Query {
 		final StringBuilder b = new StringBuilder("SELECT ");
 
 		// Columns
-		for (int i = 0; i < this.columns.length; i++) {
-			if (i != 0) { b.append(", "); }
-			b.append('`').append(this.columns[i]).append('`');
+		if (!this.selectAll) {
+			for (int i = 0; i < this.columns.length; i++) {
+				if (i != 0) { b.append(", "); }
+				b.append('`').append(this.columns[i]).append('`');
+			}
 		}
+		else { b.append("*"); }
 
 		// From
 		b.append(" FROM `").append(this.fromTable).append('`');

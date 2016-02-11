@@ -60,7 +60,7 @@ public class LogWriter implements Runnable {
 
 	/** TODO: Documentation */
 	public LogWriter provideOutput(final OutputStream output, final Level... levels) throws IllegalArgumentException {
-		Check.notNull("The output/levels cannot be null!", output, levels);
+		Check.nonNulls("The output/levels cannot be null!", output, levels);
 		Check.notEmpty(levels, "The given array of levels cannot be empty!");
 		for (final Level level : levels) {
 			if (!this.outputMap.containsKey(level)) { this.outputMap.put(level, new ArrayList<Writer>()); }

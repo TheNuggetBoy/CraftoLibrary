@@ -4,11 +4,14 @@ import de.craftolution.craftolibrary.database.table.attributes.AutoIncrementable
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
 import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
-public class IntColumn extends AbstractColumn<Integer> implements Unsignable<IntColumn>, Lengthable<IntColumn>, AutoIncrementable<IntColumn> {
+public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Unsignable<IntColumn>, Lengthable<IntColumn>, AutoIncrementable<IntColumn> {
 
 	private int length;
 	private boolean unsigned;
 	private boolean autoIncrement;
+
+	@Override
+	protected IntColumn instance() { return this; }
 
 	@Override
 	public IntColumn length(final int length) { this.length = length; return this; }

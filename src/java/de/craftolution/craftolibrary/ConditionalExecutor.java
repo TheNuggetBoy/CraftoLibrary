@@ -25,7 +25,7 @@ public class ConditionalExecutor {
 
 	/** TODO: Documentation */
 	public ConditionalExecutor(final Duration durationCondition, final Integer maxExecutionsCondition, final Runnable runnable) {
-		Check.notNull("The durationCondition/maxExecutionsCondition/runnable cannot be null!", durationCondition, maxExecutionsCondition, runnable);
+		Check.nonNulls("The durationCondition/maxExecutionsCondition/runnable cannot be null!", durationCondition, maxExecutionsCondition, runnable);
 		this.durationCondition = durationCondition;
 		this.maxExecutionsCondition = maxExecutionsCondition;
 		this.runnable = runnable;
@@ -33,7 +33,7 @@ public class ConditionalExecutor {
 
 	/** TODO: Documentation */
 	public ConditionalExecutor(final Duration durationCondition, final Runnable runnable) {
-		Check.notNull("The durationCondition/runnable cannot be null!", durationCondition, runnable);
+		Check.nonNulls("The durationCondition/runnable cannot be null!", durationCondition, runnable);
 		this.durationCondition = durationCondition;
 		this.maxExecutionsCondition = null;
 		this.runnable = runnable;
@@ -41,7 +41,7 @@ public class ConditionalExecutor {
 
 	/** TODO: Documentation */
 	public ConditionalExecutor(final Integer maxExecutionsCondition, final Runnable runnable) {
-		Check.notNull("The maxExecutionsCondition/runnable cannot be null!", maxExecutionsCondition, runnable);
+		Check.nonNulls("The maxExecutionsCondition/runnable cannot be null!", maxExecutionsCondition, runnable);
 		this.durationCondition = null;
 		this.maxExecutionsCondition = maxExecutionsCondition;
 		this.runnable = runnable;

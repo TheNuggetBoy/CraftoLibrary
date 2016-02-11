@@ -8,4 +8,5 @@ public class RawQuery implements Query {
 
 	@Override
 	public String toString() { return this.query; }
+
 }

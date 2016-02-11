@@ -170,31 +170,31 @@ public class Scheduled<E> implements Supplier<E>, com.google.common.base.Supplie
 
 	/** TODO: Documentation */
 	public void addListener(final Consumer<E> listener) {
-		Check.notNull("The listener cannot be null!", listener);
+		Check.notNull(listener, "The listener cannot be null!");
 		this.consumerListeners.add(listener);
 	}
 
 	/** TODO: Documentation */
 	public void addListener(final Runnable listener) {
-		Check.notNull("The listener cannot be null!", listener);
+		Check.notNull(listener, "The listener cannot be null!");
 		this.runnableListeners.add(listener);
 	}
 
 	@Override
 	public void addListener(final Runnable listener, final Executor executor) {
-		Check.notNull("The listener/executor cannot be null!", listener, executor);
+		Check.nonNulls("The listener/executor cannot be null!", listener, executor);
 		this.executorRunnableListener.add(Pair.of(listener, executor));
 	}
 
 	/** TODO: Documentation */
 	public void addListener(final Consumer<E> listener, final Consumer<Runnable> executor) {
-		Check.notNull("The listener/executor cannot be null!", listener, executor);
+		Check.nonNulls("The listener/executor cannot be null!", listener, executor);
 		this.consumerExecutorConsumerListener.add(Pair.of(listener, executor));
 	}
 
 	/** TODO: Documentation */
 	public void addListener(final Runnable listener, final Consumer<Runnable> executor) {
-		Check.notNull("The listener cannot be null!", listener, executor);
+		Check.nonNulls("The listener cannot be null!", listener, executor);
 		this.consumerExecutorRunnableListener.add(Pair.of(listener, executor));
 	}
 

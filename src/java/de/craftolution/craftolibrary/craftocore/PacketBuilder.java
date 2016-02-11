@@ -44,7 +44,7 @@ public class PacketBuilder implements Builder<Packet> {
 	/** TODO: Documentation */
 	@Override
 	public Packet build() throws InvalidPacketException, IllegalArgumentException {
-		Check.notNull("The packetIdarray/contentarray cannot be null!", this.packetId, this.content);
+		Check.nonNulls("The packetIdarray/contentarray cannot be null!", this.packetId, this.content);
 		final byte[] packetLength = ByteUtils.intToBytes(Packet.PACKET_SENDER_BYTECOUNT + Packet.PACKET_TYPE_BYTECOUNT + Packet.PACKET_ID_BYTECOUNT + this.content.length, Packet.PACKET_LENGTH_BYTECOUNT);
 		return new Packet(packetLength, this.serviceId, this.typeId, this.packetId, this.content);
 	}

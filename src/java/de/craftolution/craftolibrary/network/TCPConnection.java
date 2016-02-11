@@ -80,7 +80,7 @@ public class TCPConnection implements ToStringable {
 	 * @param port - The port used for the connection.
 	 */
 	public TCPConnection(final InetAddress address, final int port) {
-		Check.notNull("The hostAddress cannot be null!", address);
+		Check.notNull(address, "The hostAddress cannot be null!");
 		Check.isTrue(port > 0, "The port has to be greather than 0!");
 		this.listening.set(false);
 		this.address = address;

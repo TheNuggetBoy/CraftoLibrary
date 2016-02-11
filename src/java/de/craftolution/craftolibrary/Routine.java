@@ -81,47 +81,47 @@ public class Routine implements ToStringable {
 	}
 
 	public static Routine go(final Runnable r) {
-		Check.notNull("The runnable cannot be null!", r);
+		Check.notNull(r, "The runnable cannot be null!");
 		return new Routine(r, ThreadType.ASYNC);
 	}
 
 	public static Routine go(final ThreadType type, final Runnable r) {
-		Check.notNull("The type/runnable cannot be null!", type, r);
+		Check.nonNulls("The type/runnable cannot be null!", type, r);
 		return new Routine(r, type);
 	}
 
 	public Routine after(final Routine routine) {
-		Check.notNull("The routine cannot be null!", routine);
+		Check.notNull(routine, "The routine cannot be null!");
 		if (!this.equals(routine)) { this.executeAfter = Optional.of(routine); }
 		return this;
 	}
 
 	public Routine after(final Runnable r) {
-		Check.notNull("The runnable cannot be null!", r);
+		Check.notNull(r, "The runnable cannot be null!");
 		this.executeAfter = Optional.of(new Routine(r, ThreadType.ASYNC));
 		return this.executeAfter.get();
 	}
 
 	public Routine after(final ThreadType type, final Runnable r) {
-		Check.notNull("The type/runnable cannot be null!", type, r);
+		Check.nonNulls("The type/runnable cannot be null!", type, r);
 		this.executeAfter = Optional.of(new Routine(r, type));
 		return this.executeAfter.get();
 	}
 
 	public Routine during(final Routine routine) {
-		Check.notNull("The routine cannot be null!", routine);
+		Check.notNull(routine, "The routine cannot be null!");
 		if (!this.equals(routine)) { this.executeDuring = Optional.of(routine); }
 		return this;
 	}
 
 	public Routine during(final Runnable r) {
-		Check.notNull("The runnable cannot be null!", r);
+		Check.notNull(r, "The runnable cannot be null!");
 		this.executeDuring = Optional.of(new Routine(r, ThreadType.ASYNC));
 		return this;
 	}
 
 	public Routine during(final ThreadType type, final Runnable r) {
-		Check.notNull("The type/runnable cannot be null!", type, r);
+		Check.nonNulls("The type/runnable cannot be null!", type, r);
 		this.executeDuring = Optional.of(new Routine(r, ThreadType.ASYNC));
 		return this;
 	}

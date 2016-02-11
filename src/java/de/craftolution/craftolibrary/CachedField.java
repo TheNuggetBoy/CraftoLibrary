@@ -38,7 +38,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	 * @throws IllegalArgumentException If the specified duration is {@code null}.
 	 */
 	public CachedField(final Duration duration) throws IllegalArgumentException {
-		Check.notNull("The duration cannot be null!", duration);
+		Check.notNull(duration, "The duration cannot be null!");
 		this.lastAccess = 0;
 		this.duration = duration;
 		this.value = this.get();
@@ -50,7 +50,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	 * @throws IllegalArgumentException If the specified predicate is {@code null}.
 	 */
 	public CachedField(final Predicate<E> predicate) throws IllegalArgumentException {
-		Check.notNull("The predicate cannot be null!", predicate);
+		Check.notNull(predicate, "The predicate cannot be null!");
 		this.lastAccess = 0;
 		this.duration = null;
 		this.predicate = predicate;
@@ -63,7 +63,7 @@ public abstract class CachedField<E> implements Supplier<E>, com.google.common.b
 	 * @throws IllegalArgumentException If the given duration or predicate are {@code null}.
 	 */
 	public CachedField(final Duration duration, final Predicate<E> predicate) throws IllegalArgumentException {
-		Check.notNull("The duration/predicate cannot be null!", duration, predicate);
+		Check.nonNulls("The duration/predicate cannot be null!", duration, predicate);
 		this.lastAccess = 0;
 		this.duration = duration;
 		this.predicate = predicate;

@@ -53,7 +53,7 @@ public class Packet {
 	private final byte[] content;
 
 	Packet(final byte[] packetLength, final byte serviceId, final byte typeId, final byte[] packetId, final byte[] content) throws InvalidPacketException {
-		Check.notNull("The packetIdarray/contentarray cannot be null!", packetId, content);
+		Check.nonNulls("The packetIdarray/contentarray cannot be null!", packetId, content);
 		if (packetLength.length != Packet.PACKET_LENGTH_BYTECOUNT) { 
 			throw new InvalidPacketException("The packetLength-array doesnt match the PACKET_LENGTH_BYTECOUNT constant! (" + packetLength.length + " != " + PACKET_LENGTH_BYTECOUNT + ")");
 		}

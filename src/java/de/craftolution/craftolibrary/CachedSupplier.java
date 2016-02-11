@@ -24,12 +24,12 @@ public class CachedSupplier<E> implements Supplier<E>, com.google.common.base.Su
 	
 	public CachedSupplier(@Nonnull Supplier<E> supplier, @Nonnull Predicate<E> predicate) {
 		this(supplier, predicate, null);
-		Check.notNull("The supplier/predicate cannot be null!", supplier, duration);
+		Check.nonNulls("The supplier/predicate cannot be null!", supplier, duration);
 	}
 	
 	public CachedSupplier(@Nonnull Supplier<E> supplier, @Nonnull Duration duration) {
 		this(supplier, null, duration);
-		Check.notNull("The supplier/duration cannot be null!", supplier, duration);
+		Check.nonNulls("The supplier/duration cannot be null!", supplier, duration);
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ public interface Query {
 
 	static final HashMap<String, WeakReference<RawQuery>> queries = new HashMap<>();
 
+	/** TODO: Documentation */
 	public static Query of(final String rawQuery) {
 		if (Query.queries.containsKey(rawQuery)) {
 			final WeakReference<RawQuery> queryRef = Query.queries.get(rawQuery);
@@ -20,6 +21,10 @@ public interface Query {
 		return newQuery;
 	}
 
-	public static SelectQuery select(final String... columns) { return null; }
+	/** TODO: Documentation */
+	public static SelectQuery select(final String... columns) { return new SelectQuery(columns); }
+
+	/** TODO: Documentation */
+	public static InsertQuery insert(final String table) { return new InsertQuery(table); }
 
 }

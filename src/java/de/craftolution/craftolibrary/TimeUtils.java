@@ -44,7 +44,7 @@ public class TimeUtils {
 	 * @return Returns the current time in the given format.
 	 */
 	public static String getCurrentTime(final String format) {
-		Check.notNull("The format must not be null.", format);
+		Check.nonNulls("The format must not be null.", format);
 		TimeUtils.checkFormat(format);
 		synchronized (TimeUtils.df) { return TimeUtils.df.format(new Date(System.currentTimeMillis())); }
 	}
@@ -56,7 +56,7 @@ public class TimeUtils {
 	 * @return Returns the string version of the given timestamp.
 	 */
 	public static String getTime(final Timestamp time) {
-		Check.notNull("The timestamp must not be null.", time);
+		Check.notNull(time, "The timestamp must not be null.");
 		return TimeUtils.getTime(time.getTime(), "dd.MM.yyyy HH:mm");
 	}
 
@@ -78,7 +78,7 @@ public class TimeUtils {
 	 * @return Returns a string version of the given timestamp in the specified format.
 	 */
 	public static String getTime(final Timestamp time, final String format) {
-		Check.notNull("The timestamp/format must not be null.", time, format);
+		Check.nonNulls("The timestamp/format must not be null.", time, format);
 		return TimeUtils.getTime(time.getTime(), format);
 	}
 
@@ -90,7 +90,7 @@ public class TimeUtils {
 	 * @return Returns a string version of the given time in the specified format.
 	 */
 	public static String getTime(final long time, final String format) {
-		Check.notNull("The format must not be null.", format);
+		Check.nonNulls("The format must not be null.", format);
 		TimeUtils.checkFormat(format);
 		synchronized (TimeUtils.df) { return TimeUtils.df.format(new Date(time)); }
 	}
@@ -122,7 +122,7 @@ public class TimeUtils {
 	}
 
 	private static void checkFormat(final String format) {
-		Check.notNull("The format must not be null", format);
+		Check.nonNulls("The format must not be null", format);
 		synchronized (TimeUtils.df) {
 			if (!TimeUtils.df.toPattern().equalsIgnoreCase(format)) {
 				TimeUtils.df = new SimpleDateFormat(format, Locale.GERMANY);

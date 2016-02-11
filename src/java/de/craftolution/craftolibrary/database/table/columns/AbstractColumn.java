@@ -11,13 +11,15 @@ import de.craftolution.craftolibrary.database.table.Column;
 import de.craftolution.craftolibrary.database.table.DataType;
 import de.craftolution.craftolibrary.database.table.IndexType;
 
-public abstract class AbstractColumn<V> implements Column {
+public abstract class AbstractColumn<V, T> implements Column {
 
 	@Nullable private String name;
 	@Nullable private String comment;
 	@Nullable private IndexType index;
 	@Nullable private boolean nullable;
 	@Nullable private V standardValue;
+
+	protected abstract T instance();
 
 	@Override
 	public String getName() {
@@ -34,30 +36,29 @@ public abstract class AbstractColumn<V> implements Column {
 		return this.nullable;
 	}
 
-	public AbstractColumn<V> name(final String columnName) {
-		Check.notNull("The columnName cannot be null!", columnName);
+	public T name(final String columnName) {
 		this.name = columnName;
-		return this;
+		return this.instance();
 	}
 
-	public AbstractColumn<V> comment(final String columnComment) {
+	public T comment(final String columnComment) {
 		this.comment = columnComment;
-		return this;
+		return this.instance();
 	}
 
-	public AbstractColumn<V> index(final IndexType index) {
+	public T index(final IndexType index) {
 		this.index = index;
-		return this;
+		return this.instance();
 	}
 
-	public AbstractColumn<V> nullable() {
+	public T nullable() {
 		this.nullable = true;
-		return this;
+		return this.instance();
 	}
 
-	public AbstractColumn<V> standard(final V standardValue) {
+	public T standard(final V standardValue) {
 		this.standardValue = standardValue;
-		return this;
+		return this.instance();
 	}
 
 	@Override

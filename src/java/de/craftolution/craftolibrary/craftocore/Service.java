@@ -164,7 +164,7 @@ public class Service implements ToStringable {
 	 * @return Returns an {@link IOException} if one occured.
 	 */
 	public Optional<IOException> send(final PacketType type, final byte[] bytes) throws IllegalArgumentException {
-		Check.notNull("The packetType/bytes cannot be null!", type, bytes);
+		Check.nonNulls("The packetType/bytes cannot be null!", type, bytes);
 		
 		if (this.isConnected()) {
 

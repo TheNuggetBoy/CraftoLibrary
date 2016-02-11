@@ -8,6 +8,8 @@
 package de.craftolution.craftolibrary;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -390,26 +392,44 @@ public class Check {
 	 * @return Returns the given {@code object}.
 	 * @throws IllegalArgumentException If the specified object is {@code null}.
 	 */
-	public static <T> T notNull(final String message, final T object) throws IllegalArgumentException {
-		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object)  was called with a absent message o_O"); }
+	public static <T> T notNull(final T object, final String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNull(object, message)  was called with a absent message o_O"); }
 		if (object == null) { throw new IllegalArgumentException(message); }
 		return object;
 	}
 
-	/**
-	 * Checks that the specified object is not {@code null}.
-	 * Otherwise throws a {@link IllegalArgumentException} with the specified message.
-	 *
-	 * @param object - The object to check
-	 * @param message - The exception message
-	 * @return Returns the given {@code object}.
-	 * @throws IllegalArgumentException If the specified object is {@code null}.
-	 * @deprecated Use {@link #notNull(String, Object)} instead!
-	 */
-	@Deprecated
-	public static <T> T notNullOld(final T object, final String message) throws IllegalArgumentException {
-		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object)  was called with a absent message o_O"); }
-		if (object == null) { throw new IllegalArgumentException(message); }
+	/** TODO: Documentation */
+	public static String notNullNotEmpty(String object, String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.isEmpty() || object.replace(" ", "").isEmpty()) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+
+	/** TODO: Documentation */
+	public static <T> Collection<T> notNullNotEmpty(Collection<T> object, String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+	
+	/** TODO: Documentation */
+	public static <T> List<T> notNullNotEmpty(List<T> object, String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+
+	/** TODO: Documentation */
+	public static <T> Set<T> notNullNotEmpty(Set<T> object, String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.isEmpty()) { throw new IllegalArgumentException(message); }
+		return object;
+	}
+
+	/** TODO: Documentation */
+	public static <T> T[] notNullNotEmpty(T[] object, String message) throws IllegalArgumentException {
+		if (message == null) { throw new IllegalArgumentException("Check#notNullNotEmpty(object, message)  was called with a absent message o_O"); }
+		if (object == null || object.length < 1) { throw new IllegalArgumentException(message); }
 		return object;
 	}
 
@@ -436,10 +456,10 @@ public class Check {
 	 * @param objects - The objects to check
 	 * @throws IllegalArgumentException If one of the given objects is {@code null}.
 	 */
-	public static void notNull(final String message, final Object... objects) throws IllegalArgumentException {
+	public static void nonNulls(final String message, final Object... objects) throws IllegalArgumentException {
 		if (message == null) { throw new IllegalArgumentException("Check#notNull(string, object[]) was called with a absent message o_O"); }
 		if (objects.length <= 0) { throw new IllegalArgumentException("Check#notNull(string, object[]) was called with an empty array!"); }
-		if (objects.length == 1) { Check.notNull(message, objects[0]); }
+		if (objects.length == 1) { Check.notNull(objects[0], message); }
 
 		// Fast check, dont need to process all that stuff down there if all objects are present anyway
 		boolean allPresent = true;
@@ -504,7 +524,7 @@ public class Check {
 	 * @return Returns the given {@code string}.
 	 */
 	public static String notEmpty(final String string, final String message) throws IllegalArgumentException {
-		if (string == null || string.isEmpty()) { throw new IllegalArgumentException(message); }
+		if (string == null || string.isEmpty() || string.replace(" ", "").isEmpty()) { throw new IllegalArgumentException(message); }
 		return string;
 	}
 

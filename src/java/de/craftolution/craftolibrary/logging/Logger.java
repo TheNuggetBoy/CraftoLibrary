@@ -98,7 +98,7 @@ public class Logger {
 	}
 
 	Logger(final String name, final LogWriter worker, final SimpleDateFormat dateFormatter, final LogFormatter formatter) {
-		Check.notNull("The name/worker/dateFormatter/formatter cannot be null!", name, worker, dateFormatter, formatter);
+		Check.nonNulls("The name/worker/dateFormatter/formatter cannot be null!", name, worker, dateFormatter, formatter);
 		this.name = name;
 		this.writer = worker;
 		this.dateFormatter = dateFormatter;
@@ -128,7 +128,7 @@ public class Logger {
 
 	/** TODO: Documentation */
 	public Logger addListener(final Level level, final Consumer<LogRecord> listener) {
-		Check.notNull("The level/listener cannot be null!", level, listener);
+		Check.nonNulls("The level/listener cannot be null!", level, listener);
 		if (!this.levelListeners.containsKey(level)) {
 			this.levelListeners.put(level, new ArrayList<Consumer<LogRecord>>());
 		}
@@ -138,7 +138,7 @@ public class Logger {
 
 	/** TODO: Documentation */
 	public Logger addListener(final Consumer<LogRecord> listener) {
-		Check.notNull("The listener cannot be null!", listener);
+		Check.notNull(listener, "The listener cannot be null!");
 		this.listeners.add(listener);
 		return this;
 	}
@@ -147,7 +147,7 @@ public class Logger {
 
 	/** TODO: Documentation */
 	public Logger log(final Level level, final CharSequence message, @Nullable final Object... replacements) {
-		Check.notNull("The level/message cannot be null!", level, message);
+		Check.nonNulls("The level/message cannot be null!", level, message);
 		if (!this.writer.supportsLevel(level)) { return this; }
 
 		// Replace replacements
