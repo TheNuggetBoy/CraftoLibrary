@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.query;
 
 import java.util.List;
@@ -62,6 +69,20 @@ public class UpdateQuery implements Query {
 		}
 
 		return b.append(";").toString();
+	}
+
+	@Override
+	public UpdateQuery clone() {
+		UpdateQuery query = new UpdateQuery(this.table);
+		query.columns.addAll(this.columns);
+		
+		for (List<String> whereChain : this.whereChains) {
+			List<String> newWhereChain = Lists.newArrayList();
+			newWhereChain.addAll(whereChain);
+			query.whereChains.add(newWhereChain);
+		}
+		
+		return query;
 	}
 
 }

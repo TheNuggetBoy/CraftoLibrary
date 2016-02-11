@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.query;
 
 import java.lang.ref.WeakReference;
@@ -5,7 +12,13 @@ import java.util.HashMap;
 
 import de.craftolution.craftolibrary.Check;
 
-public interface Query {
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 11.02.2016
+ */
+public interface Query extends Cloneable {
 
 	static final HashMap<String, WeakReference<RawQuery>> queries = new HashMap<>();
 
@@ -35,5 +48,7 @@ public interface Query {
 
 	/** TODO: Documentation */
 	public static RemoveQuery remove(final String table) throws IllegalArgumentException { return new RemoveQuery(table); }
+
+	Query clone();
 
 }

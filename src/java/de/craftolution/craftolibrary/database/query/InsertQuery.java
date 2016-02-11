@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.query;
 
 import java.util.List;
@@ -95,6 +102,16 @@ public class InsertQuery implements Query {
 		b.append(';');
 
 		return b.toString();
+	}
+
+	@Override
+	public InsertQuery clone() {
+		InsertQuery query = new InsertQuery(this.table);
+		query.columns.addAll(this.columns);
+		query.values.addAll(this.values);
+		query.pairedInserts.addAll(this.pairedInserts);
+		query.onDuplicateKey.addAll(this.onDuplicateKey);
+		return query;
 	}
 
 }

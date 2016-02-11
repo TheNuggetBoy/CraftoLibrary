@@ -1,11 +1,20 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.query;
+
+import java.util.Arrays;
 
 import de.craftolution.craftolibrary.StringUtils;
 
 public class SelectQuery implements Query {
 
 	private final String[] columns;
-	private boolean selectAll;
+	private final boolean selectAll;
 
 	private String fromTable;
 	private String[] whereClauses;
@@ -19,6 +28,7 @@ public class SelectQuery implements Query {
 	SelectQuery(final String... columns) {
 		this.columns = columns;
 		if (this.columns.length == 1 && columns[0].equals("*")) { this.selectAll = true; }
+		else { this.selectAll = false; }
 	}
 
 	public SelectQuery from(final String table) { this.fromTable = table; return this; }
@@ -76,6 +86,18 @@ public class SelectQuery implements Query {
 		}
 
 		return b.append(";").toString();
+	}
+
+	@Override
+	public SelectQuery clone() {
+		SelectQuery query = new SelectQuery(this.columns);
+		query.fromTable = this.fromTable;
+		query.whereClauses = Arrays.copyOf(this.whereClauses, this.whereClauses.length);
+		query.orderByColumn = this.orderByColumn;
+		query.orderByOrder = this.orderByOrder;
+		query.firstLimit = this.firstLimit;
+		query.secondLimit = this.secondLimit;
+		return query;
 	}
 
 }

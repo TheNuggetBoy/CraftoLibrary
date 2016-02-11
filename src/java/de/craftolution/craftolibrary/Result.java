@@ -23,9 +23,9 @@ import javax.annotation.Nullable;
 public class Result<T> implements NullableSupplier<T> {
 
 	@Nullable private final T object;
-	@Nullable private final Throwable exception;
+	@Nullable private final Exception exception;
 
-	private Result(final T object, final Throwable exception) {
+	private Result(final T object, final Exception exception) {
 		this.object = object;
 		this.exception = exception;
 	}
@@ -37,10 +37,10 @@ public class Result<T> implements NullableSupplier<T> {
 	}
 
 	/** TODO: Documentation */
-	public Optional<Throwable> getException() { return Optional.ofNullable(this.exception); }
+	public Optional<Exception> getException() { return Optional.ofNullable(this.exception); }
 
 	/** TODO: Documentation */
-	public static <T> Result<T> of(@Nullable final T object, @Nullable final Throwable exception) {
+	public static <T> Result<T> of(@Nullable final T object, @Nullable final Exception exception) {
 		return new Result<T>(object, exception);
 	}
 
@@ -51,7 +51,7 @@ public class Result<T> implements NullableSupplier<T> {
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public static <T> Result<T> ofException(final Throwable exception) {
+	public static <T> Result<T> ofException(final Exception exception) {
 		return (Result<T>) new Result<Object>(null, exception);
 	}
 

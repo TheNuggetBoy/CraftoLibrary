@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.table.columns;
 
 import java.util.Optional;
@@ -108,7 +115,7 @@ public abstract class AbstractColumn<V, T> implements Column {
 			b.append("AUTO_INCREMENT ");
 		}
 
-		if (this.index != null ) {
+		if (this.index != null) {
 			b.append(this.index.toString()).append(' ');
 		}
 

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.query;
 
 import java.util.List;
@@ -47,6 +54,13 @@ public class RemoveQuery implements Query {
 		}
 
 		return b.append(";").toString();
+	}
+
+	@Override
+	public RemoveQuery clone() {
+		RemoveQuery query = new RemoveQuery(this.table);
+		query.whereChains.addAll(this.whereChains);
+		return query;
 	}
 
 }

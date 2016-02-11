@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2015 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary;
 
 import java.util.NoSuchElementException;

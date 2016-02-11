@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database.table;
 
 /** Reference: <a href="https://dev.mysql.com/doc/refman/5.5/en/charset-charsets.html">Offical MySQL CharSet list</a> */

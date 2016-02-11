@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2016 CraftolutionDE
+ * All rights reserved
+ *
+ * Website: http://craftolution.de/
+ * Contact: support@craftolution.de
+ */
 package de.craftolution.craftolibrary.database;
 
 import java.sql.ResultSet;
@@ -15,11 +22,13 @@ import com.google.common.collect.Lists;
 
 import de.craftolution.craftolibrary.Check;
 import de.craftolution.craftolibrary.Instant;
+import de.craftolution.craftolibrary.database.query.Query;
 
 public class QueryResult {
 
 	private int affectedRows;
 
+	private final Query query;
 	private final List<Row> rows = Lists.newArrayList();
 	private final List<String> columns = Lists.newArrayList();
 
@@ -29,8 +38,9 @@ public class QueryResult {
 
 	@Nullable private List<Integer> generatedKeys;
 
-	QueryResult(final Database database, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter) {
+	public QueryResult(final Database database, Query query, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter) {
 		Check.notNull(database, "The database cannot be null!");
+		this.query = query;
 		this.affectedRows = affectedRows;
 		this.statement = statement;
 		this.result = result;
@@ -42,7 +52,7 @@ public class QueryResult {
 					this.columns.add(this.result.getMetaData().getColumnLabel(i + 1));
 				}
 
-				final Instant instant = new Instant();
+				final Instant instant = Instant.now();
 				for (int i = 0; result.next() && !instant.hasPassed(Duration.ofSeconds(1)); i++) {
 					this.rows.add(new Row(this, i));
 					this.affectedRows++;
@@ -63,7 +73,7 @@ public class QueryResult {
 				final ResultSet generatedKeys = this.statement.getGeneratedKeys();
 				final List<Integer> keyList = Lists.newArrayList();
 
-				final Instant instant = new Instant();
+				final Instant instant = Instant.now();
 				for (int index = 1; generatedKeys.next() && !instant.hasPassed(Duration.ofSeconds(1)); index++) {
 					keyList.add(generatedKeys.getInt(index));
 				}
@@ -75,6 +85,9 @@ public class QueryResult {
 		}
 		return Collections.emptyList();
 	}
+
+	/** TODO: Documentation */
+	public Query getQuery() { return this.query; }
 
 	/** TODO: Documentation */
 	public int getAffectedRows() { return this.affectedRows; }
