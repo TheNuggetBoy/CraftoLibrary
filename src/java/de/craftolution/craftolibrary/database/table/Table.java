@@ -33,9 +33,9 @@ import de.craftolution.craftolibrary.database.table.columns.TimestampColumn;
 import de.craftolution.craftolibrary.database.table.columns.VarCharColumn;
 
 /**
- * TODO: Documentation
+ * Represents a table.
  *
- * @author Kevin
+ * @author Fear837
  * @since 08.02.2016
  */
 public class Table {
@@ -57,25 +57,25 @@ public class Table {
 		this.charset = charset;
 	}
 
-	/** TODO: Documentation */
+	/** @return Returns the name of this table. */
 	public String getName() { return this.name; }
 
-	/** TODO: Documentation */
+	/** @return Returns the comment, if there is one, that describes this table. */
 	public Optional<String> getComment() { return Optional.ofNullable(this.comment); }
 
-	/** TODO: Documentation */
+	/** @return Returns the engine used for the table. If no engine is present, the database, in which the table gets inserted to, chooses a default one. */
 	public Optional<Engine> getEngine() { return Optional.ofNullable(this.engine); }
 
-	/** TODO: Documentation */
+	/** @return Returns the charset used for the table. If no charset is present, the database, in which the table gets inserted to, chooses a default one. */
 	public Optional<CharSet> getCharSet() { return Optional.ofNullable(this.charset); }
 
-	/** TODO: Documentation */
+	/** @return Returns a list of {@link Column}s this table contains. */
 	public List<Column> getColumns() { return this.columns; }
 
-	/** TODO: Documentation */
+	/** @return Returns a list of {@link Index}es this table contains. */
 	public List<Index> getIndices() { return this.indices; }
 
-	/** TODO: Documentation */
+	/** @return Converts this table into a {@code "CREATE TABLE IF NOT EXISTS.."} query ready for execution. */
 	public Query toQuery() {
 		final StringBuilder b = new StringBuilder("CREATE TABLE IF NOT EXISTS `").append(this.name).append("` (");
 
@@ -104,10 +104,10 @@ public class Table {
 
 	// --- Builder ---
 
-	/** TODO: Documentation */
+	/** Creates a new {@link Table.Builder} with the specified name as the name of the table. */
 	public static Table.Builder builder(final String name) { return new Table.Builder().name(name); }
 
-	/** TODO: Documentation */
+	/** Creates a new {@link Table.Builder} by copying all attributes from the specified table. */
 	public static Table.Builder builder(final Table tableToCopyFrom) {
 		final Table.Builder builder = Table.builder(tableToCopyFrom.getName());
 		builder.comment = tableToCopyFrom.comment;

@@ -9,6 +9,7 @@ package de.craftolution.craftolibrary.database.query;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -22,7 +23,7 @@ import de.craftolution.craftolibrary.database.QueryResult;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 11.02.2016
  * @param <Input>
  */
@@ -36,7 +37,8 @@ public class PreparedQuery<Input> {
 
 	@Nullable private PreparedStatement statement;
 
-	PreparedQuery(final Database database, final Query query, final Function<Input, Tokens<Object>> converter, final Consumer<Exception> exceptionHandler) {
+	/** TODO: Documentation */
+	public PreparedQuery(final Database database, final Query query, final Function<Input, Tokens<Object>> converter, final Consumer<Exception> exceptionHandler) {
 		this.database = database;
 		this.query = query.clone();
 		this.converter = converter;
@@ -73,6 +75,7 @@ public class PreparedQuery<Input> {
 					else if (result.isPresent()) { this.statement = result.get(); }
 				}
 
+				long start, duration;
 				synchronized (this.statement) {
 					this.statement.clearParameters();
 
@@ -80,10 +83,12 @@ public class PreparedQuery<Input> {
 						this.statement.setObject(i + 1, variables.at(i));
 					}
 
+					start = System.nanoTime();
 					this.statement.execute();
+					duration = System.nanoTime() - start;
 				}
 
-				return new QueryResult(this.database, this.query, this.statement.getUpdateCount(), this.statement, this.statement.getResultSet(), null, this.exceptionHandler);
+				return new QueryResult(this.database, this.query, this.statement.getUpdateCount(), this.statement, this.statement.getResultSet(), null, this.exceptionHandler, Duration.ofNanos(duration));
 			}
 			else {
 				String query = this.rawQuery;
@@ -93,7 +98,7 @@ public class PreparedQuery<Input> {
 				return this.database.execute(Query.of(query));
 			}
 		}
-		catch (final SQLException e) { return new QueryResult(this.database, this.query, 0, null, null, e, this.exceptionHandler); }
+		catch (final SQLException e) { return new QueryResult(this.database, this.query, 0, null, null, e, this.exceptionHandler, Duration.ZERO); }
 	}
 
 }

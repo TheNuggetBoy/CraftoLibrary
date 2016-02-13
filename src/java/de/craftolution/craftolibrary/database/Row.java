@@ -18,6 +18,12 @@ import com.google.common.collect.Maps;
 
 import de.craftolution.craftolibrary.Check;
 
+/**
+ * Represents a single row in a {@link ResultSet}.
+ *
+ * @author Fear837
+ * @since 12.02.2016
+ */
 public class Row {
 
 	private final QueryResult result;
@@ -39,7 +45,7 @@ public class Row {
 		return value;
 	}
 
-	/** TODO: Documentation */
+	/** @return Returns the index of this row in the overall {@link ResultSet}. */
 	public int getIndex() { return this.rowIndex; }
 
 	// --- Primitive getters ---

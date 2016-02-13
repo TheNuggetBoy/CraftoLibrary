@@ -9,6 +9,12 @@ package de.craftolution.craftolibrary.database.table.columns;
 
 import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 13.02.2016
+ */
 public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements DoubleLenghtable<FloatColumn> {
 
 	private int firstLength, secondLength;

@@ -18,7 +18,7 @@ import de.craftolution.craftolibrary.database.QueryResult;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 11.02.2016
  * @param <FirstInput>
  * @param <SecondInput>

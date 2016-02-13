@@ -7,6 +7,12 @@
  */
 package de.craftolution.craftolibrary.database.query;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 13.02.2016
+ */
 public class RawQuery implements Query {
 
 	private final String query;

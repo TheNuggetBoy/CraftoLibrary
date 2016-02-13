@@ -16,7 +16,7 @@ import de.craftolution.craftolibrary.Check;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 11.02.2016
  */
 public class UpdateQuery implements Query {
@@ -27,6 +27,7 @@ public class UpdateQuery implements Query {
 
 	UpdateQuery(final String table) { this.table = Check.notNullNotEmpty(table, "The tableName cannot be null!"); }
 
+	/** TODO: Documentation */
 	public UpdateQuery columns(final String... columns) {
 		Check.notNullNotEmpty(columns, "The columns cannot be null or empty!");
 		for (final String column : columns) {
@@ -35,6 +36,7 @@ public class UpdateQuery implements Query {
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public UpdateQuery where(final String... whereClauses) {
 		Check.notNullNotEmpty(whereClauses, "The were clauses cannot be null or empty!");
 		final List<String> whereChain = Lists.newArrayList();

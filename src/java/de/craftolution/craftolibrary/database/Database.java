@@ -10,7 +10,6 @@ package de.craftolution.craftolibrary.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -19,6 +18,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import de.craftolution.craftolibrary.Result;
+import de.craftolution.craftolibrary.Scheduled;
 import de.craftolution.craftolibrary.Tokens;
 import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
@@ -30,7 +30,7 @@ import de.craftolution.craftolibrary.database.table.Table;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 08.02.2016
  */
 public interface Database {
@@ -38,13 +38,22 @@ public interface Database {
 	/**
 	 * Returns the {@link Connection} instance used by this {@link Database} for executing
 	 * sql statements.
+	 * 
+	 * Note that the {@link Connection} instance may or may not be present depending on whether
+	 * or not the instance was ever connected to a external database yet.
 	 *
 	 * @return The connection to the database.
 	 */
-	Connection getConnection();
+	@Nullable Connection getConnection();
 
 	/** @return Returns whether or not this instance is currently connected to the database. */
 	boolean isConnected();
+
+	/** Opens the connection to the external databse. */
+	Database connect();
+
+	/** Closes the connection to the external database. */
+	Database disconnect();
 
 	/**
 	 * Creates the specified {@link Table} by inserting it into the database.
@@ -157,6 +166,17 @@ public interface Database {
 	 */
 	QueryResult execute(Query query);
 
+	/**
+	 * Tries to execute the specified query <b>on a seperate thread</b>. If the query contains a 'SELECT' keyword a {@link ResultSet} can be expected in the
+	 * returned {@link QueryResult}. If not the {@link QueryResult} can still contain some useful information like {@link QueryResult#getAffectedRows()}
+	 * or stuff for exception handling.
+	 * 
+	 * @param query - The query to execute
+	 * @return Returns a {@link Scheduled} instance wrapping the incoming {@link QueryResult}. To handle the result, the {@link Scheduled#addListener(Consumer)} has to be
+	 * called.
+	 */
+	Scheduled<QueryResult> executeAsync(Query query);
+
 	// --- The builder ---
 
 	/**
@@ -166,7 +186,8 @@ public interface Database {
 	 */
 	public static Database.Builder builder() { return new Database.Builder(); }
 
-	static class Builder {
+	/** A {@link de.craftolution.craftolibrary.Builder Builder} used to build {@link Database} instances. */
+	static class Builder implements de.craftolution.craftolibrary.Builder<Database> {
 
 		public enum DatabaseType {
 			MYSQL;
@@ -181,6 +202,8 @@ public interface Database {
 
 		@Nullable private Consumer<Exception> exceptionHandler;
 		@Nullable private Consumer<Query> queryHandler;
+		@Nullable private Consumer<String> logHandler;
+		private boolean recordStatistics = false;
 
 		Builder() { }
 
@@ -212,7 +235,14 @@ public interface Database {
 		public Builder onQuery(final Consumer<Query> queryHandler) { this.queryHandler = queryHandler; return this; }
 
 		/** TODO: Documentation */
-		public Database connect() throws IllegalStateException, SQLException, ClassNotFoundException {
+		public Builder onLogMessage(Consumer<String> logHandler) { this.logHandler = logHandler; return this; }
+
+		/** TODO: Documentation */
+		public Builder recordStatistics(boolean recordStatistics) { this.recordStatistics = recordStatistics; return this; }
+
+		/** TODO: Documentation */
+		@Override
+		public Database build() throws IllegalStateException {
 			if (!this.isValid(this.username)) { throw new IllegalStateException("The username isn't valid."); }
 			if (!this.isValid(this.databaseName)) { throw new IllegalStateException("The databaseName isn't valid."); }
 			if (!this.isValid(this.password)) { throw new IllegalStateException("The password isn't valid."); }
@@ -222,7 +252,7 @@ public interface Database {
 
 			switch (this.type) {
 				case MYSQL:
-				default: return new MySQL(this.username, this.databaseName, this.password, this.port, this.hostname, this.exceptionHandler, this.queryHandler);
+				default: return new MySQL(this.username, this.password, this.databaseName, this.port, this.hostname, this.exceptionHandler, this.queryHandler, this.logHandler, this.recordStatistics);
 			}
 		}
 

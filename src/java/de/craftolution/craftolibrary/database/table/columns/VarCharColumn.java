@@ -9,6 +9,12 @@ package de.craftolution.craftolibrary.database.table.columns;
 
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 13.02.2016
+ */
 public class VarCharColumn extends AbstractColumn<CharSequence, VarCharColumn> implements Lengthable<VarCharColumn> {
 
 	private int length;

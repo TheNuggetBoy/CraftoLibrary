@@ -26,6 +26,7 @@ public class RemoveQuery implements Query {
 
 	RemoveQuery(final String tableName) { this.table = Check.notNullNotEmpty(tableName, "The tableName cannot be null!"); }
 
+	/** TODO: Documentation */
 	public RemoveQuery where(final String... whereClauses) {
 		Check.notNullNotEmpty(whereClauses, "The were clauses cannot be null or empty!");
 		final List<String> whereChain = Lists.newArrayList();

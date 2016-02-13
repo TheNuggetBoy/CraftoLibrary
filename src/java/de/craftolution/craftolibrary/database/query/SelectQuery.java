@@ -11,6 +11,12 @@ import java.util.Arrays;
 
 import de.craftolution.craftolibrary.StringUtils;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 13.02.2016
+ */
 public class SelectQuery implements Query {
 
 	private final String[] columns;
@@ -31,14 +37,19 @@ public class SelectQuery implements Query {
 		else { this.selectAll = false; }
 	}
 
+	/** TODO: Documentation */
 	public SelectQuery from(final String table) { this.fromTable = table; return this; }
 
+	/** TODO: Documentation */
 	public SelectQuery where(final String... whereClauses) { this.whereClauses =  whereClauses; return this; }
 
+	/** TODO: Documentation */
 	public SelectQuery orderBy(final String column, final Order order) { this.orderByColumn = column; this.orderByOrder = order; return this; }
 
+	/** TODO: Documentation */
 	public SelectQuery limit(final int limit) { this.firstLimit = limit; return this; }
 
+	/** TODO: Documentation */
 	public SelectQuery limit(final int min, final int max) { this.firstLimit = min; this.secondLimit = max; return this; }
 
 	@Override

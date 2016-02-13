@@ -15,6 +15,13 @@ package de.craftolution.craftolibrary.database.table.attributes;
  */
 public interface DoubleLenghtable<T> {
 
+	/**
+	 * Specifies the range and precision of this column typically on columns with a decimal number.
+	 *
+	 * @param firstLength - The range of the column
+	 * @param secondLength - The precision of the column
+	 * @return Returns itself for builder purposes.
+	 */
 	T length(int firstLength, int secondLength);
 
 }

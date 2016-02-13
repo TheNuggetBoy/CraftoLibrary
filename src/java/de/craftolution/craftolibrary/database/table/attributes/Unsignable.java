@@ -7,8 +7,17 @@
  */
 package de.craftolution.craftolibrary.database.table.attributes;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 12.02.2016
+ * @param <T>
+ */
 public interface Unsignable<T> {
 
+
+	/** Specifies that this column only allows positive numbers. */
 	T unsigned();
 
 }

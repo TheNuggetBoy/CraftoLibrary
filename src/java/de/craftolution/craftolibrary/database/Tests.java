@@ -73,6 +73,7 @@ public class Tests {
 				.password("12345")
 				.port("4837")
 				.type(DatabaseType.MYSQL)
+				.build()
 				.connect();
 
 		// Some database methods
@@ -92,7 +93,7 @@ public class Tests {
 				}
 			}
 		}
-		else {
+		else if (result.getException().isPresent()) {
 			final Exception exception = result.getException().get();
 			exception.printStackTrace();
 		}

@@ -22,6 +22,7 @@ public class ColumnDefinitionBuilder {
 	Integer secondLength;
 	boolean autoIncrement = false;
 	boolean unsigned = false;
+	String[] enumValues;
 
 	ColumnDefinitionBuilder type(final DataType type) {
 		this.type = type;
@@ -46,6 +47,11 @@ public class ColumnDefinitionBuilder {
 
 	ColumnDefinitionBuilder unsigned(final boolean unsigned) {
 		this.unsigned = unsigned;
+		return this;
+	}
+
+	ColumnDefinitionBuilder values(String[] values) {
+		this.enumValues = values;
 		return this;
 	}
 

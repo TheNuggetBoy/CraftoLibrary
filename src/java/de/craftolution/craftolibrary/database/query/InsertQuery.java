@@ -29,18 +29,21 @@ public class InsertQuery implements Query {
 
 	InsertQuery(final String tableName) { this.table = Check.notNullNotEmpty(tableName, "The tableName cannot be null or empty!"); }
 
+	/** TODO: Documentation */
 	public InsertQuery columns(final String... columns) throws IllegalArgumentException {
 		Check.notNullNotEmpty(columns, "The columns array cannot be null or empty!");
 		for (final String column : columns) { this.columns.add(Check.notNullNotEmpty(column, "The column cannot be null or empty!")); }
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public InsertQuery values(final String... values) {
 		Check.notNullNotEmpty(values, "The value array cannot be null or empty!");
 		for (final String value : values) { this.values.add(Check.notNullNotEmpty(value, "The value cannot be null or empty!")); }
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public InsertQuery insert(final String column, final String value) {
 		Check.notNullNotEmpty(column, "The column cannot be null or empty!");
 		Check.notNullNotEmpty(value, "The value cannot be null or empty!");
@@ -48,6 +51,7 @@ public class InsertQuery implements Query {
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public InsertQuery onDuplicateKey(final String... values) {
 		Check.notNullNotEmpty(values, "The values array cannot be null!");
 		for (final String value : values) { this.onDuplicateKey.add(Check.notNullNotEmpty(value, "The value cannot be null or empty!")); }

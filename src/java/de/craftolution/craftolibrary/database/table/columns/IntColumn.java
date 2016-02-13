@@ -7,10 +7,17 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import de.craftolution.craftolibrary.database.table.DataType;
 import de.craftolution.craftolibrary.database.table.attributes.AutoIncrementable;
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
 import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 13.02.2016
+ */
 public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Unsignable<IntColumn>, Lengthable<IntColumn>, AutoIncrementable<IntColumn> {
 
 	private int length;
@@ -31,6 +38,11 @@ public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Uns
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
+		if (length <= 3) { builder.type(DataType.TINYINT); }
+		else if (length <= 5) { builder.type(DataType.SMALLINT); }
+		else if (length <= 7) { builder.type(DataType.MEDIUMINT); }
+		else if (length <= 11) { builder.type(DataType.INT); }
+		else { builder.type(DataType.BIGINT); }
 		return builder.length(this.length).unsigned(this.unsigned).autoIncrement(this.autoIncrement);
 	}
 

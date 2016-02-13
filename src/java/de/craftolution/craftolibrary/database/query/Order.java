@@ -7,10 +7,18 @@
  */
 package de.craftolution.craftolibrary.database.query;
 
+/**
+ * TODO: Documentation
+ *
+ * @author Fear837
+ * @since 12.02.2016
+ */
 public enum Order {
 
+	/** TODO: Documentation */
 	ASCENDING ("ASC"),
 
+	/** TODO: Documentation */
 	DESCENDING ("DESC");
 
 	private final String sql;

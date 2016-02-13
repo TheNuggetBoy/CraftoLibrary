@@ -15,6 +15,7 @@ package de.craftolution.craftolibrary.database.table.attributes;
  */
 public interface AutoIncrementable<T> {
 
+	/** Specifies that this column should automatically increment its standard value by each insert. */
 	T autoIncrement();
 
 }

@@ -24,13 +24,27 @@ import de.craftolution.craftolibrary.Check;
 import de.craftolution.craftolibrary.Instant;
 import de.craftolution.craftolibrary.database.query.Query;
 
+/**
+ * A {@code QueryResult} pretty much serves as a container of
+ * information about what happened during and after the exeuction of a certain {@link Query}.
+ * 
+ * It contains the actual {@link Query}, the amount of rows affected, the statement used, how long it took
+ * to execute the query and, if the query is a select query, a ResultSet.
+ * 
+ * Additionally the {@link QueryResult} provides {@link #getRows()} as an alternative to {@link #getResultSet()}
+ * for easier looping (for) and without nasty exceptions that you would have to try/catch.
+ *
+ * @author Fear837
+ * @since 12.02.2016
+ */
 public class QueryResult {
 
-	private int affectedRows;
+	private int affectedRows = 0;
 
 	private final Query query;
 	private final List<Row> rows = Lists.newArrayList();
 	private final List<String> columns = Lists.newArrayList();
+	private final Duration executionDuration;
 
 	@Nullable private final Statement statement;
 	@Nullable private final ResultSet result;
@@ -38,13 +52,26 @@ public class QueryResult {
 
 	@Nullable private List<Integer> generatedKeys;
 
-	public QueryResult(final Database database, Query query, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter) {
+	/**
+	 * Initializes a new {@link QueryResult}. In most cases, only the {@link Database} instances
+	 * should be using this constructor.
+	 *
+	 * @param database - The database
+	 * @param query - The query
+	 * @param affectedRows - The amount of affected rows
+	 * @param statement - The statement
+	 * @param result - The result
+	 * @param exception - The exception, if there's any
+	 * @param exceptionReporter - An exception reporter
+	 * @param executionDuration - The execution duration
+	 */
+	public QueryResult(final Database database, Query query, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter, Duration executionDuration) {
 		Check.notNull(database, "The database cannot be null!");
 		this.query = query;
-		this.affectedRows = affectedRows;
 		this.statement = statement;
 		this.result = result;
 		this.exception = exception;
+		this.executionDuration = executionDuration;
 
 		if (result != null) {
 			try {
@@ -62,9 +89,11 @@ public class QueryResult {
 			}
 			catch (final Exception e) { if (this.exception == null) { this.exception = e; } exceptionReporter.accept(e); }
 		}
+
+		if (this.affectedRows == 0) { this.affectedRows = affectedRows; }
 	}
 
-	/** TODO: Documentation */
+	/** @return Returns a list of keys that were created when the query got executed. */
 	public List<Integer> getGeneratedKeys() {
 		if (this.generatedKeys != null) { return this.generatedKeys; }
 
@@ -86,28 +115,31 @@ public class QueryResult {
 		return Collections.emptyList();
 	}
 
-	/** TODO: Documentation */
+	/** @return Returns the query used that produced this result instance. */
 	public Query getQuery() { return this.query; }
 
-	/** TODO: Documentation */
+	/** @return Returns how many rows were affected by the query. */
 	public int getAffectedRows() { return this.affectedRows; }
 
-	/** TODO: Documentation */
+	/** @return Returns the {@link Statement} that was created for executing the query. */
 	public Optional<Statement> getStatement() { return Optional.ofNullable(this.statement); }
 
-	/** TODO: Documentation */
+	/** @return Returns a {@link ResultSet} if one was returned by the execution of the query.  */
 	public Optional<ResultSet> getResultSet() { return Optional.ofNullable(this.result); }
 
-	/** TODO: Documentation */
+	/** @return Returns an {@link Exception} if any occured while trying to execute the query. */
 	public Optional<Exception> getException() { return Optional.ofNullable(this.exception); }
 
-	/** TODO: Documentation */
+	/** @return Returns the columns of the returned {@link ResultSet}. Note: If no {@link #getResultSet()} is present, this method returns an empty list. */
 	public List<String> getColumns() { return this.columns; }
 
-	/** TODO: Documentation */
+	/** @return Returns a list of rows included in the {@link ResultSEt}. Note: If no {@link #getResultSet()} is present, this method returns an empty list. */
 	public List<Row> getRows() { return this.rows; }
 
-	/** TODO: Documentation */
+	/** @return Returns how long it took to execute the query. */
+	public Duration getExecutionDuration() { return this.executionDuration; }
+
+	/** @return Returns whether or not the amount of affected rows is greater than 0 and if no exception is present. */
 	public boolean wasSuccess() { return this.getAffectedRows() > 0 && !this.getException().isPresent(); }
 
 }
