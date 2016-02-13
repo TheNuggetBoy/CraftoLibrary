@@ -32,9 +32,8 @@ dependencies {
 
 javadoc {
 	options {
-		encoding = 'UTF-8'
-		charSet = 'UTF-8'
-		overview "${rootDir.path}/overview.html"
+		encoding = 'Cp1252'
+		charSet = 'Cp1252'
 	}
 
     // Disable the crazy super-strict doclint tool in Java 8
