@@ -15,12 +15,12 @@ import java.time.Duration;
  * @author Kevin
  * @since 11.02.2016
  */
-public class Instant {
+public class Stopwatch {
 
 	private final long instant = System.currentTimeMillis();
 
 	/** TODO: Documentation */
-	Instant() { }
+	Stopwatch() { }
 
 	/** TODO: Documentation */
 	public boolean hasPassed(final Duration duration) {
@@ -28,6 +28,11 @@ public class Instant {
 	}
 
 	/** TODO: Documentation */
-	public static Instant now() { return new Instant(); }
+	public Duration getPassed() {
+		return Duration.ofMillis(System.currentTimeMillis() - this.instant);
+	}
+
+	/** TODO: Documentation */
+	public static Stopwatch start() { return new Stopwatch(); }
 
 }
