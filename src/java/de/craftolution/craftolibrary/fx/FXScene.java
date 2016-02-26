@@ -44,6 +44,16 @@ public class FXScene {
 	}
 
 	/** TODO: Documentation */
+	public FXScene(URL fxmlFile, Controller controller) throws IOException {
+		final FXMLLoader loader = new FXMLLoader(fxmlFile);
+		if (controller != null) { loader.setController(controller); }
+		
+		this.container = loader.load();
+		this.controller = Optional.ofNullable(loader.getController());
+		this.loader = loader;
+	}
+
+	/** TODO: Documentation */
 	public Parent getContainer() { return this.container; }
 
 	/** TODO: Documentation */
