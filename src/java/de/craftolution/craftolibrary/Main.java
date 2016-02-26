@@ -24,6 +24,7 @@ public class Main {
 
 	public static void main(final String[] args) {
 		System.err.println(Main.MESSAGE);
+
 		if (!GraphicsEnvironment.isHeadless()) {
 			JOptionPane.showMessageDialog(null, Main.MESSAGE, "You executed the wrong jar!", JOptionPane.ERROR_MESSAGE);
 		}

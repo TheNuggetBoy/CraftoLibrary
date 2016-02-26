@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 
 import de.craftolution.craftolibrary.Check;
-import de.craftolution.craftolibrary.Instant;
+import de.craftolution.craftolibrary.Stopwatch;
 import de.craftolution.craftolibrary.database.query.Query;
 
 /**
@@ -79,8 +79,8 @@ public class QueryResult {
 					this.columns.add(this.result.getMetaData().getColumnLabel(i + 1));
 				}
 
-				final Instant instant = Instant.now();
-				for (int i = 0; result.next() && !instant.hasPassed(Duration.ofSeconds(1)); i++) {
+				final Stopwatch stopwatch = Stopwatch.start();
+				for (int i = 0; result.next() && !stopwatch.hasPassed(Duration.ofSeconds(1)); i++) {
 					this.rows.add(new Row(this, i));
 					this.affectedRows++;
 				}
@@ -102,8 +102,8 @@ public class QueryResult {
 				final ResultSet generatedKeys = this.statement.getGeneratedKeys();
 				final List<Integer> keyList = Lists.newArrayList();
 
-				final Instant instant = Instant.now();
-				for (int index = 1; generatedKeys.next() && !instant.hasPassed(Duration.ofSeconds(1)); index++) {
+				final Stopwatch stopwatch = Stopwatch.start();
+				for (int index = 1; generatedKeys.next() && !stopwatch.hasPassed(Duration.ofSeconds(1)); index++) {
 					keyList.add(generatedKeys.getInt(index));
 				}
 

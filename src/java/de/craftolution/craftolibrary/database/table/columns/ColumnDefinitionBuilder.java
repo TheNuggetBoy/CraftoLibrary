@@ -23,6 +23,7 @@ public class ColumnDefinitionBuilder {
 	boolean autoIncrement = false;
 	boolean unsigned = false;
 	String[] enumValues;
+	String onUpdate;
 
 	ColumnDefinitionBuilder type(final DataType type) {
 		this.type = type;
@@ -52,6 +53,11 @@ public class ColumnDefinitionBuilder {
 
 	ColumnDefinitionBuilder values(String[] values) {
 		this.enumValues = values;
+		return this;
+	}
+
+	ColumnDefinitionBuilder onUpdate(String onUpdate) {
+		this.onUpdate = onUpdate;
 		return this;
 	}
 

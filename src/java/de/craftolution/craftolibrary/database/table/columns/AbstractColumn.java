@@ -120,6 +120,8 @@ public abstract class AbstractColumn<V, T> implements Column {
 			b.append(' ');
 		}
 
+		if (definitions.onUpdate != null) { b.append("ON UPDATE ").append(definitions.onUpdate).append(' '); }
+
 		if (definitions.unsigned) { b.append("UNSIGNED "); }
 
 		if (definitions.autoIncrement) { b.append("AUTO_INCREMENT "); }
@@ -128,9 +130,7 @@ public abstract class AbstractColumn<V, T> implements Column {
 
 		if (this.comment != null) { b.append("COMMENT '").append(this.comment.replace("'", "")).append('\''); }
 
-		b.append(';');
-
-		return Query.of(b.toString());
+		return Query.of(b.toString().trim());
 	}
 
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) { return builder; }

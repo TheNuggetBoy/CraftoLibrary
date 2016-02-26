@@ -8,13 +8,18 @@
 package de.craftolution.craftolibrary.database.table.columns;
 
 import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
+import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
-public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> implements DoubleLenghtable<DecimalColumn> {
+public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> implements DoubleLenghtable<DecimalColumn>, Unsignable<DecimalColumn> {
 
 	private int firstLength, secondLength;
+	private boolean unsigned;
 
 	@Override
 	protected DecimalColumn instance() { return this; }
+
+	@Override
+	public DecimalColumn unsigned() { this.unsigned = true; return this; }
 
 	@Override
 	public DecimalColumn length(final int firstLength, final int secondLength) {
@@ -25,6 +30,7 @@ public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> impleme
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.length(this.firstLength, this.secondLength);
+		return builder.unsigned(unsigned).length(this.firstLength, this.secondLength);
 	}
+
 }

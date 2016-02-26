@@ -17,8 +17,22 @@ import java.sql.Timestamp;
  */
 public class TimestampColumn extends AbstractColumn<String, TimestampColumn> {
 
+	private String onUpdate;
+
 	@Override
 	protected TimestampColumn instance() { return this; }
+
+	/** TODO: Documentation */
+	public TimestampColumn onUpdate(String onUpdate) {
+		this.onUpdate = onUpdate;
+		return this;
+	}
+
+	/** TODO: Documentation */
+	public TimestampColumn onUpdateCurrentTimestamp() {
+		this.onUpdate = "CURRENT_TIMESTAMP";
+		return this;
+	}
 
 	/** TODO: Documentation */
 	public TimestampColumn standardCurrentTimestamp() {
@@ -30,6 +44,11 @@ public class TimestampColumn extends AbstractColumn<String, TimestampColumn> {
 	public TimestampColumn standard(final Timestamp timestamp) {
 		super.standard(timestamp.toString());
 		return this;
+	}
+
+	/** TODO: Documentation */
+	public ColumnDefinitionBuilder define(ColumnDefinitionBuilder builder) {
+		return builder.onUpdate(this.onUpdate);
 	}
 
 }

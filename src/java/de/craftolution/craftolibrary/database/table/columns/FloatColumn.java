@@ -8,6 +8,7 @@
 package de.craftolution.craftolibrary.database.table.columns;
 
 import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
+import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
 /**
  * TODO: Documentation
@@ -15,12 +16,16 @@ import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
  * @author Fear837
  * @since 13.02.2016
  */
-public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements DoubleLenghtable<FloatColumn> {
+public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements DoubleLenghtable<FloatColumn>, Unsignable<FloatColumn> {
 
 	private int firstLength, secondLength;
+	private boolean unsigned;
 
 	@Override
 	protected FloatColumn instance() { return this; }
+
+	@Override
+	public FloatColumn unsigned() { this.unsigned = true; return this; }
 
 	@Override
 	public FloatColumn length(final int firstLength, final int secondLength) {
@@ -31,7 +36,7 @@ public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements D
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.length(this.firstLength, this.secondLength);
+		return builder.unsigned(this.unsigned).length(this.firstLength, this.secondLength);
 	}
 
 }

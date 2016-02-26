@@ -62,7 +62,7 @@ public class MySQL implements Database {
 		this.exceptionHandler = exceptionHandler != null ? exceptionHandler : (exception) -> exception.printStackTrace();
 		this.queryHandler = queryHandler != null ? queryHandler : (query) -> this.getConnection();
 		this.logHandler = logHandler != null ? logHandler : (log) -> System.out.println(log);
-		this.statistics = new StatisticRecorder(this, recordStatistics);
+		this.statistics = new StatisticRecorder(this, recordStatistics, this.logHandler, this.exceptionHandler);
 	}
 
 	@Override
@@ -99,6 +99,8 @@ public class MySQL implements Database {
 		if (this.connection != null) {
 			try { this.connection.close(); }
 			catch (SQLException e) { this.exceptionHandler.accept(e); }
+			
+			this.statistics.stop();
 		}
 
 		return this;

@@ -1,8 +1,20 @@
 package de.craftolution.craftolibrary.database;
 
+import java.sql.Statement;
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+
+import com.google.common.collect.Queues;
+
+import de.craftolution.craftolibrary.Result;
+import de.craftolution.craftolibrary.Scheduled;
+import de.craftolution.craftolibrary.Stopwatch;
+import de.craftolution.craftolibrary.database.query.Query;
+import de.craftolution.craftolibrary.database.table.Table;
 
 /**
  * TODO: Documentation
@@ -10,49 +22,89 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Kevin
  * @since 12.02.2016
  */
-public class StatisticRecorder {
+public class StatisticRecorder extends TimerTask {
 
-	private boolean enabled;
+	private static final String TABLE_NAME = "cl_stats_database_queries";
 
-	private final AtomicInteger successfulQueries = new AtomicInteger(0);
-	private final AtomicInteger failedQueries = new AtomicInteger(0);
+	private final Database database;
+	private final AtomicBoolean recording;
+	private final Consumer<String> logger;
+	private final Consumer<Exception> exceptionHandler;
+	private final Queue<QueryResult> queue = Queues.newConcurrentLinkedQueue();
+	private final Timer timer;
 
-	private final AtomicLong minuteStart = new AtomicLong(System.currentTimeMillis());
-	private final AtomicInteger queriesThisMinute = new AtomicInteger(0);
-	private final AtomicInteger countedQueriesPerMinute = new AtomicInteger(0);
-	private final AtomicInteger averageQueriesPerMinute = new AtomicInteger(0);
+	StatisticRecorder(Database database, boolean enabled, Consumer<String> logger, Consumer<Exception> exceptionHandler) {
+		this.database = database;
+		this.recording = new AtomicBoolean(enabled);
+		this.logger = logger;
+		this.exceptionHandler = exceptionHandler;
 
-	private final AtomicInteger countedDurations = new AtomicInteger(0);
-	private final AtomicLong averageDuration = new AtomicLong();
+		if (enabled) {
+			this.timer = new Timer("DatabaseStatisticRecorder", true);
+			
+			Table table = Table.builder(TABLE_NAME)
+					.addString("query", null)
+					.addInt("duration", c -> c.length(6))
+					.addBoolean("success", null)
+					.addInt("affected_rows", c -> c.length(7))
+					.addCreatedAt()
+					.build();
 
-	StatisticRecorder(Database database, boolean enabled) {
-		this.enabled = enabled;
+			Result<Statement> result = this.database.createTable(table);
+			if (!result.getException().isPresent()) {
+				this.logger.accept("Disabling the StatisticRecorder because failed to create the database table " + TABLE_NAME + ".");
+				this.recording.set(false);
+			}
+
+			
+		}
+		else { this.timer = null; }
+	}
+
+	void start() {
+		synchronized (this.recording) {
+			if (this.recording.get()) { return; }
+			this.timer.scheduleAtFixedRate(this, 1000L, 1000L * 60 * 30);
+			this.recording.set(true);
+		}
+	}
+	
+	void stop() {
+		synchronized (this.recording) {
+			if (!this.recording.get()) { return; }
+			this.cancel();
+			this.recording.set(false);
+		}
 	}
 
 	void insertQuery(QueryResult result) {
-		if (!enabled) { return; }
+		synchronized (this.recording) {
+			if (!recording.get() || this.queue.size() > 102400) { return; }
+			if (result.getQuery().toString().contains(TABLE_NAME)) { return; }
 
-		if (result.wasSuccess()) { this.successfulQueries.incrementAndGet(); }
-		else { this.failedQueries.incrementAndGet(); }
-
-		if (System.currentTimeMillis() - this.minuteStart.get() > 1000) {
-			this.averageQueriesPerMinute.set((this.averageQueriesPerMinute.get() * (this.countedQueriesPerMinute.get() - 1) + this.queriesThisMinute.get()) / this.countedQueriesPerMinute.get());
-			this.queriesThisMinute.set(0);
-			this.minuteStart.set(System.currentTimeMillis());
-			this.countedQueriesPerMinute.incrementAndGet();
-		}
-		else { this.queriesThisMinute.incrementAndGet(); }
-
-		if (!result.getExecutionDuration().isZero()) {
-			this.averageDuration.set((this.averageDuration.get() * (this.countedDurations.get() - 1) + result.getExecutionDuration().toNanos()) / this.countedDurations.get());
-			this.countedDurations.incrementAndGet();
+			this.queue.add(result);
 		}
 	}
 
-	/** TODO: Documentation */
-	public int getQueriesPerMinute() { return this.averageQueriesPerMinute.get(); }
+	@Override
+	public void run() {
+		if (!this.recording.get() || this.queue.isEmpty()) { return; }
 
-	/** TODO: Documentation */
-	public Duration getAverageDuration() { return Duration.ofNanos(this.averageDuration.get()); }
+		final StringBuilder builder = new StringBuilder("INSERT INTO `").append(TABLE_NAME).append("` (`query`, `duration`, `success`, `affected_rows`, `created_at`) VALUES ('");
+		final Stopwatch stopWatch = Stopwatch.start();
+
+		for (QueryResult result = this.queue.poll(); !this.queue.isEmpty() && !stopWatch.hasPassed(Duration.ofSeconds(2)); result = this.queue.poll()) {
+			builder.append(result.getQuery().toString()).append("', ")
+			.append(result.getExecutionDuration().toMillis()).append(", ")
+			.append(result.wasSuccess()).append(", ")
+			.append(result.getAffectedRows()).append(", '")
+			.append(System.currentTimeMillis()).append("'), ('");
+		}
+		
+		builder.delete(builder.length() - 4, builder.length()).append(';');
+
+		final Scheduled<QueryResult> result = this.database.executeAsync(Query.of(builder.toString()));
+		result.addListener(queryResult -> queryResult.getException().ifPresent(e -> this.exceptionHandler.accept(e)));
+	}
 
 }
