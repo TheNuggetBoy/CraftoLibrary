@@ -15,10 +15,13 @@ package de.craftolution.craftolibrary.events;
  */
 public interface Cancellable {
 
+	/** TODO: Documentation */
 	void cancel();
 
+	/** TODO: Documentation */
 	void uncancel();
 
+	/** TODO: Documentation */
 	boolean isCancelled();
 
 }
