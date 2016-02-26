@@ -22,6 +22,8 @@ import javax.annotation.Nullable;
  */
 public class Tokens<T> {
 
+	private static final Tokens<?> EMPTY = new Tokens<Object>(new Object[]{});
+
 	private final T[] tokens;
 	private boolean empty;
 	private boolean needsNewEmptyCalculation;
@@ -97,5 +99,9 @@ public class Tokens<T> {
 	public static <T> Tokens<T> of(final Tokens<T> original) {
 		return new Tokens<T>(original.tokens);
 	}
+
+	/** TODO: Documentation */
+	@SuppressWarnings("unchecked")
+	public static <T> Tokens<T> empty() { return (Tokens<T>) Tokens.EMPTY; }
 
 }
