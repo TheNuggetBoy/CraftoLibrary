@@ -16,7 +16,7 @@ import de.craftolution.craftolibrary.Check;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 11.02.2016
  */
 public class RemoveQuery implements Query {

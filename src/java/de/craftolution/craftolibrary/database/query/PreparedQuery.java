@@ -16,7 +16,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import de.craftolution.craftolibrary.Result;
-import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.Database;
 import de.craftolution.craftolibrary.database.QueryResult;
 
@@ -31,14 +31,14 @@ public class PreparedQuery<Input> {
 
 	private final Database database;
 	private final Query query;
-	private final Function<Input, Tokens<Object>> converter;
+	private final Function<Input, Tuple<Object>> converter;
 	private final String rawQuery;
 	private final Consumer<Exception> exceptionHandler;
 
 	@Nullable private PreparedStatement statement;
 
 	/** TODO: Documentation */
-	public PreparedQuery(final Database database, final Query query, final Function<Input, Tokens<Object>> converter, final Consumer<Exception> exceptionHandler) {
+	public PreparedQuery(final Database database, final Query query, final Function<Input, Tuple<Object>> converter, final Consumer<Exception> exceptionHandler) {
 		this.database = database;
 		this.query = query.clone();
 		this.converter = converter;
@@ -65,7 +65,7 @@ public class PreparedQuery<Input> {
 
 	/** TODO: Documentation */
 	public QueryResult execute(final Input input) {
-		final Tokens<Object> variables = this.converter.apply(input);
+		final Tuple<Object> variables = this.converter.apply(input);
 
 		try {
 			if (this.statement != null) {

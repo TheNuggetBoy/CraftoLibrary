@@ -19,7 +19,7 @@ import de.craftolution.craftolibrary.database.table.Table;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 12.02.2016
  */
 public class StatisticRecorder extends TimerTask {
@@ -55,8 +55,7 @@ public class StatisticRecorder extends TimerTask {
 				this.logger.accept("Disabling the StatisticRecorder because failed to create the database table " + TABLE_NAME + ".");
 				this.recording.set(false);
 			}
-
-			
+	
 		}
 		else { this.timer = null; }
 	}

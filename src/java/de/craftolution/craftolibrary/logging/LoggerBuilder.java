@@ -10,7 +10,8 @@ package de.craftolution.craftolibrary.logging;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class LoggerBuilder implements Builder<Logger>, Cloneable {
 
 	@Nullable private String name;
 	@Nullable private LogWriter writer;
-	@Nullable private SimpleDateFormat dateFormatter;
+	@Nullable private DateTimeFormatter dateFormatter;
 	@Nullable private LogFormatter formatter;
 
 	LoggerBuilder() {
@@ -48,7 +49,7 @@ public class LoggerBuilder implements Builder<Logger>, Cloneable {
 	public Optional<LogWriter> getWriter() { return Optional.ofNullable(this.writer); }
 
 	/** TODO: Documentation */
-	public Optional<SimpleDateFormat> getDateFormatter() { return Optional.ofNullable(this.dateFormatter); }
+	public Optional<DateTimeFormatter> getDateFormatter() { return Optional.ofNullable(this.dateFormatter); }
 
 	/** TODO: Documentation */
 	public Optional<LogFormatter> getFormatter() { return Optional.ofNullable(this.formatter); }
@@ -63,12 +64,12 @@ public class LoggerBuilder implements Builder<Logger>, Cloneable {
 
 	/** TODO: Documentation */
 	public LoggerBuilder dateFormatter(final String pattern) throws NullPointerException, IllegalArgumentException {
-		this.dateFormatter = new SimpleDateFormat(pattern);
+		this.dateFormatter = DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault());
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public LoggerBuilder dateFormatter(final SimpleDateFormat dateFormatter) {
+	public LoggerBuilder dateFormatter(final DateTimeFormatter dateFormatter) {
 		this.dateFormatter = dateFormatter;
 		return this;
 	}
@@ -107,7 +108,7 @@ public class LoggerBuilder implements Builder<Logger>, Cloneable {
 		if (this.name == null) { throw new IllegalStateException("Cannot build logger because the name is null!"); }
 
 		final LogWriter writer = this.writer != null ? this.writer : Logger.getDefaultSystemWriter();
-		final SimpleDateFormat dateFormatter = this.dateFormatter != null ? this.dateFormatter : Logger.getDefaultDateFormatter();
+		final DateTimeFormatter dateFormatter = this.dateFormatter != null ? this.dateFormatter : Logger.getDefaultDateFormatter();
 		final LogFormatter formatter = this.formatter != null ? this.formatter : Logger.getDefaultFormatter();
 
 		return new Logger(this.name, writer.start(), dateFormatter, formatter);

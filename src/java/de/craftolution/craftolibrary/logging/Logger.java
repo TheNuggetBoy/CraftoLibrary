@@ -7,7 +7,9 @@
  */
 package de.craftolution.craftolibrary.logging;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.log4j.Level;
@@ -42,7 +45,7 @@ public class Logger {
 	private static final LogFormatter defaultFormatter = record -> {
 		return new StringBuilder()
 				.append('[')
-				.append(record.getLogger().getDateFormatter().format(record.getDate()))
+				.append(record.getLogger().getDateFormatter().format(record.getInstant()))
 				.append("] [")
 				.append(record.getLogger().getName())
 				.append("] [")
@@ -51,7 +54,7 @@ public class Logger {
 				.append(record.getMessage()).toString();
 	};
 
-	private static final SimpleDateFormat defaultDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS");
+	private static final DateTimeFormatter defaultDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss:SSS").withZone(ZoneId.systemDefault());
 
 	/** TODO: Documentation */
 	public static LogWriter getDefaultSystemWriter() { return Logger.defaultSystemWriter; }
@@ -60,12 +63,12 @@ public class Logger {
 	public static LogFormatter getDefaultFormatter() { return Logger.defaultFormatter; }
 
 	/** TODO: Documentation */
-	public static SimpleDateFormat getDefaultDateFormatter() { return Logger.defaultDateFormatter; }
+	public static DateTimeFormatter getDefaultDateFormatter() { return Logger.defaultDateFormatter; }
 
 	// --- Factory methods ---
 
 	/** TODO: Documentation */
-	public static Logger of(final String name) {
+	@Nonnull public static Logger of(final String name) {
 		Logger logger = Logger.loggerMap.get(name);
 		if (logger == null) {
 			logger = Logger.builder(name).build();
@@ -73,6 +76,11 @@ public class Logger {
 		}
 
 		return logger;
+	}
+
+	/** TODO: Documentation */
+	public static Logger of(Class<?> clazz) {
+		return Logger.of(clazz.getName());
 	}
 
 	/** TODO: Documentation */
@@ -89,7 +97,7 @@ public class Logger {
 
 	private final String name;
 	private final LogWriter writer;
-	private final SimpleDateFormat dateFormatter;
+	private final DateTimeFormatter dateFormatter;
 	private final LogFormatter formatter;
 
 	private final Map<Level, List<Consumer<LogRecord>>> levelListeners;
@@ -104,7 +112,7 @@ public class Logger {
 		this.listeners = logger.listeners;
 	}
 
-	Logger(final String name, final LogWriter worker, final SimpleDateFormat dateFormatter, final LogFormatter formatter) {
+	Logger(final String name, final LogWriter worker, final DateTimeFormatter dateFormatter, final LogFormatter formatter) {
 		Check.nonNulls("The name/worker/dateFormatter/formatter cannot be null!", name, worker, dateFormatter, formatter);
 		this.name = name;
 		this.writer = worker;
@@ -126,7 +134,7 @@ public class Logger {
 	public boolean supportsLevel(final Level level) { return this.writer.supportsLevel(level); }
 
 	/** TODO: Documentation */
-	public SimpleDateFormat getDateFormatter() { return this.dateFormatter; }
+	public DateTimeFormatter getDateFormatter() { return this.dateFormatter; }
 
 	/** TODO: Documentation */
 	public LogFormatter getFormatter() { return this.formatter; }
@@ -168,7 +176,7 @@ public class Logger {
 			}
 		}
 
-		final LogRecord record = new LogRecord(this, System.currentTimeMillis(), level, stringMessage);
+		final LogRecord record = new LogRecord(this, Instant.now(), level, stringMessage);
 
 		// Notify event handlers
 		this.listeners.forEach(handler -> handler.accept(record));

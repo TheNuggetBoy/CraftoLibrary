@@ -19,7 +19,7 @@ import de.craftolution.craftolibrary.StringUtils;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 13.09.2015
  */
 public class Test {

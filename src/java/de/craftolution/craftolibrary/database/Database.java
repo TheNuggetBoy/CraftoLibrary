@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 import de.craftolution.craftolibrary.Result;
 import de.craftolution.craftolibrary.Scheduled;
-import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
 import de.craftolution.craftolibrary.database.query.PreparedQuery;
@@ -123,7 +123,7 @@ public interface Database {
 	 * @param converter - The converter used to convert the {@literal <F>} input object to an array of parameters.
 	 * @return Returns a {@link PreparedQuery} ready to be used.
 	 */
-	<F> PreparedQuery<F> prepareQuery(Query query, Function<F, Tokens<Object>> converter);
+	<F> PreparedQuery<F> prepareQuery(Query query, Function<F, Tuple<Object>> converter);
 
 	/**
 	 * Creates a {@link BiPreparedQuery} object for sending parameterized SQL statements to the database.
@@ -138,7 +138,7 @@ public interface Database {
 	 * @param converter - The converter used to convert the {@literal <F>} and {@literal <S>} input objects to an array of parameters.
 	 * @return Returns a {@link BiPreparedQuery} ready to be used.
 	 */
-	<F, S> BiPreparedQuery<F, S> prepareQuery(Query query, BiFunction<F, S, Tokens<Object>> converter);
+	<F, S> BiPreparedQuery<F, S> prepareQuery(Query query, BiFunction<F, S, Tuple<Object>> converter);
 
 	/**
 	 * Creates a {@link TriPreparedQuery} object for sending parameterized SQL statements to the database.
@@ -154,7 +154,7 @@ public interface Database {
 	 * @param converter - The converter used to convert the {@literal <F>}, {@literal <S>} and {@literal <T>} input objects to an array of parameters.
 	 * @return Returns a {@link TriPreparedQuery} ready to be used.
 	 */
-	<F, S, T> TriPreparedQuery<F, S, T> prepareQuery(Query query, TriFunction<F, S, T, Tokens<Object>> converter);
+	<F, S, T> TriPreparedQuery<F, S, T> prepareQuery(Query query, TriFunction<F, S, T, Tuple<Object>> converter);
 
 	/**
 	 * Tries to execute the specified query. If the query contains a 'SELECT' keyword a {@link ResultSet} can be expected in the

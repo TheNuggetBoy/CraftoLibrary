@@ -10,7 +10,7 @@ package de.craftolution.craftolibrary.database.table;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 12.02.2016
  */
 public enum IndexType {

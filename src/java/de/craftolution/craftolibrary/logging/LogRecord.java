@@ -7,7 +7,7 @@
  */
 package de.craftolution.craftolibrary.logging;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.apache.log4j.Level;
 
@@ -22,11 +22,11 @@ public class LogRecord {
 	private final Logger logger;
 	private final Level level;
 	private final String message;
-	private final Date date;
+	private final Instant instant;
 
-	LogRecord(final Logger logger, final long timestamp, final Level level, final String message) {
+	LogRecord(final Logger logger, final Instant instant, final Level level, final String message) {
 		this.logger = logger;
-		this.date = new Date(timestamp);
+		this.instant = instant;
 		this.level = level;
 		this.message = message;
 	}
@@ -37,8 +37,8 @@ public class LogRecord {
 	}
 
 	/** TODO: Documentation */
-	public Date getDate() {
-		return this.date;
+	public Instant getInstant() {
+		return this.instant;
 	}
 
 	/** TODO: Documentation */

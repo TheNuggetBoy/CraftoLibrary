@@ -11,14 +11,14 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import de.craftolution.craftolibrary.Pair;
-import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.Database;
 import de.craftolution.craftolibrary.database.QueryResult;
 
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 11.02.2016
  * @param <FirstInput>
  * @param <SecondInput>
@@ -28,7 +28,7 @@ public class BiPreparedQuery<FirstInput, SecondInput> {
 	private PreparedQuery<Pair<FirstInput, SecondInput>> preparedQuery;
 
 	/** TODO: Documentation */
-	public BiPreparedQuery(Database database, Query query, BiFunction<FirstInput, SecondInput, Tokens<Object>> converter, Consumer<Exception> exceptionHandler) {
+	public BiPreparedQuery(Database database, Query query, BiFunction<FirstInput, SecondInput, Tuple<Object>> converter, Consumer<Exception> exceptionHandler) {
 		this.preparedQuery = new PreparedQuery<Pair<FirstInput, SecondInput>>(database, query, (input) -> converter.apply(input.getFirst(), input.getSecond()), exceptionHandler);
 	}
 

@@ -3,7 +3,7 @@ package de.craftolution.craftolibrary.events;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 22.02.2016
  */
 public class Test {

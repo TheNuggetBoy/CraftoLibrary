@@ -20,7 +20,7 @@ import de.craftolution.craftolibrary.ToStringable;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 13.09.2015
  */
 public class TCPListener implements ToStringable {

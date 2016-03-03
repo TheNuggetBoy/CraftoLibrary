@@ -9,7 +9,7 @@ package de.craftolution.craftolibrary.database.query;
 
 import java.util.function.Consumer;
 
-import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.Triple;
 import de.craftolution.craftolibrary.database.Database;
@@ -29,7 +29,7 @@ public class TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 	private PreparedQuery<Triple<FirstInput, SecondInput, ThirdInput>> preparedQuery;
 
 	/** TODO: Documentation */
-	public TriPreparedQuery(Database database, Query query, TriFunction<FirstInput, SecondInput, ThirdInput, Tokens<Object>> converter, Consumer<Exception> exceptionHandler) {
+	public TriPreparedQuery(Database database, Query query, TriFunction<FirstInput, SecondInput, ThirdInput, Tuple<Object>> converter, Consumer<Exception> exceptionHandler) {
 		this.preparedQuery = new PreparedQuery<Triple<FirstInput, SecondInput, ThirdInput>>(database, query, (input) -> converter.apply(input.getFirst(), input.getSecond(), input.getThird()), exceptionHandler);
 	}
 

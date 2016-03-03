@@ -13,7 +13,7 @@ import de.craftolution.craftolibrary.database.query.Query;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 10.02.2016
  */
 public class Index {

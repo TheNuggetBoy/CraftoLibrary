@@ -10,7 +10,7 @@ package de.craftolution.craftolibrary.logging;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 15.09.2015
  */
 @FunctionalInterface

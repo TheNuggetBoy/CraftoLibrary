@@ -12,7 +12,7 @@ import de.craftolution.craftolibrary.database.table.DataType;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 18.12.2015
  */
 public class ColumnDefinitionBuilder {

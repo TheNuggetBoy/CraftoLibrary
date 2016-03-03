@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import de.craftolution.craftolibrary.Check;
 import de.craftolution.craftolibrary.Result;
 import de.craftolution.craftolibrary.Scheduled;
-import de.craftolution.craftolibrary.Tokens;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
 import de.craftolution.craftolibrary.database.query.PreparedQuery;
@@ -35,7 +35,7 @@ import de.craftolution.craftolibrary.database.table.Table;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 08.02.2016
  */
 public class MySQL implements Database {
@@ -138,19 +138,19 @@ public class MySQL implements Database {
 	}
 
 	@Override
-	public <F> PreparedQuery<F> prepareQuery(Query query, Function<F, Tokens<Object>> converter) {
+	public <F> PreparedQuery<F> prepareQuery(Query query, Function<F, Tuple<Object>> converter) {
 		Check.nonNulls("The query/converter cannot be null!", query, converter);
 		return new PreparedQuery<F>(this, query, converter, this.exceptionHandler);
 	}
 
 	@Override
-	public <F, S> BiPreparedQuery<F, S> prepareQuery(Query query, BiFunction<F, S, Tokens<Object>> converter) {
+	public <F, S> BiPreparedQuery<F, S> prepareQuery(Query query, BiFunction<F, S, Tuple<Object>> converter) {
 		Check.nonNulls("The query/converter cannot be null!", query, converter);
 		return new BiPreparedQuery<F, S>(this, query, converter, this.exceptionHandler);
 	}
 
 	@Override
-	public <F, S, T> TriPreparedQuery<F, S, T> prepareQuery(Query query, TriFunction<F, S, T, Tokens<Object>> converter) {
+	public <F, S, T> TriPreparedQuery<F, S, T> prepareQuery(Query query, TriFunction<F, S, T, Tuple<Object>> converter) {
 		Check.nonNulls("The query/converter cannot be null!", query, converter);
 		return new TriPreparedQuery<F, S, T>(this, query, converter, this.exceptionHandler);
 	}
