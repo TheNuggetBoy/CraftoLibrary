@@ -100,7 +100,7 @@ public class Tests {
 
 
 		// A PreparedQuery
-		//PreparedQuery<FXScene> selectSceneQuery = db.prepareQuery(Query.of("SELECT * FROM `cp_scene_meta` WHERE `scene_id` = ?"), scene -> Tokens.of(scene.getContainer().getId()));
+		//PreparedQuery<FXScene> selectSceneQuery = db.prepareQuery(Query.of("SELECT * FROM `cp_scene_meta` WHERE `scene_id` = ?"), scene -> Tuple.of(scene.getContainer().getId()));
 
 		//QueryResult otherResult = selectSceneQuery.execute(new FXScene(null));
 

@@ -100,7 +100,7 @@ public interface Database {
 	 * a {@link ResultSet} in the {@link QueryResult} if possible. <p>
 	 *
 	 * <p><b>Usage example:</b><br> To use a {@link PreparedQuery} it first needs to be initialized: <br>
-	 * <code>PreparedQuery{@literal <User>} insertUserQuery = myDatabase.prepareQuery(Query.of("INSERT INTO `users` (`id`, `name`) VALUES (?, ?);"), user -> Tokens.of(user.getId(), user.getName());</code> <br>
+	 * <code>PreparedQuery{@literal <User>} insertUserQuery = myDatabase.prepareQuery(Query.of("INSERT INTO `users` (`id`, `name`) VALUES (?, ?);"), user -> Tuple.of(user.getId(), user.getName());</code> <br>
 	 * Later you can use the query by calling: {@link PreparedQuery#execute(Object)}.
 	 *
 	 * <p> The whole thing can be split into 3 parts:
@@ -110,7 +110,7 @@ public interface Database {
 	 * <br> <b>2. The query:</b> <code>myDatabase.prepareQuery(Query.of("INSERT .... VALUES (?, ?)"), ...);</code> <br>
 	 * Specifing the query is very similiar to a {@link PreparedStatement}. Basically if you have parameters in your query you write them with {@code '?'} in your query.
 	 * These characters will later be replaced by the converted tokens specified by the converter in the next step. Just keep in mind to have the same amount of ?'s as your tokenconverter provides.
-	 * <br> <b>3. The converter:</b> <code>myDatabase.prepareQuery(..., user -> Tokens.of(user.getId(), user.getName()));</code> <br>
+	 * <br> <b>3. The converter:</b> <code>myDatabase.prepareQuery(..., user -> Tuple.of(user.getId(), user.getName()));</code> <br>
 	 * In this step we're converting the input (in this case a user instance) basically to an array (tokens instance) of parameters which then
 	 * replace the ?'s in the query. The order is very important so better check if everything matches. </p>
 	 *
