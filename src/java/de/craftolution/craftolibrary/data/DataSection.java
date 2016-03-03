@@ -66,7 +66,7 @@ public class DataSection {
 			//this.nodes.put(path.toString(), node);
 		}
 
-		return node;
+		return null;
 	}
 	
 }
