@@ -11,13 +11,13 @@ import java.util.Iterator;
 public class TupleIterator<T> implements Iterator<T> {
 
 	private final ImmutableTuple<T> tokens;
-	private int index;
+	private int index = 0;
 
 	TupleIterator(ImmutableTuple<T> tokens) { this.tokens = tokens; }
 
 	@Override
 	public boolean hasNext() {
-		return this.index < (tokens.length() - 1);
+		return this.index < tokens.length();
 	}
 
 	@Override

@@ -25,6 +25,8 @@ import javax.annotation.Nullable;
  */
 public class Tuple<T> extends ImmutableTuple<T> {
 
+	private static final long serialVersionUID = 4000205510737837777L;
+
 	private static final Tuple<?> EMPTY = new Tuple<Object>(new Object[]{});
 
 	Tuple(final T[] tokens) { super(tokens); }
@@ -188,8 +190,11 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	}
 
 	/** @return Basically returns a copy of the specified array containing all the elements that {@code original} has. */
+	@SuppressWarnings("unchecked")
 	public static <T> Tuple<T> of(final Tuple<T> original) {
-		return new Tuple<T>(original.tokens);
+		Object[] tokens = new Object[original.tokens.length];
+		System.arraycopy(original.tokens, 0, tokens, 0, original.tokens.length);
+		return new Tuple<T>((T[]) tokens);
 	}
 
 	/** @return Returns an empty array. */
