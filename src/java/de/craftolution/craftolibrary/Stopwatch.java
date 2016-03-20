@@ -17,19 +17,19 @@ import java.time.Duration;
  */
 public class Stopwatch {
 
-	private final long instant = System.currentTimeMillis();
+	private final long instant = System.nanoTime();
 
 	/** TODO: Documentation */
 	Stopwatch() { }
 
 	/** TODO: Documentation */
 	public boolean hasPassed(final Duration duration) {
-		return System.currentTimeMillis() - this.instant > duration.toMillis();
+		return System.nanoTime() - this.instant > duration.toNanos();
 	}
 
 	/** TODO: Documentation */
 	public Duration getPassed() {
-		return Duration.ofMillis(System.currentTimeMillis() - this.instant);
+		return Duration.ofNanos(System.nanoTime() - this.instant);
 	}
 
 	/** TODO: Documentation */
