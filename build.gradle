@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
-version = '1.1.9'
+version = '1.1.9.1'
 
 jar {
     manifest {
@@ -10,6 +10,19 @@ jar {
                    'Implementation-Version': version,
                    'Main-Class': 'de.craftolution.craftolibrary.Main'
     }
+}
+
+eclipse.project {
+natures 'org.springsource.ide.eclipse.gradle.core.nature'
+natures 'org.eclipse.jdt.core.javanature'
+natures 'org.eclipse.xtext.ui.shared.xtextNature'
+natures 'org.eclipse.fx.ide.css.nature'
+
+buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'	
+}
+
+eclipse.classpath {
+containers 'org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER'
 }
 
 sourceSets {
