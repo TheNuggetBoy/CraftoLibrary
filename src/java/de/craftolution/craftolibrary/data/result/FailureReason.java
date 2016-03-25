@@ -9,6 +9,7 @@ package de.craftolution.craftolibrary.data.result;
 @FunctionalInterface
 public interface FailureReason {
 
+	/** TODO: Documentation */
 	String getExplanation();
 
 }

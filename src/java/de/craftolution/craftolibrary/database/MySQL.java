@@ -191,7 +191,7 @@ public class MySQL implements Database {
 			duration = System.nanoTime() - start;
 			
 			result = new QueryResult(this, query, affectedRows, statement, resultSet, null, this.exceptionHandler, Duration.ofNanos(duration));
-			this.statistics.insertQuery(result);
+			if (statistics != null) { this.statistics.insertQuery(result); } // TODO: Investigate when this could be null!
 
 			return result;
 		}

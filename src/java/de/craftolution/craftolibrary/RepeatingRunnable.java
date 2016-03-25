@@ -2,14 +2,13 @@ package de.craftolution.craftolibrary;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 18.03.2016
  */
 public class RepeatingRunnable {
@@ -21,10 +20,10 @@ public class RepeatingRunnable {
 
 	private Runnable cancelListener;
 
-	RepeatingRunnable(Duration interval, Runnable runnable) {
+	RepeatingRunnable(Duration interval, Duration initialDelay, Runnable runnable) {
 		this.interval = interval;
 		this.runnable = runnable;
-		executor.scheduleWithFixedDelay(runnable, 0L, interval.toNanos(), TimeUnit.NANOSECONDS);
+		executor.scheduleWithFixedDelay(runnable, initialDelay.toNanos(), interval.toNanos(), TimeUnit.NANOSECONDS);
 	}
 
 	/** TODO: Documentation */
@@ -51,7 +50,12 @@ public class RepeatingRunnable {
 
 	/** TODO: Documentation */
 	public static RepeatingRunnable run(Duration interval, Runnable runnable) {
-		return new RepeatingRunnable(interval, runnable);
+		return new RepeatingRunnable(interval, Duration.ZERO, runnable);
+	}
+
+	/** TODO: Documentation */
+	public static RepeatingRunnable run(Duration interval, Duration initialDelay, Runnable runnable) {
+		return new RepeatingRunnable(interval, initialDelay, runnable);
 	}
 
 }

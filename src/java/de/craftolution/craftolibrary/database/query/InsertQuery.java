@@ -78,7 +78,7 @@ public class InsertQuery implements Query {
 			columns.append('`').append(pairedInsert[0]).append("`, ");
 
 			if (Check.isDouble(pairedInsert[1])) { values.append(pairedInsert[1]).append(", "); }
-			else { values.append("'").append(pairedInsert[1]).append("', "); }
+			else { values.append("'").append( Query.escape(pairedInsert[1]) ).append("', "); }
 		}
 
 		for (final String column : this.columns) {
@@ -87,7 +87,7 @@ public class InsertQuery implements Query {
 
 		for (final String value : this.values) {
 			if (Check.isDouble(value)) { values.append(value).append(", "); }
-			else { values.append("'").append(value).append("', "); }
+			else { values.append("'").append( Query.escape(value) ).append("', "); }
 		}
 
 		columns.delete(columns.length() - 2, columns.length()).append(')');

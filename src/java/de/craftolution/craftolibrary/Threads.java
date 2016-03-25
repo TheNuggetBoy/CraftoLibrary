@@ -36,7 +36,7 @@ public class Threads {
 	}
 
 	/** TODO: Documentation */
-	public static <E> void go(final Supplier<E> supplier) {
+	public static void go(final Supplier<?> supplier) {
 		Threads.go(() -> supplier.get());
 	}
 
@@ -74,4 +74,5 @@ public class Threads {
 			e.printStackTrace();
 		}
 	}
+
 }

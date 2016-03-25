@@ -24,6 +24,7 @@ import javafx.stage.Stage;
  * @author Fear837
  * @since 10.01.2016
  */
+@Deprecated
 public class FXScene {
 
 	/** The container that contains all elements of this scene. */
@@ -58,6 +59,10 @@ public class FXScene {
 
 	/** TODO: Documentation */
 	public Optional<Controller> getController() { return this.controller; }
+
+	/** TODO: Documentation */
+	@SuppressWarnings("unchecked")
+	public <T extends Controller> Optional<T> getController(Class<T> clazz) { return (Optional<T>) this.controller; }
 
 	/** TODO: Documentation */
 	public FXMLLoader getLoader() { return this.loader; }

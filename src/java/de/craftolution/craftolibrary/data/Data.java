@@ -8,6 +8,7 @@ package de.craftolution.craftolibrary.data;
  */
 public interface Data {
 
-	default void serialize(DataSection container) { }
+	/** TODO: Documentation */
+	boolean serialize(DataSection container);
 
 }

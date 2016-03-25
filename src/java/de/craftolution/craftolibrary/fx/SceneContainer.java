@@ -20,6 +20,7 @@ import javafx.stage.Stage;
  * @author Fear837
  * @since 10.01.2016
  */
+@Deprecated
 public class SceneContainer {
 
 	private Scene scene;

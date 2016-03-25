@@ -15,16 +15,6 @@ package de.craftolution.craftolibrary;
  */
 public class ByteUtils {
 
-	//	/** TODO: Documentation */
-	//	public static int threeBytesToInt(final byte[] b) {
-	//		return b[2] & 0xFF | (b[1] & 0xFF) << 8 | (b[0] & 0xFF) << 16;
-	//	}
-	//
-	//	/** TODO: Documentation */
-	//	public static byte[] intToThreeBytes(final int i) {
-	//		return new byte[] { (byte) (i >> 16 & 0xFF), (byte) (i >> 8 & 0xFF), (byte) (i & 0xFF) };
-	//	}
-
 	public static String displayBytes(final byte... byteArray) {
 		final StringBuilder builder = new StringBuilder();
 		for (final byte b : byteArray) {

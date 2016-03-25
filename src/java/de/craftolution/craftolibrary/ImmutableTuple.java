@@ -1,5 +1,6 @@
 package de.craftolution.craftolibrary;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -16,10 +17,12 @@ import com.google.common.collect.Sets;
 /**
  * TODO: Documentation
  *
- * @author Kevin
+ * @author Fear837
  * @since 01.03.2016
  */
-public class ImmutableTuple<T> implements Iterable<T> {
+public class ImmutableTuple<T> implements Iterable<T>, Serializable {
+
+	private static final long serialVersionUID = 4889726528185722077L;
 
 	protected final T[] tokens;
 	protected boolean empty;

@@ -1,14 +1,13 @@
 package de.craftolution.craftolibrary.data;
 
-import java.nio.file.Paths;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 
-import de.craftolution.craftolibrary.Check;
+import de.craftolution.craftolibrary.ImmutableTuple;
 
 /**
  * TODO: Documentation
@@ -16,57 +15,99 @@ import de.craftolution.craftolibrary.Check;
  * @author Fear837
  * @since 26.02.2016
  */
-public class DataSection {
+public class DataSection implements Serializable {
 
-	Node rootNode = Node.of(DataPath.of(""));
+	private static final long serialVersionUID = -4351651518497546995L;
 
-	Optional<Node> getNode(DataPath path) {
-		String[] tree = path.getPath();
-		Node currentNode = rootNode;
-		for (String element : tree) {
-			for (Node node : currentNode.getChildren()) {
+	private final Node rootNode;
+	private int version;
+
+	DataSection(final String sectionId) {
+		this.rootNode = new Node(DataPath.of(sectionId), null, Lists.newArrayList(), null);
+	}
+
+	/** TODO: Documentation */
+	public int getVersion() { return this.version; }
+
+	/** TODO: Documentation */
+	public String getId() { return this.rootNode.getId(); }
+
+	/** TODO: Documentation */
+	public DataSection withVersion(final int version) { this.version = version; return this; }
+
+	/** TODO: Documentation */
+	public Node getRootNode() { return this.rootNode; }
+
+	/** TODO: Documentation */
+	public Optional<Node> getNode(final String... path) { return this.getNode(DataPath.of(path)); }
+
+	/** TODO: Documentation */
+	public Optional<Node> getNode(final DataPath path) {
+		final ImmutableTuple<String> elements = path.getPath();
+		List<Node> possibleNodes = this.rootNode.getChildren();
+		Node currentNode = null;
+
+		outer: for (int i = 0; i < elements.length(); i++) {
+			final String element = elements.at(i);
+			boolean foundNode = false;
+
+			inner: for (final Node node : possibleNodes) {
 				if (node.getId().equals(element)) {
+					possibleNodes = node.getChildren();
 					currentNode = node;
-				}
-			}
-		}
-		
-		if (currentNode.getPath().equals(path)) {
-			return Optional.of(currentNode);
-		}
-		else { return Optional.empty(); }
-	}
-
-	Node getOrCreateNode(DataPath path) {
-		@Nullable Node foundNode = this.getNode(path).orElse(null);
-		if (foundNode == null) {
-			String[] tree = path.getPath();
-			Node currentNode = rootNode;
-			for (String element : tree) {
-				boolean found = false;
-				
-				for (Node node : currentNode.getChildren()) {
-					if (node.getId().equals(element)) {
-						found = true;
-						currentNode = node;
-					}
-				}
-				
-				if (!found) {
-					String[] newPath = new String[tree.length + 1];
-					System.arraycopy(tree, 0, newPath, 0, tree.length);
-					newPath[tree.length] = element;
-					Node newNode = Node.of(DataPath.of(newPath));
-					currentNode.getChildren().add(newNode);
-					currentNode = newNode;
+					foundNode = true;
+					System.out.println("Found subnode: " + currentNode.getPath());
+					break inner;
 				}
 			}
 
-			//foundNode = Node.of(path); 
-			//this.nodes.put(path.toString(), node);
+			if (!foundNode) {
+				break outer;
+			}
 		}
 
-		return null;
+		System.out.println(currentNode != null ? "Found node: " + currentNode.getPath().toString() : "Failed to get node: " + path);
+		return Optional.ofNullable(currentNode);
 	}
-	
+
+	/** TODO: Documentation */
+	public Node getOrCreateNode(final String... path) { return this.getOrCreateNode(DataPath.of(path)); }
+
+	/** TODO: Documentation */
+	public Node getOrCreateNode(final DataPath path) {
+		System.out.println("Getting or creating node: " + path.toString());
+		final ImmutableTuple<String> elements = path.getPath();
+		List<Node> possibleNodes = this.rootNode.getChildren();
+		Node currentNode = this.rootNode;
+
+		for (int i = 0; i < elements.length(); i++) {
+			final String element = elements.at(i);
+			boolean foundNode = false;
+
+			inner: for (final Node node : possibleNodes) {
+				if (node.getId().equals(element)) {
+					possibleNodes = node.getChildren();
+					currentNode = node;
+					foundNode = true;
+					break inner;
+				}
+			}
+
+			if (!foundNode) {
+				final Node newNode = new Node(DataPath.of(elements.slice(0, i + 1)), currentNode, new ArrayList<>(1), null);
+
+				if (currentNode != null) { currentNode.getChildren().add(newNode); } // When newNode is a rootNode, currentNode is most likely null
+				else { this.rootNode.getChildren().add(newNode); }
+
+				currentNode = newNode;
+
+				possibleNodes = newNode.getChildren();
+				System.out.println("Created subnode: " + newNode.getPath().toString());
+			}
+		}
+
+		System.out.println(currentNode != null ? "Found node: " + currentNode.getPath().toString() : "Failed to get or create node: " + path);
+		return currentNode;
+	}
+
 }
