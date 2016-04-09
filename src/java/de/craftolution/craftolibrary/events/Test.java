@@ -21,14 +21,14 @@ public class Test {
 			System.out.println("Received: " + event.a);
 		});
 
-		MyListener listener = new MyListener();
+		final MyListener listener = new MyListener();
 		manager.register(listener);
-		
+
 		final MyEvent e = new MyEvent();
 		e.a = 5;
 
-		
-		
+
+
 		for (int i = 0; i < 10; i++) {
 			e.a = i;
 			manager.post(e);
@@ -39,7 +39,7 @@ public class Test {
 	static class MyListener {
 
 		@EventHandler
-		public void onEvent(MyEvent event) {
+		public void onEvent(final MyEvent event) {
 			System.out.println("RECEIVED: " + event.a);
 		}
 

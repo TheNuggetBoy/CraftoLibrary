@@ -38,10 +38,10 @@ public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Uns
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		if (length <= 3) { builder.type(DataType.TINYINT); }
-		else if (length <= 5) { builder.type(DataType.SMALLINT); }
-		else if (length <= 7) { builder.type(DataType.MEDIUMINT); }
-		else if (length <= 11) { builder.type(DataType.INT); }
+		if (this.length <= 3) { builder.type(DataType.TINYINT); }
+		else if (this.length <= 5) { builder.type(DataType.SMALLINT); }
+		else if (this.length <= 7) { builder.type(DataType.MEDIUMINT); }
+		else if (this.length <= 11) { builder.type(DataType.INT); }
 		else { builder.type(DataType.BIGINT); }
 		return builder.length(this.length).unsigned(this.unsigned).autoIncrement(this.autoIncrement);
 	}

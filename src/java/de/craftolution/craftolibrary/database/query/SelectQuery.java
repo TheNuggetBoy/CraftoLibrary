@@ -101,7 +101,7 @@ public class SelectQuery implements Query {
 
 	@Override
 	public SelectQuery clone() {
-		SelectQuery query = new SelectQuery(this.columns);
+		final SelectQuery query = new SelectQuery(this.columns);
 		query.fromTable = this.fromTable;
 		query.whereClauses = Arrays.copyOf(this.whereClauses, this.whereClauses.length);
 		query.orderByColumn = this.orderByColumn;

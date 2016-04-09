@@ -12,35 +12,35 @@ import javafx.stage.Stage;
  */
 public class Test extends Application {
 
-	public static void main(String[] args) { launch(); }
+	public static void main(final String[] args) { Application.launch(); }
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		RemoteScene scene = RemoteScene.builder()
-		.scene("de/craftolution/craftolibrary/fx/scene.fxml")
-		.style(Test.class.getResource("style.css"))
-		.build();
-		
-		RemoteScene secondScene = RemoteScene.builder()
-		.scene(Test.class.getResource("secondscene.fxml"))
-		.style(Test.class.getResource("style.css"))
-		.build();
-		
-		SceneSwapper swapper = new SceneSwapper().addAll(scene, secondScene);
+	public void start(final Stage primaryStage) throws Exception {
+		final RemoteScene scene = RemoteScene.builder()
+				.scene("de/craftolution/craftolibrary/fx/scene.fxml")
+				.style(Test.class.getResource("style.css"))
+				.build();
+
+		final RemoteScene secondScene = RemoteScene.builder()
+				.scene(Test.class.getResource("secondscene.fxml"))
+				.style(Test.class.getResource("style.css"))
+				.build();
+
+		final SceneSwapper swapper = new SceneSwapper().addAll(scene, secondScene);
 		swapper.swap(scene);
 		swapper.showTo(primaryStage);
-		
+
 		primaryStage.show();
 
 		System.out.println("Works yeah");
-		
+
 		new Thread(() -> {
-			
+
 			try { Thread.sleep(1000 * 5); }
-			catch (Exception e) { e.printStackTrace(); }
+			catch (final Exception e) { e.printStackTrace(); }
 
 			Platform.runLater(() -> swapper.swap(secondScene));
-			
+
 		}).start();
 	}
 

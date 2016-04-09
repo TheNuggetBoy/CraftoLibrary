@@ -91,7 +91,7 @@ public abstract class AbstractColumn<V, T> implements Column {
 
 		if (definitions.enumValues != null && definitions.enumValues.length > 0) { // If its a enum
 			b.append('(');
-			for (String constant : definitions.enumValues) { b.append('\'').append(constant).append("', "); }
+			for (final String constant : definitions.enumValues) { b.append('\'').append(constant).append("', "); }
 			b.delete(b.length() - 2, b.length()).append(')');
 		}
 		else if (definitions.firstLength != null) { // Append length otherwise

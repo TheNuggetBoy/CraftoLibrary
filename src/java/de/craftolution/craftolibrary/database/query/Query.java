@@ -75,7 +75,7 @@ public interface Query extends Cloneable {
 	public static RemoveQuery remove(final String table) throws IllegalArgumentException { return new RemoveQuery(table); }
 
 	/** Escapes the given text by replacing "'" with "''". */
-	public static String escape(String text) { return text.replace("'", "''").replace("\"", "\"\""); }
+	public static String escape(final String text) { return text.replace("'", "''").replace("\"", "\"\""); }
 
 	/** Creates an exact copy of this query. */
 	Query clone();

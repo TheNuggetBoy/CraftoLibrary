@@ -23,7 +23,7 @@ public class TimestampColumn extends AbstractColumn<String, TimestampColumn> {
 	protected TimestampColumn instance() { return this; }
 
 	/** TODO: Documentation */
-	public TimestampColumn onUpdate(String onUpdate) {
+	public TimestampColumn onUpdate(final String onUpdate) {
 		this.onUpdate = onUpdate;
 		return this;
 	}
@@ -47,7 +47,8 @@ public class TimestampColumn extends AbstractColumn<String, TimestampColumn> {
 	}
 
 	/** TODO: Documentation */
-	public ColumnDefinitionBuilder define(ColumnDefinitionBuilder builder) {
+	@Override
+	public ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
 		return builder.onUpdate(this.onUpdate);
 	}
 

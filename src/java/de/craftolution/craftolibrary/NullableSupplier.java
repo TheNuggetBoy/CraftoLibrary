@@ -31,13 +31,13 @@ public interface NullableSupplier<T> extends Supplier<T>, com.google.common.base
 	/** TODO: Documentation */
 	default Optional<T> getAsOptional() {
 		try { return Optional.ofNullable(this.get()); }
-		catch (NoSuchElementException e) { return Optional.empty(); }
+		catch (final NoSuchElementException e) { return Optional.empty(); }
 	}
 
 	/** TODO: Documentation */
 	default boolean isPresent() {
 		try { return this.get() != null; }
-		catch (NoSuchElementException e) { return false; }
+		catch (final NoSuchElementException e) { return false; }
 	}
 
 	/** TODO: Documentation */

@@ -90,7 +90,7 @@ public class Node implements Serializable {
 	// --- Setters ---
 
 	/** TODO: Documentation */
-	public Node set(Object value) { this.value = value; return this; }
+	public Node set(final Object value) { this.value = value; return this; }
 
 	/** TODO: Documentation */
 	public Node setInt(final int value) { this.value = value; return this; }

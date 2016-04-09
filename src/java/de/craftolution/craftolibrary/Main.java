@@ -24,7 +24,7 @@ public class Main {
 
 	static long last = System.currentTimeMillis();
 
-	public static void main(final String[] args) {		
+	public static void main(final String[] args) {
 		System.err.println(Main.MESSAGE);
 
 		if (!GraphicsEnvironment.isHeadless()) {

@@ -79,7 +79,7 @@ public class Logger {
 	}
 
 	/** TODO: Documentation */
-	public static Logger of(Class<?> clazz) {
+	public static Logger of(final Class<?> clazz) {
 		return Logger.of(clazz.getName());
 	}
 

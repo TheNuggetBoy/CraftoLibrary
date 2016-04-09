@@ -44,7 +44,7 @@ public class Check {
 	}
 
 	/** TODO: Documentation */
-	public static final <T> T getPresent(T firstObj, T secondObj) { return firstObj != null ? firstObj : secondObj; }
+	public static final <T> T getPresent(final T firstObj, final T secondObj) { return firstObj != null ? firstObj : secondObj; }
 
 	/**
 	 * Checks whether or not the given object is {@code null}.

@@ -13,17 +13,17 @@ public class TupleIterator<T> implements Iterator<T> {
 	private final ImmutableTuple<T> tokens;
 	private int index = 0;
 
-	TupleIterator(ImmutableTuple<T> tokens) { this.tokens = tokens; }
+	TupleIterator(final ImmutableTuple<T> tokens) { this.tokens = tokens; }
 
 	@Override
 	public boolean hasNext() {
-		return this.index < tokens.length();
+		return this.index < this.tokens.length();
 	}
 
 	@Override
 	public T next() {
-		T element = this.tokens.at(this.index);
-		index++;
+		final T element = this.tokens.at(this.index);
+		this.index++;
 		return element;
 	}
 

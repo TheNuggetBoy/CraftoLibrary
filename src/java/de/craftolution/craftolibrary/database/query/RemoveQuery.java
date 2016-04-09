@@ -59,7 +59,7 @@ public class RemoveQuery implements Query {
 
 	@Override
 	public RemoveQuery clone() {
-		RemoveQuery query = new RemoveQuery(this.table);
+		final RemoveQuery query = new RemoveQuery(this.table);
 		query.whereChains.addAll(this.whereChains);
 		return query;
 	}

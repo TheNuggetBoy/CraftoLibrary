@@ -45,10 +45,10 @@ public class FXScene {
 	}
 
 	/** TODO: Documentation */
-	public FXScene(URL fxmlFile, Controller controller) throws IOException {
+	public FXScene(final URL fxmlFile, final Controller controller) throws IOException {
 		final FXMLLoader loader = new FXMLLoader(fxmlFile);
 		if (controller != null) { loader.setController(controller); }
-		
+
 		this.container = loader.load();
 		this.controller = Optional.ofNullable(loader.getController());
 		this.loader = loader;
@@ -62,7 +62,7 @@ public class FXScene {
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public <T extends Controller> Optional<T> getController(Class<T> clazz) { return (Optional<T>) this.controller; }
+	public <T extends Controller> Optional<T> getController(final Class<T> clazz) { return (Optional<T>) this.controller; }
 
 	/** TODO: Documentation */
 	public FXMLLoader getLoader() { return this.loader; }

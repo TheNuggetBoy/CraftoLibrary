@@ -9,9 +9,9 @@ package de.craftolution.craftolibrary.database.query;
 
 import java.util.function.Consumer;
 
-import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.Triple;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.Database;
 import de.craftolution.craftolibrary.database.QueryResult;
 
@@ -26,10 +26,10 @@ import de.craftolution.craftolibrary.database.QueryResult;
  */
 public class TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 
-	private PreparedQuery<Triple<FirstInput, SecondInput, ThirdInput>> preparedQuery;
+	private final PreparedQuery<Triple<FirstInput, SecondInput, ThirdInput>> preparedQuery;
 
 	/** TODO: Documentation */
-	public TriPreparedQuery(Database database, Query query, TriFunction<FirstInput, SecondInput, ThirdInput, Tuple<Object>> converter, Consumer<Exception> exceptionHandler) {
+	public TriPreparedQuery(final Database database, final Query query, final TriFunction<FirstInput, SecondInput, ThirdInput, Tuple<Object>> converter, final Consumer<Exception> exceptionHandler) {
 		this.preparedQuery = new PreparedQuery<Triple<FirstInput, SecondInput, ThirdInput>>(database, query, (input) -> converter.apply(input.getFirst(), input.getSecond(), input.getThird()), exceptionHandler);
 	}
 
@@ -43,7 +43,7 @@ public class TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 	public void close() { this.preparedQuery.close(); }
 
 	/** TODO: Documentation */
-	public QueryResult execute(FirstInput firstInput, SecondInput secondInput, ThirdInput thirdInput) {
+	public QueryResult execute(final FirstInput firstInput, final SecondInput secondInput, final ThirdInput thirdInput) {
 		return this.preparedQuery.execute(Triple.of(firstInput, secondInput, thirdInput));
 	}
 

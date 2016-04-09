@@ -209,7 +209,7 @@ public class StringUtils {
 		final boolean useBetween = between != null && !between.isEmpty();
 		final Iterator<String> iterator = iterable.iterator();
 		while (iterator.hasNext()) {
-			String s = iterator.next();
+			final String s = iterator.next();
 			if (useBetween) { b.append(s).append(between); }
 			else { b.append(s); }
 		}
@@ -228,7 +228,7 @@ public class StringUtils {
 		final boolean useBetween = between != null && !between.isEmpty();
 		final Iterator<String> iterator = iterable.iterator();
 		while (iterator.hasNext()) {
-			String s = operator.apply( iterator.next() );
+			final String s = operator.apply( iterator.next() );
 			if (useBetween) { b.append(s).append(between); }
 			else { b.append(s); }
 		}

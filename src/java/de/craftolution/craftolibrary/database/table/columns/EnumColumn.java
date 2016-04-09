@@ -39,7 +39,7 @@ public class EnumColumn extends AbstractColumn<String, EnumColumn> {
 	}
 
 	@Override
-	protected ColumnDefinitionBuilder define(ColumnDefinitionBuilder builder) {
+	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
 		return builder.values(this.values);
 	}
 

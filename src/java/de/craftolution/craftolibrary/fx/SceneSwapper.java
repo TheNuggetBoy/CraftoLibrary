@@ -18,13 +18,13 @@ import javafx.stage.Stage;
 public class SceneSwapper {
 
 	private Scene container;
-	private StackPane pane = new StackPane();
+	private final StackPane pane = new StackPane();
 
 	private RemoteScene currentScene;
-	private List<RemoteScene> sceneList = Lists.newArrayList();
+	private final List<RemoteScene> sceneList = Lists.newArrayList();
 
 	/** TODO: Documentation */
-	public SceneSwapper add(RemoteScene scene) {
+	public SceneSwapper add(final RemoteScene scene) {
 		scene.getContainer().setOpacity(0.0f);
 		scene.getContainer().setDisable(true);
 
@@ -34,23 +34,23 @@ public class SceneSwapper {
 	}
 
 	/** TODO: Documentation */
-	public SceneSwapper addAll(RemoteScene... scenes) {
-		for (RemoteScene scene : scenes) {
+	public SceneSwapper addAll(final RemoteScene... scenes) {
+		for (final RemoteScene scene : scenes) {
 			this.add(scene);
 		}
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public SceneSwapper showTo(Stage stage) {
+	public SceneSwapper showTo(final Stage stage) {
 		if (this.container == null) { this.container = new Scene(this.pane); }
 		stage.setScene(this.container);
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public SceneSwapper swap(RemoteScene newScene) {
-		for (RemoteScene scene : this.sceneList) {
+	public SceneSwapper swap(final RemoteScene newScene) {
+		for (final RemoteScene scene : this.sceneList) {
 			if (scene.equals(newScene)) {
 				scene.getContainer().setOpacity(1);
 				scene.getContainer().setDisable(false);

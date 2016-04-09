@@ -17,7 +17,7 @@ public class CharColumn extends AbstractColumn<Character, CharColumn> implements
 	protected CharColumn instance() { return this; }
 
 	@Override
-	public CharColumn length(int length) { this.length = length; return this; }
+	public CharColumn length(final int length) { this.length = length; return this; }
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {

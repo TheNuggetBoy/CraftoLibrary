@@ -47,10 +47,10 @@ public class Row {
 		}
 	}
 
-	@Nullable 
+	@Nullable
 	private Object pull(final String columnLabel) throws NoSuchElementException {
-		if (!this.columns.contains(Check.notNullNotEmpty(columnLabel, "The columnLabel cannot be null or empty!"))) { 
-			throw new NoSuchElementException("The column '" + columnLabel + "' doesnt exist at row index '" + this.rowIndex + "'. [Query: " + this.result.getQuery().toString() + "]"); 
+		if (!this.columns.contains(Check.notNullNotEmpty(columnLabel, "The columnLabel cannot be null or empty!"))) {
+			throw new NoSuchElementException("The column '" + columnLabel + "' doesnt exist at row index '" + this.rowIndex + "'. [Query: " + this.result.getQuery().toString() + "]");
 		}
 		final Object value = this.values.get(columnLabel);
 		return value.equals(Void.TYPE) ? null : value;
@@ -153,7 +153,7 @@ public class Row {
 	}
 
 	/** TODO: Documentation */
-	public Instant getInstant(String columnLabel) throws IllegalArgumentException, NoSuchElementException {
+	public Instant getInstant(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
 		final Object value = this.pull(columnLabel);
 		if (value == null) { return null; }
 		if (value instanceof Timestamp) { return TimeUtils.toInstant((Timestamp) value); }

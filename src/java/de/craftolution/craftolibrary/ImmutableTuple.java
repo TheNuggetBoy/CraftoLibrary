@@ -154,8 +154,8 @@ public class ImmutableTuple<T> implements Iterable<T>, Serializable {
 	/** @return Returns a <b>copy</b> of the. */
 	@SuppressWarnings("unchecked")
 	public T[] toArray() {
-		Object[] newArray = new Object[this.tokens.length];
-		System.arraycopy(this.tokens, 0, newArray, 0, tokens.length);
+		final Object[] newArray = new Object[this.tokens.length];
+		System.arraycopy(this.tokens, 0, newArray, 0, this.tokens.length);
 		return (T[]) newArray;
 	}
 

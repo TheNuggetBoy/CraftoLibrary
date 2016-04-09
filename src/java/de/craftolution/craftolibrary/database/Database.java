@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
 
 import de.craftolution.craftolibrary.Result;
 import de.craftolution.craftolibrary.Scheduled;
-import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.TriFunction;
+import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.query.BiPreparedQuery;
 import de.craftolution.craftolibrary.database.query.PreparedQuery;
 import de.craftolution.craftolibrary.database.query.Query;
@@ -38,7 +38,7 @@ public interface Database {
 	/**
 	 * Returns the {@link Connection} instance used by this {@link Database} for executing
 	 * sql statements.
-	 * 
+	 *
 	 * Note that the {@link Connection} instance may or may not be present depending on whether
 	 * or not the instance was ever connected to a external database yet.
 	 *
@@ -170,7 +170,7 @@ public interface Database {
 	 * Tries to execute the specified query <b>on a seperate thread</b>. If the query contains a 'SELECT' keyword a {@link ResultSet} can be expected in the
 	 * returned {@link QueryResult}. If not the {@link QueryResult} can still contain some useful information like {@link QueryResult#getAffectedRows()}
 	 * or stuff for exception handling.
-	 * 
+	 *
 	 * @param query - The query to execute
 	 * @return Returns a {@link Scheduled} instance wrapping the incoming {@link QueryResult}. To handle the result, the {@link Scheduled#addListener(Consumer)} has to be
 	 * called.
@@ -235,10 +235,10 @@ public interface Database {
 		public Builder onQuery(final Consumer<Query> queryHandler) { this.queryHandler = queryHandler; return this; }
 
 		/** TODO: Documentation */
-		public Builder onLogMessage(Consumer<String> logHandler) { this.logHandler = logHandler; return this; }
+		public Builder onLogMessage(final Consumer<String> logHandler) { this.logHandler = logHandler; return this; }
 
 		/** TODO: Documentation */
-		public Builder recordStatistics(boolean recordStatistics) { this.recordStatistics = recordStatistics; return this; }
+		public Builder recordStatistics(final boolean recordStatistics) { this.recordStatistics = recordStatistics; return this; }
 
 		/** TODO: Documentation */
 		@Override

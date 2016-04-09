@@ -25,10 +25,10 @@ import de.craftolution.craftolibrary.database.QueryResult;
  */
 public class BiPreparedQuery<FirstInput, SecondInput> {
 
-	private PreparedQuery<Pair<FirstInput, SecondInput>> preparedQuery;
+	private final PreparedQuery<Pair<FirstInput, SecondInput>> preparedQuery;
 
 	/** TODO: Documentation */
-	public BiPreparedQuery(Database database, Query query, BiFunction<FirstInput, SecondInput, Tuple<Object>> converter, Consumer<Exception> exceptionHandler) {
+	public BiPreparedQuery(final Database database, final Query query, final BiFunction<FirstInput, SecondInput, Tuple<Object>> converter, final Consumer<Exception> exceptionHandler) {
 		this.preparedQuery = new PreparedQuery<Pair<FirstInput, SecondInput>>(database, query, (input) -> converter.apply(input.getFirst(), input.getSecond()), exceptionHandler);
 	}
 
@@ -42,7 +42,7 @@ public class BiPreparedQuery<FirstInput, SecondInput> {
 	public void close() { this.preparedQuery.close(); }
 
 	/** TODO: Documentation */
-	public QueryResult execute(FirstInput firstInput, SecondInput secondInput) {
+	public QueryResult execute(final FirstInput firstInput, final SecondInput secondInput) {
 		return this.preparedQuery.execute(Pair.of(firstInput, secondInput));
 	}
 

@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
  *
  * To access an element or to modify one the {@link #at(int)} & {@link #at(int, Object)} methods are used.
  * This class offers some conversion support from collection/array/list/set etc. to tuple and vice versa.
- * 
+ *
  *
  * @author Fear837
  * @since 08.02.2016
@@ -46,7 +46,7 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	/** @return Creates an immutable tuple with the same elements as this one. */
 	@SuppressWarnings("unchecked")
 	public ImmutableTuple<T> toImmutable() {
-		Object[] newArray = new Object[this.tokens.length];
+		final Object[] newArray = new Object[this.tokens.length];
 		System.arraycopy(this.tokens, 0, newArray, 0, this.tokens.length);
 		return new ImmutableTuple<T>((T[]) newArray);
 	}
@@ -115,16 +115,16 @@ public class Tuple<T> extends ImmutableTuple<T> {
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> of(int length, T defaultElement) {
-		Object[] array = new Object[length];
+	public static <T> Tuple<T> of(final int length, final T defaultElement) {
+		final Object[] array = new Object[length];
 		for (int i = 0; i < length; i++) { array[i] = defaultElement; }
 		return new Tuple<T>((T[]) array);
 	}
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> of(int length, Function<Integer, T> elementProvider) {
-		Object[] array = new Object[length];
+	public static <T> Tuple<T> of(final int length, final Function<Integer, T> elementProvider) {
+		final Object[] array = new Object[length];
 		for (int i = 0; i < length; i++) { array[i] = elementProvider.apply(i); }
 		return new Tuple<T>((T[]) array);
 	}
@@ -137,8 +137,8 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	 * @return Returns a new {@link Tuple} containing all the elements from the first and second tuple.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> concatenate(Tuple<T> tuple, Tuple<T> otherTuple) {
-		Object[] newArray = new Object[tuple.length() + otherTuple.length()];
+	public static <T> Tuple<T> concatenate(final Tuple<T> tuple, final Tuple<T> otherTuple) {
+		final Object[] newArray = new Object[tuple.length() + otherTuple.length()];
 		System.arraycopy(tuple.tokens, 0, newArray, 0, tuple.length());
 		System.arraycopy(otherTuple.tokens, 0, newArray, tuple.length(), otherTuple.length());
 		return new Tuple<T>((T[]) newArray);
@@ -147,14 +147,14 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	/**
 	 * Creates a tuple containg the given {@code array} and also containing all the
 	 * elements specified in {@code appendedTokens}. This allows for arrays to be concatenated.
-	 * 
+	 *
 	 * @param array
 	 * @param appendedTokens
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> concatenate(Tuple<T> tuple, T... appendedTokens) {
-		Object[] newArray = new Object[tuple.length() + appendedTokens.length];
+	public static <T> Tuple<T> concatenate(final Tuple<T> tuple, final T... appendedTokens) {
+		final Object[] newArray = new Object[tuple.length() + appendedTokens.length];
 		System.arraycopy(tuple.tokens, 0, newArray, 0, tuple.length());
 		System.arraycopy(appendedTokens, 0, newArray, tuple.length(), appendedTokens.length);
 		return new Tuple<T>((T[]) newArray);
@@ -163,14 +163,14 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	/**
 	 * Creates a tuple containg the given {@code array} and also containing all the
 	 * elements specified in {@code appendedTokens}. This allows for arrays to be concatenated.
-	 * 
+	 *
 	 * @param array
 	 * @param appendedTokens
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> concatenate(T[] array, T... appendedTokens) {
-		Object[] newArray = new Object[array.length + appendedTokens.length];
+	public static <T> Tuple<T> concatenate(final T[] array, final T... appendedTokens) {
+		final Object[] newArray = new Object[array.length + appendedTokens.length];
 		System.arraycopy(array, 0, newArray, 0, array.length);
 		System.arraycopy(appendedTokens, 0, newArray, array.length, appendedTokens.length);
 		return new Tuple<T>((T[]) newArray);
@@ -192,7 +192,7 @@ public class Tuple<T> extends ImmutableTuple<T> {
 	/** @return Basically returns a copy of the specified array containing all the elements that {@code original} has. */
 	@SuppressWarnings("unchecked")
 	public static <T> Tuple<T> of(final Tuple<T> original) {
-		Object[] tokens = new Object[original.tokens.length];
+		final Object[] tokens = new Object[original.tokens.length];
 		System.arraycopy(original.tokens, 0, tokens, 0, original.tokens.length);
 		return new Tuple<T>((T[]) tokens);
 	}

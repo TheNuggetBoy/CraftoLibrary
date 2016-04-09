@@ -33,7 +33,7 @@ public class StatisticRecorder extends TimerTask {
 	private final Queue<QueryResult> queue = Queues.newConcurrentLinkedQueue();
 	private final Timer timer;
 
-	StatisticRecorder(Database database, boolean enabled, Consumer<String> logger, Consumer<Exception> exceptionHandler) {
+	StatisticRecorder(final Database database, final boolean enabled, final Consumer<String> logger, final Consumer<Exception> exceptionHandler) {
 		this.database = database;
 		this.recording = new AtomicBoolean(enabled);
 		this.logger = logger;
@@ -41,8 +41,8 @@ public class StatisticRecorder extends TimerTask {
 
 		if (enabled) {
 			this.timer = new Timer("DatabaseStatisticRecorder", true);
-			
-			Table table = Table.builder(TABLE_NAME)
+
+			final Table table = Table.builder(StatisticRecorder.TABLE_NAME)
 					.addString("query", null)
 					.addInt("duration", c -> c.length(6))
 					.addBoolean("success", null)
@@ -50,12 +50,12 @@ public class StatisticRecorder extends TimerTask {
 					.addCreatedAt()
 					.build();
 
-			Result<Statement> result = this.database.createTable(table);
+			final Result<Statement> result = this.database.createTable(table);
 			if (!result.getException().isPresent()) {
-				this.logger.accept("Disabling the StatisticRecorder because failed to create the database table " + TABLE_NAME + ".");
+				this.logger.accept("Disabling the StatisticRecorder because failed to create the database table " + StatisticRecorder.TABLE_NAME + ".");
 				this.recording.set(false);
 			}
-	
+
 		}
 		else { this.timer = null; }
 	}
@@ -67,7 +67,7 @@ public class StatisticRecorder extends TimerTask {
 			this.recording.set(true);
 		}
 	}
-	
+
 	void stop() {
 		synchronized (this.recording) {
 			if (!this.recording.get()) { return; }
@@ -76,10 +76,10 @@ public class StatisticRecorder extends TimerTask {
 		}
 	}
 
-	void insertQuery(QueryResult result) {
+	void insertQuery(final QueryResult result) {
 		synchronized (this.recording) {
-			if (!recording.get() || this.queue.size() > 102400) { return; }
-			if (result.getQuery().toString().contains(TABLE_NAME)) { return; }
+			if (!this.recording.get() || this.queue.size() > 102400) { return; }
+			if (result.getQuery().toString().contains(StatisticRecorder.TABLE_NAME)) { return; }
 
 			this.queue.add(result);
 		}
@@ -89,7 +89,7 @@ public class StatisticRecorder extends TimerTask {
 	public void run() {
 		if (!this.recording.get() || this.queue.isEmpty()) { return; }
 
-		final StringBuilder builder = new StringBuilder("INSERT INTO `").append(TABLE_NAME).append("` (`query`, `duration`, `success`, `affected_rows`, `created_at`) VALUES ('");
+		final StringBuilder builder = new StringBuilder("INSERT INTO `").append(StatisticRecorder.TABLE_NAME).append("` (`query`, `duration`, `success`, `affected_rows`, `created_at`) VALUES ('");
 		final Stopwatch stopWatch = Stopwatch.start();
 
 		for (QueryResult result = this.queue.poll(); !this.queue.isEmpty() && !stopWatch.hasPassed(Duration.ofSeconds(2)); result = this.queue.poll()) {
@@ -99,7 +99,7 @@ public class StatisticRecorder extends TimerTask {
 			.append(result.getAffectedRows()).append(", '")
 			.append(System.currentTimeMillis()).append("'), ('");
 		}
-		
+
 		builder.delete(builder.length() - 4, builder.length()).append(';');
 
 		final Scheduled<QueryResult> result = this.database.executeAsync(Query.of(builder.toString()));

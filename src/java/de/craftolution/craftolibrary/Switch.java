@@ -12,25 +12,25 @@ public class Switch {
 	private boolean foundCase = false;
 	private boolean suspended = false;
 
-	Switch(Object instance) { this.instance = instance; }
-	
-	public static Switch of(Object instance) {
+	Switch(final Object instance) { this.instance = instance; }
+
+	public static Switch of(final Object instance) {
 		return new Switch(instance);
 	}
 
-	public Switch onCase(Object... instances) {
-		if (suspended) { return this; }
+	public Switch onCase(final Object... instances) {
+		if (this.suspended) { return this; }
 
-		for (Object obj : instances) {
+		for (final Object obj : instances) {
 			if (this.instance.equals(obj)) {
-				foundCase = true;
+				this.foundCase = true;
 			}
 		}
 		return this;
 	}
 
-	public Switch then(Runnable runnable) {
-		if (foundCase) { runnable.run(); }
+	public Switch then(final Runnable runnable) {
+		if (this.foundCase) { runnable.run(); }
 		return this;
 	}
 
@@ -39,8 +39,8 @@ public class Switch {
 		if (this.foundCase) { this.suspended = true; }
 		return this;
 	}
-	
-	public Switch onDefault(Runnable handler) {
+
+	public Switch onDefault(final Runnable handler) {
 		if (this.suspended) { return this; }
 
 		handler.run();

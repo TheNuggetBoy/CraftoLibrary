@@ -70,9 +70,9 @@ public enum DataType {
 	TINYTEXT (null),
 
 	BLOB (null),
-	
+
 	CHAR (CharColumn.class),
-	
+
 	VARCHAR (VarCharColumn.class),
 
 	TEXT (TextColumn.class),

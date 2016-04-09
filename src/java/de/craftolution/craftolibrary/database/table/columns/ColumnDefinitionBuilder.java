@@ -51,12 +51,12 @@ public class ColumnDefinitionBuilder {
 		return this;
 	}
 
-	ColumnDefinitionBuilder values(String[] values) {
+	ColumnDefinitionBuilder values(final String[] values) {
 		this.enumValues = values;
 		return this;
 	}
 
-	ColumnDefinitionBuilder onUpdate(String onUpdate) {
+	ColumnDefinitionBuilder onUpdate(final String onUpdate) {
 		this.onUpdate = onUpdate;
 		return this;
 	}

@@ -30,7 +30,7 @@ public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> impleme
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.unsigned(unsigned).length(this.firstLength, this.secondLength);
+		return builder.unsigned(this.unsigned).length(this.firstLength, this.secondLength);
 	}
 
 }

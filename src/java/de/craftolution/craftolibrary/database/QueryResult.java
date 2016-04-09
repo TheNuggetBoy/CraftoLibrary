@@ -27,10 +27,10 @@ import de.craftolution.craftolibrary.database.query.Query;
 /**
  * A {@code QueryResult} pretty much serves as a container of
  * information about what happened during and after the exeuction of a certain {@link Query}.
- * 
+ *
  * It contains the actual {@link Query}, the amount of rows affected, the statement used, how long it took
  * to execute the query and, if the query is a select query, a ResultSet.
- * 
+ *
  * Additionally the {@link QueryResult} provides {@link #getRows()} as an alternative to {@link #getResultSet()}
  * for easier looping (for) and without nasty exceptions that you would have to try/catch.
  *
@@ -65,7 +65,7 @@ public class QueryResult {
 	 * @param exceptionReporter - An exception reporter
 	 * @param executionDuration - The execution duration
 	 */
-	public QueryResult(final Database database, Query query, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter, Duration executionDuration) {
+	public QueryResult(final Database database, final Query query, final int affectedRows, final Statement statement, final ResultSet result, final Exception exception, final Consumer<Exception> exceptionReporter, final Duration executionDuration) {
 		Check.notNull(database, "The database cannot be null!");
 		this.query = query;
 		this.statement = statement;
@@ -143,13 +143,13 @@ public class QueryResult {
 	public boolean wasSuccess() { return this.getAffectedRows() > 0 && !this.getException().isPresent(); }
 
 	/** TODO: Documentation */
-	public boolean ifSuccess(Runnable runnable) { if (this.wasSuccess()) { Check.notNull(runnable, "The runnable cannot be null!").run(); } return this.wasSuccess(); }
+	public boolean ifSuccess(final Runnable runnable) { if (this.wasSuccess()) { Check.notNull(runnable, "The runnable cannot be null!").run(); } return this.wasSuccess(); }
 
 	/** TODO: Documentation */
-	public boolean ifSuccess(Consumer<QueryResult> consumer) { if (this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this.wasSuccess(); }
+	public boolean ifSuccess(final Consumer<QueryResult> consumer) { if (this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this.wasSuccess(); }
 
 	/** TODO: Documentation */
-	public boolean handle(Consumer<Optional<Exception>> errorHandler, Consumer<QueryResult> successHandler) {
+	public boolean handle(final Consumer<Optional<Exception>> errorHandler, final Consumer<QueryResult> successHandler) {
 		if (this.wasSuccess()) { successHandler.accept(this); }
 		else { errorHandler.accept(this.getException()); }
 		return this.wasSuccess();
