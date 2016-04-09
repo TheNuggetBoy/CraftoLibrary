@@ -44,10 +44,25 @@ public class InsertQuery implements Query {
 	}
 
 	/** TODO: Documentation */
-	public InsertQuery insert(final String column, final String value) {
+	public InsertQuery insert(final String column, final Object value) {
 		Check.notNullNotEmpty(column, "The column cannot be null or empty!");
-		Check.notNullNotEmpty(value, "The value cannot be null or empty!");
-		this.pairedInserts.add(new String[] { column, value });
+		Check.notNull(value, "The value cannot be null or empty!");
+		this.pairedInserts.add(new String[] { column, String.valueOf(value) });
+		return this;
+	}
+
+	/** TODO: Documentation */
+	public InsertQuery insertVar(final String column) {
+		Check.notNullNotEmpty(column, "The column cannot be null!");
+		this.pairedInserts.add(new String[] { column, "?" });
+		return this;
+	}
+
+	/** TODO: Documentation */
+	public InsertQuery insertVars(final String... columns) {
+		for (final String column : Check.notNull(columns, "The columns cannot be null!")) {
+			this.insertVar(column);
+		}
 		return this;
 	}
 
@@ -77,7 +92,7 @@ public class InsertQuery implements Query {
 		for (final String[] pairedInsert : this.pairedInserts) {
 			columns.append('`').append(pairedInsert[0]).append("`, ");
 
-			if (Check.isDouble(pairedInsert[1])) { values.append(pairedInsert[1]).append(", "); }
+			if (Check.isDouble(pairedInsert[1]) || pairedInsert[1].equals("?")) { values.append(pairedInsert[1]).append(", "); }
 			else { values.append("'").append( Query.escape(pairedInsert[1]) ).append("', "); }
 		}
 
@@ -86,7 +101,7 @@ public class InsertQuery implements Query {
 		}
 
 		for (final String value : this.values) {
-			if (Check.isDouble(value)) { values.append(value).append(", "); }
+			if (Check.isDouble(value) || value.equals("?")) { values.append(value).append(", "); }
 			else { values.append("'").append( Query.escape(value) ).append("', "); }
 		}
 
@@ -110,7 +125,7 @@ public class InsertQuery implements Query {
 
 	@Override
 	public InsertQuery clone() {
-		InsertQuery query = new InsertQuery(this.table);
+		final InsertQuery query = new InsertQuery(this.table);
 		query.columns.addAll(this.columns);
 		query.values.addAll(this.values);
 		query.pairedInserts.addAll(this.pairedInserts);

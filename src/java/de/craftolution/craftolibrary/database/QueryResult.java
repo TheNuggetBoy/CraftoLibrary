@@ -142,4 +142,17 @@ public class QueryResult {
 	/** @return Returns whether or not the amount of affected rows is greater than 0 and if no exception is present. */
 	public boolean wasSuccess() { return this.getAffectedRows() > 0 && !this.getException().isPresent(); }
 
+	/** TODO: Documentation */
+	public boolean ifSuccess(Runnable runnable) { if (this.wasSuccess()) { Check.notNull(runnable, "The runnable cannot be null!").run(); } return this.wasSuccess(); }
+
+	/** TODO: Documentation */
+	public boolean ifSuccess(Consumer<QueryResult> consumer) { if (this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this.wasSuccess(); }
+
+	/** TODO: Documentation */
+	public boolean handle(Consumer<Optional<Exception>> errorHandler, Consumer<QueryResult> successHandler) {
+		if (this.wasSuccess()) { successHandler.accept(this); }
+		else { errorHandler.accept(this.getException()); }
+		return this.wasSuccess();
+	}
+
 }

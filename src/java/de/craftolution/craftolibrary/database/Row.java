@@ -7,16 +7,21 @@
  */
 package de.craftolution.craftolibrary.database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import de.craftolution.craftolibrary.Check;
+import de.craftolution.craftolibrary.TimeUtils;
 
 /**
  * Represents a single row in a {@link ResultSet}.
@@ -29,24 +34,30 @@ public class Row {
 	private final QueryResult result;
 	private final int rowIndex;
 	private final Map<String, Object> values = Maps.newHashMap();
+	private final Set<String> columns = Sets.newHashSet();
 
 	Row(final QueryResult result, final int rowIndex) throws SQLException {
 		this.result = result;
 		this.rowIndex = rowIndex;
 
 		for (final String column : result.getColumns()) {
-			this.values.put(column.toLowerCase(), result.getResultSet().get().getObject(column));
+			final Object obj = result.getResultSet().get().getObject(column);
+			if (obj == null) { this.values.put(column.toLowerCase(), Void.TYPE); }
+			else { this.values.put(column.toLowerCase(), obj); }
 		}
 	}
 
+	@Nullable 
 	private Object pull(final String columnLabel) throws NoSuchElementException {
-		final Object value = this.values.get(Check.notNullNotEmpty(columnLabel, "The columnLabel cannot be null!"));
-		if (value == null) { throw new NoSuchElementException("The column '" + columnLabel + "' doesnt exist at row index '" + this.rowIndex + "'. (Query: " + this.result.getQuery().toString() + ")"); }
-		return value;
+		if (!this.columns.contains(Check.notNullNotEmpty(columnLabel, "The columnLabel cannot be null or empty!"))) { 
+			throw new NoSuchElementException("The column '" + columnLabel + "' doesnt exist at row index '" + this.rowIndex + "'. [Query: " + this.result.getQuery().toString() + "]"); 
+		}
+		final Object value = this.values.get(columnLabel);
+		return value.equals(Void.TYPE) ? null : value;
 	}
 
 	/** @return Returns the index of this row in the overall {@link ResultSet}. */
-	public int getIndex() { return this.rowIndex; }
+	public int index() { return this.rowIndex; }
 
 	// --- Primitive getters ---
 
@@ -59,7 +70,7 @@ public class Row {
 	 */
 	@Nullable public String getString(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
 		final Object value = this.pull(columnLabel);
-		return value.toString();
+		return value != null ? value.toString() : null;
 	}
 
 	/**
@@ -72,6 +83,7 @@ public class Row {
 	 */
 	@Nullable public Integer getInt(final String columnLabel) throws IllegalArgumentException, NoSuchElementException, NumberFormatException {
 		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
 		if (value instanceof Integer) { return (Integer) value; }
 		else { return Integer.parseInt(value.toString()); }
 	}
@@ -86,6 +98,7 @@ public class Row {
 	 */
 	@Nullable public Double getDouble(final String columnLabel) throws IllegalArgumentException, NoSuchElementException, NumberFormatException {
 		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
 		if (value instanceof Double) { return (Double) value; }
 		else { return Double.parseDouble(value.toString()); }
 	}
@@ -100,6 +113,7 @@ public class Row {
 	 */
 	@Nullable public Float getFloat(final String columnLabel) throws IllegalArgumentException, NoSuchElementException, NumberFormatException {
 		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
 		if (value instanceof Float) { return (Float) value; }
 		else { return Float.parseFloat(value.toString()); }
 	}
@@ -114,6 +128,7 @@ public class Row {
 	 */
 	@Nullable public Boolean getBoolean(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
 		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
 		if (value instanceof Boolean) { return (Boolean) value; }
 		else {
 			final String valueAsString = value.toString().toLowerCase();
@@ -132,8 +147,17 @@ public class Row {
 	 */
 	@Nullable public Timestamp getTimestamp(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
 		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
 		if (value instanceof Timestamp) { return (Timestamp) value; }
 		else { return Timestamp.valueOf(value.toString()); }
+	}
+
+	/** TODO: Documentation */
+	public Instant getInstant(String columnLabel) throws IllegalArgumentException, NoSuchElementException {
+		final Object value = this.pull(columnLabel);
+		if (value == null) { return null; }
+		if (value instanceof Timestamp) { return TimeUtils.toInstant((Timestamp) value); }
+		else { return TimeUtils.toInstant(Timestamp.valueOf(value.toString())); }
 	}
 
 }

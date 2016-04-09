@@ -156,31 +156,61 @@ public class Table {
 		public Builder add(final Column column) { this.columns.add(column); return this; }
 
 		/** TODO: Documentation */
+		public Builder addBoolean(final String columnName) { return this.accept(new BooleanColumn().name(columnName), null); }
+
+		/** TODO: Documentation */
 		public Builder addBoolean(final String columnName, @Nullable final Consumer<BooleanColumn> modifier) { return this.accept(new BooleanColumn().name(columnName), modifier); }
+
+		/** TODO: Documentation */
+		public Builder addDecimal(final String columnName) { return this.accept(new DecimalColumn().name(columnName), null); }
 
 		/** TODO: Documentation */
 		public Builder addDecimal(final String columnName, final Consumer<DecimalColumn> modifier) { return this.accept(new DecimalColumn().name(columnName), modifier); }
 
 		/** TODO: Documentation */
+		public Builder addDouble(final String columnName) { return this.accept(new DoubleColumn().name(columnName), null); }
+
+		/** TODO: Documentation */
 		public Builder addDouble(final String columnName, final Consumer<DoubleColumn> modifier) { return this.accept(new DoubleColumn().name(columnName), modifier); }
+
+		/** TODO: Documentation */
+		public Builder addFloat(final String columnName) { return this.accept(new FloatColumn().name(columnName), null); }
 
 		/** TODO: Documentation */
 		public Builder addFloat(final String columnName, final Consumer<FloatColumn> modifier) { return this.accept(new FloatColumn().name(columnName), modifier); }
 
 		/** TODO: Documentation */
+		public Builder addEnum(final String columnName) { return this.accept(new EnumColumn().name(columnName), null); }
+
+		/** TODO: Documentation */
 		public Builder addEnum(final String columnName, final Consumer<EnumColumn> modifier) { return this.accept(new EnumColumn().name(columnName), modifier); }
+
+		/** TODO: Documentation */
+		public Builder addInt(final String columnName) { return this.accept(new IntColumn().name(columnName), null); }
 
 		/** TODO: Documentation */
 		public Builder addInt(final String columnName, final Consumer<IntColumn> modifier) { return this.accept(new IntColumn().name(columnName), modifier); }
 
 		/** TODO: Documentation */
+		public Builder addString(final String columnName) { return this.accept(new VarCharColumn().name(columnName), null); }
+
+		/** TODO: Documentation */
 		public Builder addString(final String columnName, final Consumer<VarCharColumn> modifier) { return this.accept(new VarCharColumn().name(columnName), modifier); }
+
+		/** TODO: Documentation */
+		public Builder addChar(final String columnName) { return this.accept(new CharColumn().name(columnName), null); }
 
 		/** TODO: Documentation */
 		public Builder addChar(final String columnName, final Consumer<CharColumn> modifier) { return this.accept(new CharColumn().name(columnName), modifier); }
 
 		/** TODO: Documentation */
+		public Builder addText(final String columnName) { return this.accept(new TextColumn().name(columnName), null); }
+
+		/** TODO: Documentation */
 		public Builder addText(final String columnName, final Consumer<TextColumn> modifier) { return this.accept(new TextColumn().name(columnName), modifier); }
+
+		/** TODO: Documentation */
+		public Builder addTimestamp(final String columnName) { return this.accept(new TimestampColumn().name(columnName), null); }
 
 		/** TODO: Documentation */
 		public Builder addTimestamp(final String columnName, final Consumer<TimestampColumn> modifier) { return this.accept(new TimestampColumn().name(columnName), modifier); }

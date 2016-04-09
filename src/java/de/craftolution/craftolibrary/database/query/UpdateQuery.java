@@ -28,6 +28,21 @@ public class UpdateQuery implements Query {
 	UpdateQuery(final String table) { this.table = Check.notNullNotEmpty(table, "The tableName cannot be null!"); }
 
 	/** TODO: Documentation */
+	public UpdateQuery column(final String column, final Object value) {
+		Check.nonNulls("The column/value cannot be null!", column, value);
+		Check.notEmpty("The column cannot be empty!", column);
+		Check.notEmpty("The value cannot be empty!", value.toString());
+
+		final StringBuilder b = new StringBuilder().append('`').append(column).append("` = ");
+
+		if (value.toString().equals("CURRENT_TIMESTAMP") || Check.isDouble(value)) { b.append(value); }
+		else { b.append('\'').append(value).append('\''); }
+
+		this.columns.add(b.toString());
+		return this;
+	}
+
+	/** TODO: Documentation */
 	public UpdateQuery columns(final String... columns) {
 		Check.notNullNotEmpty(columns, "The columns cannot be null or empty!");
 		for (final String column : columns) {
@@ -39,7 +54,7 @@ public class UpdateQuery implements Query {
 	/** TODO: Documentation */
 	public UpdateQuery where(final String... whereClauses) {
 		Check.notNullNotEmpty(whereClauses, "The were clauses cannot be null or empty!");
-		final List<String> whereChain = Lists.newArrayList();
+		final List<String> whereChain = Lists.newArrayListWithCapacity(whereClauses.length);
 		for (final String whereClause : whereClauses) {
 			whereChain.add(Check.notNullNotEmpty(whereClause, "The whereClause cannot be null or empty!"));
 		}
@@ -75,15 +90,15 @@ public class UpdateQuery implements Query {
 
 	@Override
 	public UpdateQuery clone() {
-		UpdateQuery query = new UpdateQuery(this.table);
+		final UpdateQuery query = new UpdateQuery(this.table);
 		query.columns.addAll(this.columns);
-		
-		for (List<String> whereChain : this.whereChains) {
-			List<String> newWhereChain = Lists.newArrayList();
+
+		for (final List<String> whereChain : this.whereChains) {
+			final List<String> newWhereChain = Lists.newArrayList();
 			newWhereChain.addAll(whereChain);
 			query.whereChains.add(newWhereChain);
 		}
-		
+
 		return query;
 	}
 
