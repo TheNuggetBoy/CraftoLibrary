@@ -43,6 +43,9 @@ public class Check {
 		return false;
 	}
 
+	/** TODO: Documentation */
+	public static final <T> T getPresent(T firstObj, T secondObj) { return firstObj != null ? firstObj : secondObj; }
+
 	/**
 	 * Checks whether or not the given object is {@code null}.
 	 * @param o - The object to check.
