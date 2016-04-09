@@ -8,7 +8,9 @@
 package de.craftolution.craftolibrary;
 
 import java.security.SecureRandom;
+import java.util.Formatter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
@@ -194,6 +196,109 @@ public class StringUtils {
 	 */
 	public static boolean isFalseOrNo(final String s){
 		return s.matches("[fF]false|[nN]o|n");
+	}
+
+	/**
+	 * Converts all strings in the given array into one single string.
+	 * @param between - What should be added between the strings. Can be {@code null}.
+	 * @param iterable - The iterable whose strings get converted into one. If the array is {@code null} or empty, an empty string will be returned.
+	 * @return Returns a single string containing all of the strings of the given array.
+	 */
+	public static String join(@Nullable final String between, final Iterable<String> iterable) {
+		final StringBuilder b = new StringBuilder();
+		final boolean useBetween = between != null && !between.isEmpty();
+		final Iterator<String> iterator = iterable.iterator();
+		while (iterator.hasNext()) {
+			String s = iterator.next();
+			if (useBetween) { b.append(s).append(between); }
+			else { b.append(s); }
+		}
+		return useBetween ? b.delete(b.length()-between.length(), b.length()).toString().trim() : b.toString().trim();
+	}
+
+	/**
+	 * Converts all strings in the given array into one single string.
+	 * @param operator - A operator that is able to modify every string in the array right before being appended to the string.
+	 * @param between - What should be added between the strings. Can be {@code null}.
+	 * @param iterable - The iterable whose strings get converted into one. If the array is {@code null} or empty, an empty string will be returned.
+	 * @return Returns a single string containing all of the strings of the given array.
+	 */
+	public static String join(final UnaryOperator<String> operator, @Nullable final String between, final Iterable<String> iterable) {
+		final StringBuilder b = new StringBuilder();
+		final boolean useBetween = between != null && !between.isEmpty();
+		final Iterator<String> iterator = iterable.iterator();
+		while (iterator.hasNext()) {
+			String s = operator.apply( iterator.next() );
+			if (useBetween) { b.append(s).append(between); }
+			else { b.append(s); }
+		}
+		return useBetween ? b.delete(b.length()-between.length(), b.length()).toString().trim() : b.toString().trim();
+	}
+
+	/**
+	 * Converts all strings in the given iterable between the start and stop index into one single string.
+	 *
+	 * <p>
+	 * For example:
+	 * <pre> List<String> myList = Arrays.asList("hello", "how", "are", "you");
+	 * System.out.print( StringUtils.join(" ", 1, 3, myList) ); </pre>
+	 * Will produce the following output: {@code "how are"}
+	 * <p>
+	 *
+	 * @param between - What should be added between the strings. Can be {@code null}.
+	 * @param start - Where to start in the given array. (including the string at the given index)
+	 * @param stop - Where to stop in the given array. (excluding the string at the given index)
+	 * @param iterable - The iterable whose strings get converted into one.
+	 * @return Returns a single string containing all of the strings between the given start and stop position from the array.
+	 */
+	public static String join(@Nullable final String between, final int start, final int stop, final Iterable<String> iterable) {
+		final StringBuilder b = new StringBuilder();
+		final boolean useBetween = between != null && !between.isEmpty();
+		final Iterator<String> iterator = iterable.iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			final String string = iterator.next();
+			if (i >= start && i < stop) {
+				if (useBetween) { b.append(string).append(between); }
+				else { b.append(string); }
+			}
+			i++;
+		}
+		return b.toString().trim();
+	}
+
+	/**
+	 * Converts all strings in the given iterable between the start and stop index into one single string.
+	 *
+	 * <p>
+	 * For example:
+	 * <pre> List{@literal <String>} myList = Arrays.asList("hello", "how", "are", "you");
+	 * System.out.print( StringUtils.join(" ", 1, 3, myList) ); </pre>
+	 * Will produce the following output: {@code "how are"}
+	 * <p>
+	 *
+	 * @param operator - A operator that is able to modify every string in the array right before being appended to the string.
+	 * @param between - What should be added between the strings. Can be {@code null}.
+	 * @param start - Where to start in the given array. (including the string at the given index)
+	 * @param stop - Where to stop in the given array. (excluding the string at the given index)
+	 * @param iterable - The iterable whose strings get converted into one.
+	 * @return Returns a single string containing all of the strings between the given start and stop position from the array.
+	 */
+	public static String join(final UnaryOperator<String> operator, @Nullable final String between, final int start, final int stop, final Iterable<String> iterable) {
+		final StringBuilder b = new StringBuilder();
+		final boolean useBetween = between != null && !between.isEmpty();
+		final Iterator<String> iterator = iterable.iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			String string = iterator.next();
+			if (i >= start && i < stop) {
+				string = operator.apply(string);
+				if (useBetween) { b.append(string).append(between); }
+				else { b.append(string); }
+			}
+			i++;
+		}
+		return b.toString().trim();
 	}
 
 	/**
@@ -475,7 +580,7 @@ public class StringUtils {
 	 * @return Returns {@code true} if the string is a word and {@code false} if not.
 	 */
 	public static final boolean isWord(final String s) {
-		return s != null && s.matches("(?i)[a-zäöüß]+");
+		return s != null && s.matches("(?i)[a-zï¿½ï¿½ï¿½ï¿½]+");
 	}
 
 	/**
@@ -494,7 +599,7 @@ public class StringUtils {
 	 */
 	public static final boolean isWebsite(final String s) {
 		return s != null
-				&& s.matches("(?i)(http(s)?://)?([a-z0-9-_äöüß]+\\.)+(a-z){2,4}((\\?[a-z0-9-_äöüß](=[a-z0-9-_äöüß]*)?)|(/[a-z0-9-_äöüß]*))*");
+				&& s.matches("(?i)(http(s)?://)?([a-z0-9-_ï¿½ï¿½ï¿½ï¿½]+\\.)+(a-z){2,4}((\\?[a-z0-9-_ï¿½ï¿½ï¿½ï¿½](=[a-z0-9-_ï¿½ï¿½ï¿½ï¿½]*)?)|(/[a-z0-9-_ï¿½ï¿½ï¿½ï¿½]*))*");
 	}
 
 	/**
