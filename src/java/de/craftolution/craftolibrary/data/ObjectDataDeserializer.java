@@ -25,7 +25,7 @@ public class ObjectDataDeserializer implements DataDeserializer {
 	public Optional<RegisteredData> getData(final Class<? extends Data> dataClass) { return Optional.ofNullable(this.dataMap.get(dataClass.getName())); }
 
 	@Override
-	public <T extends Data> boolean registerData(final Class<T> dataClass, final Function<DataSection, DeserializedData> deserializer) {
+	public <T extends Data> boolean registerData(final Class<T> dataClass, final Function<DataSection, DeserializationResult> deserializer) {
 		if (!this.getData(dataClass).isPresent()) {
 			final RegisteredData data = new RegisteredData(dataClass, deserializer);
 			this.dataMap.put(dataClass.getName(), data);
@@ -49,15 +49,15 @@ public class ObjectDataDeserializer implements DataDeserializer {
 				final RegisteredData registeredData = this.dataMap.get(className);
 				if (registeredData != null) {
 					try {
-						final DeserializedData deserializedData = registeredData.getDeserializer().apply(section);
-						if (deserializedData.getData().isPresent()) {
-							storage.offer(deserializedData.getData().get());
-							System.out.println("Offering data " + deserializedData.getClass().getName().toString() + " to storage!");
+						final DeserializationResult result = registeredData.getDeserializer().apply(section);
+						if (result.getData().isPresent()) {
+							storage.offer(result.getData().get());
+							System.out.println("Offering data " + result.getClass().getName().toString() + " to storage!");
 						}
 						else {
 							System.err.println("Failed to handle deserialized data!");
-							if (deserializedData.getException().isPresent()) {
-								throw deserializedData.getException().get();
+							if (result.getException().isPresent()) {
+								throw result.getException().get();
 							}
 						}
 					}

@@ -11,9 +11,9 @@ import java.util.function.Function;
 public class RegisteredData {
 
 	private final Class<? extends Data> clazz;
-	private final Function<DataSection, DeserializedData> deserializer;
+	private final Function<DataSection, DeserializationResult> deserializer;
 
-	RegisteredData(final Class<? extends Data> clazz, final Function<DataSection, DeserializedData> deserializer) {
+	RegisteredData(final Class<? extends Data> clazz, final Function<DataSection, DeserializationResult> deserializer) {
 		this.clazz = clazz;
 		this.deserializer = deserializer;
 	}
@@ -22,6 +22,6 @@ public class RegisteredData {
 	public Class<? extends Data> getDataClass() { return this.clazz; }
 
 	/** TODO: Documentation */
-	public Function<DataSection, DeserializedData> getDeserializer() { return this.deserializer; }
+	public Function<DataSection, DeserializationResult> getDeserializer() { return this.deserializer; }
 
 }

@@ -18,7 +18,7 @@ public interface DataDeserializer {
 	Optional<RegisteredData> getData(Class<? extends Data> dataClass);
 
 	/** TODO: Documentation */
-	<T extends Data> boolean registerData(Class<T> dataClass, Function<DataSection, DeserializedData> deserializer);
+	<T extends Data> boolean registerData(Class<T> dataClass, Function<DataSection, DeserializationResult> deserializer);
 
 	/** TODO: Documentation */
 	Result<DataStorage> deserialize(Path source);

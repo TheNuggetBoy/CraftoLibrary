@@ -54,9 +54,9 @@ public class Tests {
 					final Node maxHP = section.getNode("maxhp").orElseThrow(() -> new MissingNodeException(section, "maxhp"));
 					data.maxhp = maxHP.get(Integer.class).orElseThrow(() -> new EmptyNodeException(section, hp));
 
-					return new DeserializedData(data);
+					return new DeserializationResult(data);
 				}
-				catch (final InvalidDataSectionException e) { return new DeserializedData(e); }
+				catch (final InvalidDataSectionException e) { return new DeserializationResult(e); }
 			});
 		}
 

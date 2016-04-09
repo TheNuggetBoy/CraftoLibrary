@@ -10,17 +10,17 @@ import de.craftolution.craftolibrary.data.exceptions.InvalidDataSectionException
  * @author Fear837
  * @since 24.03.2016
  */
-public class DeserializedData {
+public class DeserializationResult {
 
 	private final Data data;
 	private final InvalidDataSectionException exception;
 
-	DeserializedData(final Data data) {
+	DeserializationResult(final Data data) {
 		this.data = data;
 		this.exception = null;
 	}
 
-	DeserializedData(final InvalidDataSectionException exception) {
+	DeserializationResult(final InvalidDataSectionException exception) {
 		this.data = null;
 		this.exception = exception;
 	}
