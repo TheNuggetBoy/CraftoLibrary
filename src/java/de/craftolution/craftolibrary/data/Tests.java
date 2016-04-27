@@ -6,9 +6,8 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 import de.craftolution.craftolibrary.Result;
-import de.craftolution.craftolibrary.data.exceptions.EmptyNodeException;
+import de.craftolution.craftolibrary.data.exceptions.DataException;
 import de.craftolution.craftolibrary.data.exceptions.InvalidDataSectionException;
-import de.craftolution.craftolibrary.data.exceptions.MissingNodeException;
 import de.craftolution.craftolibrary.data.result.DataTransactionResult;
 
 /**
@@ -21,17 +20,16 @@ public class Tests {
 
 	static class TestData implements Data {
 
+		private static final int VERSION = 1;
+
 		int hp;
 		int maxhp;
 
 		@Override
 		public boolean serialize(final DataSection container) {
-			container.withVersion(1)
-			.getOrCreateNode("hp")
-			.setInt(this.hp)
-			.getParent()
-			.getOrCreateChild("maxhp")
-			.setInt(this.maxhp);
+			container.withVersion(VERSION);
+			container.getOrCreateNode("hp").setInt(this.hp);
+			container.getOrCreateNode("maxhp").setInt(this.maxhp);
 
 			return true;
 		}
@@ -42,21 +40,18 @@ public class Tests {
 		public static void register(final DataDeserializer deserializer) {
 			deserializer.registerData(TestData.class, section -> {
 				try {
-					if (section.getVersion() < 1) {
+					if (section.getVersion() < VERSION) {
 						throw new InvalidDataSectionException(section, "The section version " + section.getVersion() + " is outdated.");
 					}
 
 					final TestData data = new TestData();
 
-					final Node hp = section.getNode("hp").orElseThrow(() -> new MissingNodeException(section, "hp"));
-					data.hp = hp.get(Integer.class).orElseThrow(() -> new EmptyNodeException(section, hp));
-
-					final Node maxHP = section.getNode("maxhp").orElseThrow(() -> new MissingNodeException(section, "maxhp"));
-					data.maxhp = maxHP.get(Integer.class).orElseThrow(() -> new EmptyNodeException(section, hp));
+					data.hp = section.getNodeOrThrow("hp").getOrThrow(Integer.class);
+					data.maxhp = section.getNodeOrThrow("maxhp").getOrThrow(Integer.class);
 
 					return new DeserializationResult(data);
 				}
-				catch (final InvalidDataSectionException e) { return new DeserializationResult(e); }
+				catch (final DataException e) { return new DeserializationResult(e); }
 			});
 		}
 

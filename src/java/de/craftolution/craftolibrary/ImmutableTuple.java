@@ -4,14 +4,17 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 /**
@@ -165,6 +168,16 @@ public class ImmutableTuple<T> implements Iterable<T>, Serializable {
 	/** @return Returns a new list containing all of the elements in this array. */
 	public List<T> toList() { return Lists.newArrayList(this.tokens); }
 
+	/** TODO: Documentation */
+	public <K> Map<K, T> toMap(Function<T, K> mapper) {
+		Map<K, T> map = Maps.newHashMap();
+		for (T element : this.tokens) {
+			K key = mapper.apply(element);
+			map.put(key, element);
+		}
+		return map;
+	}
+
 	/**
 	 * Performs the given action for each element of this array until all elements have been processed or the action throws an exception.
 	 *
@@ -184,6 +197,13 @@ public class ImmutableTuple<T> implements Iterable<T>, Serializable {
 	public void forEachNotNull(final Consumer<? super T> action) {
 		for (final T element : this.tokens) {
 			if (element != null) { action.accept(element); }
+		}
+	}
+
+	/** TODO: Documentation */
+	public void forEach(Predicate<? super T> predicate, Consumer<? super T> action) {
+		for (final T element : this.tokens) {
+			if (predicate.test(element)) { action.accept(element); }
 		}
 	}
 
