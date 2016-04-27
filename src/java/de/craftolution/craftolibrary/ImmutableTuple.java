@@ -169,10 +169,10 @@ public class ImmutableTuple<T> implements Iterable<T>, Serializable {
 	public List<T> toList() { return Lists.newArrayList(this.tokens); }
 
 	/** TODO: Documentation */
-	public <K> Map<K, T> toMap(Function<T, K> mapper) {
-		Map<K, T> map = Maps.newHashMap();
-		for (T element : this.tokens) {
-			K key = mapper.apply(element);
+	public <K> Map<K, T> toMap(final Function<T, K> mapper) {
+		final Map<K, T> map = Maps.newHashMap();
+		for (final T element : this.tokens) {
+			final K key = mapper.apply(element);
 			map.put(key, element);
 		}
 		return map;
@@ -201,7 +201,7 @@ public class ImmutableTuple<T> implements Iterable<T>, Serializable {
 	}
 
 	/** TODO: Documentation */
-	public void forEach(Predicate<? super T> predicate, Consumer<? super T> action) {
+	public void forEach(final Predicate<? super T> predicate, final Consumer<? super T> action) {
 		for (final T element : this.tokens) {
 			if (predicate.test(element)) { action.accept(element); }
 		}

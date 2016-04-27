@@ -16,17 +16,17 @@ import de.craftolution.craftolibrary.fx.RenderFrame.Key;
  */
 public class Test2 {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		new Test2();
 	}
 
 	RenderFrame renderFrame;
 	int coord = 100;
-	
+
 	Test2() {
-		JFrame frame = new JFrame("Hallo Welt");
+		final JFrame frame = new JFrame("Hallo Welt");
 		frame.setSize(1600, 800);
-		
+
 		this.renderFrame = new RenderFrame(1600, 800, 3);
 		this.renderFrame.renderTo(frame);
 
@@ -34,10 +34,10 @@ public class Test2 {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+
 		RepeatingRunnable.run(Duration.ofMillis(16), this::update);
 	}
-	
+
 	public void update() {
 		if (this.renderFrame.isKeyPressed(Key.D)) {
 			this.coord++;
@@ -47,10 +47,10 @@ public class Test2 {
 	}
 
 	public void render() {
-		Graphics g = this.renderFrame.getGraphics();
+		final Graphics g = this.renderFrame.getGraphics();
 		g.fillRect(this.coord, 100, 50, 50);
 		g.fillRect(this.coord + 100, 100, 1, 1);
-		
+
 		System.out.println("HI " + Thread.currentThread().getName());
 	}
 

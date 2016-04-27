@@ -57,7 +57,7 @@ public class RenderFrame {
 	public Canvas getCanvas() { return this.canvas; }
 
 	/** TODO: Documentation */
-	public void renderTo(Container container) { container.add(this.canvas); }
+	public void renderTo(final Container container) { container.add(this.canvas); }
 
 	private static class RenderCanvas extends Canvas {
 

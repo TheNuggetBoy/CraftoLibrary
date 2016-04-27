@@ -40,10 +40,10 @@ public class DataSection implements Serializable {
 	public Node getRootNode() { return this.rootNode; }
 
 	/** TODO: Documentation */
-	public Node getNodeOrThrow(String... path) throws MissingNodeException { return this.getNodeOrThrow(DataPath.of(path)); }
+	public Node getNodeOrThrow(final String... path) throws MissingNodeException { return this.getNodeOrThrow(DataPath.of(path)); }
 
 	/** TODO: Documentation */
-	public Node getNodeOrThrow(DataPath path) throws MissingNodeException { return this.getNode(path).orElseThrow(() -> new MissingNodeException(this, path.getId())); }
+	public Node getNodeOrThrow(final DataPath path) throws MissingNodeException { return this.getNode(path).orElseThrow(() -> new MissingNodeException(this, path.getId())); }
 
 	/** TODO: Documentation */
 	public Optional<Node> getNode(final String... path) { return this.getNode(DataPath.of(path)); }

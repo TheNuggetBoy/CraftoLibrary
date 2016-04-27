@@ -27,7 +27,7 @@ public class Tests {
 
 		@Override
 		public boolean serialize(final DataSection container) {
-			container.withVersion(VERSION);
+			container.withVersion(TestData.VERSION);
 			container.getOrCreateNode("hp").setInt(this.hp);
 			container.getOrCreateNode("maxhp").setInt(this.maxhp);
 
@@ -40,7 +40,7 @@ public class Tests {
 		public static void register(final DataDeserializer deserializer) {
 			deserializer.registerData(TestData.class, section -> {
 				try {
-					if (section.getVersion() < VERSION) {
+					if (section.getVersion() < TestData.VERSION) {
 						throw new InvalidDataSectionException(section, "The section version " + section.getVersion() + " is outdated.");
 					}
 

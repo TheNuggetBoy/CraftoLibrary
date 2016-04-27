@@ -11,11 +11,11 @@ import de.craftolution.craftolibrary.data.Node;
 public class UnknownTypeNodeException extends InvalidNodeException {
 
 	private static final long serialVersionUID = -6489299070352575405L;
-	
+
 	private final Class<?> type;
 
 	/** TODO: Documentation */
-	public UnknownTypeNodeException(final Node node, Class<?> type, final String message) {
+	public UnknownTypeNodeException(final Node node, final Class<?> type, final String message) {
 		super(node, message);
 		this.type = type;
 	}

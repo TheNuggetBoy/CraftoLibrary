@@ -159,7 +159,7 @@ public class Tuple<T> extends ImmutableTuple<T> {
 		System.arraycopy(appendedTokens, 0, newArray, tuple.length(), appendedTokens.length);
 		return new Tuple<T>((T[]) newArray);
 	}
-	
+
 	/**
 	 * Creates a tuple containg the given {@code array} and also containing all the
 	 * elements specified in {@code appendedTokens}. This allows for arrays to be concatenated.

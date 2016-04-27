@@ -84,7 +84,7 @@ public class Node implements Serializable {
 	}
 
 	/** TODO: Documentation */
-	public <T> T getOrThrow(Class<? extends T> type) throws EmptyNodeException {
+	public <T> T getOrThrow(final Class<? extends T> type) throws EmptyNodeException {
 		if (this.get().isPresent()) { throw new EmptyNodeException(this); }
 		return this.get(type).get();
 	}

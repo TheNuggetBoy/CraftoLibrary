@@ -11,7 +11,7 @@ import de.craftolution.craftolibrary.Check;
 /**
  * A simpler version of the {@link TCPConnection} by using a scanner
  * for reading packets from the connected socket.
- * 
+ *
  * Although the term 'scanner' refers to only reading from a source, this class
  * uses it for easier understanding.
  *
