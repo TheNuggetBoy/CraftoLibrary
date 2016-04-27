@@ -29,9 +29,10 @@ public class TCPScanner {
 
 	public TCPScanner(final Socket socket) {
 		Check.notNull(socket, "The socket cannot be null!");
+		this.address = socket.getInetAddress();
+		this.port = socket.getPort();
+		
 		try {
-			this.address = socket.getInetAddress();
-			this.port = socket.getPort();
 			this.socket = socket;
 			this.socket.setKeepAlive(true);
 			this.scanner = new Scanner(this.socket.getInputStream());
