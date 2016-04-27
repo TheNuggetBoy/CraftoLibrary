@@ -65,7 +65,7 @@ public class Pair<F, S> implements Comparable<Pair<?, ?>>{
 	 * @param function - The function that transforms the pair.
 	 * @return Returns the result of the function.
 	 */
-	public Optional<Pair<F, S>> transform(final BiFunction<F, S, Pair<F, S>> function) {
+	public <NF, NS> Optional<Pair<NF, NS>> transform(final BiFunction<F, S, Pair<NF, NS>> function) {
 		// This method is unique to Pair as there is no TriFunction for triples.
 		if (this.allPresent()) {
 			return Optional.ofNullable(function.apply(this.getFirst(), this.getSecond()));

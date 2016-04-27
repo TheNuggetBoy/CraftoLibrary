@@ -29,7 +29,7 @@ public interface NullableSupplier<T> extends Supplier<T>, com.google.common.base
 	@Override T get() throws NoSuchElementException;
 
 	/** TODO: Documentation */
-	default Optional<T> getAsOptional() {
+	default Optional<T> toOptional() {
 		try { return Optional.ofNullable(this.get()); }
 		catch (final NoSuchElementException e) { return Optional.empty(); }
 	}
