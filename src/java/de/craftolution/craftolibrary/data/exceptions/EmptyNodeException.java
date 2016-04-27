@@ -1,6 +1,5 @@
 package de.craftolution.craftolibrary.data.exceptions;
 
-import de.craftolution.craftolibrary.data.DataSection;
 import de.craftolution.craftolibrary.data.Node;
 
 /**
@@ -9,24 +8,18 @@ import de.craftolution.craftolibrary.data.Node;
  * @author Fear837
  * @since 24.03.2016
  */
-public class EmptyNodeException extends InvalidDataSectionException {
+public class EmptyNodeException extends InvalidNodeException {
 
 	private static final long serialVersionUID = 1518069043053787965L;
 
-	private final Node node;
-
 	/** TODO: Documentation */
-	public EmptyNodeException(final DataSection section, final Node node, final String message) {
-		super(section, message);
-		this.node = node;
+	public EmptyNodeException(final Node node, final String message) {
+		super(node, message);
 	}
 
 	/** TODO: Documentation */
-	public EmptyNodeException(final DataSection section, final Node node) {
-		this(section, node, "The node '" + node.getPath() + "' in the section '" + section.getId() + "' is to be empty!");
+	public EmptyNodeException(final Node node) {
+		this(node, "The node '" + node.getPath() + "' seems to be empty!");
 	}
-
-	/** TODO: Documentation */
-	public Node getNode() { return this.node; }
 
 }

@@ -8,7 +8,7 @@ import de.craftolution.craftolibrary.data.DataSection;
  * @author Fear837
  * @since 24.03.2016
  */
-public class InvalidDataSectionException extends Exception {
+public class InvalidDataSectionException extends DataException {
 
 	private static final long serialVersionUID = -1026737062922429124L;
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.google.common.collect.Lists;
 
 import de.craftolution.craftolibrary.ImmutableTuple;
+import de.craftolution.craftolibrary.data.exceptions.MissingNodeException;
 
 /**
  * TODO: Documentation
@@ -37,6 +38,12 @@ public class DataSection implements Serializable {
 
 	/** TODO: Documentation */
 	public Node getRootNode() { return this.rootNode; }
+
+	/** TODO: Documentation */
+	public Node getNodeOrThrow(String... path) throws MissingNodeException { return this.getNodeOrThrow(DataPath.of(path)); }
+
+	/** TODO: Documentation */
+	public Node getNodeOrThrow(DataPath path) throws MissingNodeException { return this.getNode(path).orElseThrow(() -> new MissingNodeException(this, path.getId())); }
 
 	/** TODO: Documentation */
 	public Optional<Node> getNode(final String... path) { return this.getNode(DataPath.of(path)); }

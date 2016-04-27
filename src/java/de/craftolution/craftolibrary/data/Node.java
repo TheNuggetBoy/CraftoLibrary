@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import de.craftolution.craftolibrary.data.exceptions.EmptyNodeException;
+
 /**
  * TODO: Documentation
  *
@@ -79,6 +81,12 @@ public class Node implements Serializable {
 		if (this.value == null) { return Optional.empty(); }
 		if (this.value.getClass().isAssignableFrom(type)) { return Optional.ofNullable( this.cast(type) ); }
 		else { throw new ClassCastException("Cannot cast " + type.getClass().getName() + " to " + type.getName() + " in node: " + this.getPath() + "." + this.getId() + "!"); }
+	}
+
+	/** TODO: Documentation */
+	public <T> T getOrThrow(Class<? extends T> type) throws EmptyNodeException {
+		if (this.get().isPresent()) { throw new EmptyNodeException(this); }
+		return this.get(type).get();
 	}
 
 	/** TODO: Documentation */
