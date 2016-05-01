@@ -36,8 +36,16 @@ public class SetBuilder<T> implements Builder<Set<T>> {
 		}
 		return this;
 	}
+	
+	public SetBuilder<T> addAll(Tuple<T> elements) {
+		for (final T element : elements) {
+			this.set.add(element);
+		}
+		return this;
+	}
 
 	public static <T> SetBuilder<T> create(final T element) {
 		return new SetBuilder<T>().add(element);
 	}
+
 }

@@ -27,12 +27,22 @@ public class ListBuilder<T> implements Builder<List<T>> {
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public ListBuilder<T> addAll(final Collection<? extends T> elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		this.list.addAll(elements);
 		return this;
 	}
 
+	/** TODO: Documentation */
 	public ListBuilder<T> addAll(final T[] elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
+		for (final T element : elements) {
+			this.list.add(element);
+		}
+		return this;
+	}
+
+	/** TODO: Documentation */
+	public ListBuilder<T> addAll(final Tuple<T> elements) throws UnsupportedOperationException, ClassCastException, NullPointerException, IllegalArgumentException {
 		for (final T element : elements) {
 			this.list.add(element);
 		}

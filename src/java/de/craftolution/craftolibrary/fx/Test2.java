@@ -1,12 +1,13 @@
 package de.craftolution.craftolibrary.fx;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.time.Duration;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
-import de.craftolution.craftolibrary.RepeatingRunnable;
-import de.craftolution.craftolibrary.fx.RenderFrame.Key;
+import de.craftolution.craftolibrary.Threads;
 
 /**
  * TODO: Documentation
@@ -22,6 +23,8 @@ public class Test2 {
 
 	RenderFrame renderFrame;
 	int coord = 100;
+	
+	PixelFrame pixels = new PixelFrame(1600, 800, false);
 
 	Test2() {
 		final JFrame frame = new JFrame("Hallo Welt");
@@ -35,12 +38,24 @@ public class Test2 {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		RepeatingRunnable.run(Duration.ofMillis(16), this::update);
+		while (true) {
+			this.update();
+			
+			Threads.sleep(Duration.ofSeconds(1));
+		}
 	}
 
+	Random r = new Random();
+	
 	public void update() {
 		if (this.renderFrame.isKeyPressed(Key.D)) {
 			this.coord++;
+		}
+		
+		for (int y = 300; y < 400; y++) {
+			for (int x = 300; x < 400; x++) {
+				this.pixels.getPixels()[y * 1600 + x] = r.nextInt(12000);
+			}
 		}
 
 		this.render();
@@ -48,8 +63,13 @@ public class Test2 {
 
 	public void render() {
 		final Graphics g = this.renderFrame.getGraphics();
+		this.pixels.renderTo(g);
 		g.fillRect(this.coord, 100, 50, 50);
 		g.fillRect(this.coord + 100, 100, 1, 1);
+		g.setColor(Color.RED);
+		g.fillOval(300, 300, 300, 300);
+		g.setColor(Color.BLUE);
+		g.fillOval(301, 301, 298, 298);
 
 		System.out.println("HI " + Thread.currentThread().getName());
 	}
