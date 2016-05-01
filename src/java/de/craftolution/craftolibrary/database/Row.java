@@ -153,7 +153,7 @@ public class Row {
 	}
 
 	/** TODO: Documentation */
-	public Instant getInstant(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
+	@Nullable public Instant getInstant(final String columnLabel) throws IllegalArgumentException, NoSuchElementException {
 		final Object value = this.pull(columnLabel);
 		if (value == null) { return null; }
 		if (value instanceof Timestamp) { return TimeUtils.toInstant((Timestamp) value); }

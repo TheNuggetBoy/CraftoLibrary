@@ -21,6 +21,8 @@ public class Test {
 			System.out.println("Received: " + event.a);
 		});
 
+		System.out.println("----------------");
+		
 		final MyListener listener = new MyListener();
 		manager.register(listener);
 
@@ -29,7 +31,7 @@ public class Test {
 
 
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 2; i++) {
 			e.a = i;
 			manager.post(e);
 		}
@@ -41,6 +43,11 @@ public class Test {
 		@EventHandler
 		public void onEvent(final MyEvent event) {
 			System.out.println("RECEIVED: " + event.a);
+		}
+
+		@EventHandler
+		public void onOtherEvent(Event event) {
+			System.out.println("LOL");
 		}
 
 	}
