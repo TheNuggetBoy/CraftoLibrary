@@ -30,6 +30,17 @@ public class Threads {
 
 	static ExecutorService service = Executors.newCachedThreadPool();
 
+	private Threads() { }
+
+	/**
+	 * TODO: Documentation
+	 * @param duration
+	 */
+	public static void sleep(Duration duration) {
+		try { Thread.sleep(duration.toMillis()); }
+		catch (InterruptedException e) { e.printStackTrace(); }
+	}
+
 	/** TODO: Documentation */
 	public static void go(final Runnable runnable) {
 		Threads.service.execute(runnable);
