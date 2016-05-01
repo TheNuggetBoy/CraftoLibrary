@@ -40,12 +40,9 @@ public class Tests {
 		public static void register(final DataDeserializer deserializer) {
 			deserializer.registerData(TestData.class, section -> {
 				try {
-					if (section.getVersion() < TestData.VERSION) {
-						throw new InvalidDataSectionException(section, "The section version " + section.getVersion() + " is outdated.");
-					}
+					section.assertVersion(TestData.VERSION);
 
 					final TestData data = new TestData();
-
 					data.hp = section.getNodeOrThrow("hp").getOrThrow(Integer.class);
 					data.maxhp = section.getNodeOrThrow("maxhp").getOrThrow(Integer.class);
 

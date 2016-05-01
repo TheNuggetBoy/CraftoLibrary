@@ -31,11 +31,12 @@ public class Chain<E, T> extends Pair<E, T> {
 		return this.getSecond();
 	}
 
+	/** TODO: Documentatipn */
 	public Chain<E, T> handle(final Consumer<E> consumer) {
 		consumer.accept(this.get());
 		return this;
 	}
-
+	
 	/** TODO: Documentation */
 	public static <E, T> Chain<E, T> of(final E value, final T next) {
 		return new Chain<E, T>(value, next);
@@ -47,7 +48,7 @@ public class Chain<E, T> extends Pair<E, T> {
 		test = Chain.of("Hello", Chain.of(5, Chain.of(true, Chain.of("Firstname", "Lastname"))));
 
 		test.handle(string -> System.out.println(string))
-		.next().handle(age -> System.out.println("Age: bla"))
+		.next().handle(age -> System.out.println("Age: " + age))
 		.next()
 		.next();
 	}

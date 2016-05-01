@@ -569,4 +569,5 @@ public class Check {
 		}
 		throw new IllegalArgumentException(message);
 	}
+
 }

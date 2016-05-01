@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.google.common.collect.Lists;
 
 import de.craftolution.craftolibrary.ImmutableTuple;
+import de.craftolution.craftolibrary.data.exceptions.InvalidDataSectionException;
 import de.craftolution.craftolibrary.data.exceptions.MissingNodeException;
 
 /**
@@ -29,6 +30,13 @@ public class DataSection implements Serializable {
 
 	/** TODO: Documentation */
 	public int getVersion() { return this.version; }
+
+	/** TODO: Documentation */
+	public void assertVersion(int version) throws InvalidDataSectionException {
+		if (this.getVersion() < version) {
+			throw new InvalidDataSectionException(this, "The section version " + this.getVersion() + " is outdated.");
+		}
+	}
 
 	/** TODO: Documentation */
 	public String getId() { return this.rootNode.getId(); }
