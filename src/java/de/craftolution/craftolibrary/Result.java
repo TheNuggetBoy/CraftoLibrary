@@ -33,6 +33,7 @@ public class Result<T> implements NullableSupplier<T> {
 	/** TODO: Documentation */
 	@Override
 	public T get() throws NoSuchElementException {
+		if (this.object == null) { throw new NoSuchElementException("The value inside this result is null therefore inaccessible!"); }
 		return this.object;
 	}
 
