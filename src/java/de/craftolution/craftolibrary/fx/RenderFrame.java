@@ -30,10 +30,20 @@ public class RenderFrame {
 
 	/** TODO: Documentation */
 	public Graphics getGraphics() {
-		final BufferStrategy bs = this.canvas.getBufferStrategy();
-		if (bs == null) { this.canvas.createBufferStrategy(this.canvas.buffering); this.requestFocus(); }
+		BufferStrategy bs = this.canvas.getBufferStrategy();
+		if (bs == null) { 
+			this.canvas.createBufferStrategy(this.canvas.buffering); 
+			this.requestFocus();
+			bs = this.canvas.getBufferStrategy();
+		}
 
-		return this.canvas.getGraphics();
+		return bs.getDrawGraphics();
+	}
+
+	/** TODO: Documentation */
+	public void show() {
+		this.canvas.getBufferStrategy().getDrawGraphics().dispose();
+		this.canvas.getBufferStrategy().show();
 	}
 
 	/** TODO: Documentation */

@@ -15,6 +15,8 @@ package de.craftolution.craftolibrary;
  */
 public class ByteUtils {
 
+	private ByteUtils() { }
+
 	public static String displayBytes(final byte... byteArray) {
 		final StringBuilder builder = new StringBuilder();
 		for (final byte b : byteArray) {

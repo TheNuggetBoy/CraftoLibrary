@@ -22,6 +22,8 @@ public class Main {
 	private static final String MESSAGE = "\nHi, you just tried to execute the CraftoLibrary jar!"
 			+ "\nVisit https://github.com/Craftolution/CraftoLibrary for further help on how to properly use this library.\n";
 
+	private Main() { }
+
 	public static void main(final String[] args) {
 		System.err.println(Main.MESSAGE);
 
