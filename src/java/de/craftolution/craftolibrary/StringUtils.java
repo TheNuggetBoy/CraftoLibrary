@@ -49,6 +49,11 @@ public class StringUtils {
 	private static SecureRandom random = new SecureRandom();
 
 	/** TODO: Documentation */
+	public static StringBuilder toJson(Object instance) throws IllegalArgumentException, IllegalAccessException {
+		return ObjectJsonConverter.toJson(instance);
+	}
+
+	/** TODO: Documentation */
 	public static ToStringBuilder buildToString(final Object instance) {
 		return new ToStringBuilder(instance);
 	}
