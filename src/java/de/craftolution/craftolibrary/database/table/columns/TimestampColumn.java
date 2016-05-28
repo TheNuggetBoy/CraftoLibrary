@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -15,7 +16,9 @@ import java.sql.Timestamp;
  * @author Fear837
  * @since 13.02.2016
  */
-public class TimestampColumn extends AbstractColumn<String, TimestampColumn> {
+public class TimestampColumn extends AbstractColumn<String, TimestampColumn> implements Serializable {
+
+	private static final long serialVersionUID = -2033634002169528664L;
 
 	private String onUpdate;
 

@@ -7,6 +7,8 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.DataType;
 
 /**
@@ -15,7 +17,9 @@ import de.craftolution.craftolibrary.database.table.DataType;
  * @author Fear837
  * @since 18.12.2015
  */
-public class ColumnDefinitionBuilder {
+public class ColumnDefinitionBuilder implements Serializable {
+
+	private static final long serialVersionUID = 4642583947342132932L;
 
 	DataType type;
 	Integer firstLength;

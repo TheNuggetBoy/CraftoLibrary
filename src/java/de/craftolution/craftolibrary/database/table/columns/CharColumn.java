@@ -7,9 +7,13 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
 
-public class CharColumn extends AbstractColumn<Character, CharColumn> implements Lengthable<CharColumn> {
+public class CharColumn extends AbstractColumn<CharSequence, CharColumn> implements Lengthable<CharColumn>, Serializable {
+
+	private static final long serialVersionUID = 5673983052359940949L;
 
 	private int length;
 

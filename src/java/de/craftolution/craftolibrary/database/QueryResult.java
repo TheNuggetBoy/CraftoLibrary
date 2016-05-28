@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary.database;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,7 +38,9 @@ import de.craftolution.craftolibrary.database.query.Query;
  * @author Fear837
  * @since 12.02.2016
  */
-public class QueryResult {
+public class QueryResult implements Serializable {
+
+	private static final long serialVersionUID = 6283956960990259855L;
 
 	private int affectedRows = 0;
 

@@ -7,6 +7,8 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
 
 /**
@@ -15,7 +17,9 @@ import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
  * @author Fear837
  * @since 13.02.2016
  */
-public class VarCharColumn extends AbstractColumn<CharSequence, VarCharColumn> implements Lengthable<VarCharColumn> {
+public class VarCharColumn extends AbstractColumn<CharSequence, VarCharColumn> implements Serializable, Lengthable<VarCharColumn> {
+
+	private static final long serialVersionUID = 645353242551077057L;
 
 	private int length;
 

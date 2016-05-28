@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary.database;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -29,7 +30,9 @@ import de.craftolution.craftolibrary.TimeUtils;
  * @author Fear837
  * @since 12.02.2016
  */
-public class Row {
+public class Row implements Serializable {
+
+	private static final long serialVersionUID = 159668534154443560L;
 
 	private final QueryResult result;
 	private final int rowIndex;
@@ -41,6 +44,8 @@ public class Row {
 		this.rowIndex = rowIndex;
 
 		for (final String column : result.getColumns()) {
+			this.columns.add(column);
+			
 			final Object obj = result.getResultSet().get().getObject(column);
 			if (obj == null) { this.values.put(column.toLowerCase(), Void.TYPE); }
 			else { this.values.put(column.toLowerCase(), obj); }

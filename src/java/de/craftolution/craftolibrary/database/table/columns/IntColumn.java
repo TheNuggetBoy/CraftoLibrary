@@ -7,6 +7,8 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.DataType;
 import de.craftolution.craftolibrary.database.table.attributes.AutoIncrementable;
 import de.craftolution.craftolibrary.database.table.attributes.Lengthable;
@@ -18,7 +20,9 @@ import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
  * @author Fear837
  * @since 13.02.2016
  */
-public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Unsignable<IntColumn>, Lengthable<IntColumn>, AutoIncrementable<IntColumn> {
+public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Serializable, Unsignable<IntColumn>, Lengthable<IntColumn>, AutoIncrementable<IntColumn> {
+
+	private static final long serialVersionUID = -7129709002071992844L;
 
 	private int length;
 	private boolean unsigned;

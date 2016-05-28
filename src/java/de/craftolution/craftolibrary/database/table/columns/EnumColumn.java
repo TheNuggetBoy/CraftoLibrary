@@ -7,13 +7,17 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 /**
  * TODO: Documentation
  *
  * @author Fear837
  * @since 13.02.2016
  */
-public class EnumColumn extends AbstractColumn<String, EnumColumn> {
+public class EnumColumn extends AbstractColumn<String, EnumColumn> implements Serializable {
+
+	private static final long serialVersionUID = 728090716216483729L;
 
 	private String[] values;
 

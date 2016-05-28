@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -24,9 +25,11 @@ import de.craftolution.craftolibrary.database.table.IndexType;
  * @author Fear837
  * @since 13.02.2016
  * @param <V> - The type of value this column contains
- * @param <T> - The implemeting column class
+ * @param <T> - The implementing column class
  */
-public abstract class AbstractColumn<V, T> implements Column {
+public abstract class AbstractColumn<V, T> implements Serializable, Column {
+
+	private static final long serialVersionUID = -4740955053761415509L;
 
 	@Nullable private String name;
 	@Nullable private String comment;

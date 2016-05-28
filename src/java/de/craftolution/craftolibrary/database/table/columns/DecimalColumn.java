@@ -7,10 +7,14 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
 import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
-public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> implements DoubleLenghtable<DecimalColumn>, Unsignable<DecimalColumn> {
+public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> implements Serializable, DoubleLenghtable<DecimalColumn>, Unsignable<DecimalColumn> {
+
+	private static final long serialVersionUID = 5438254254144890570L;
 
 	private int firstLength, secondLength;
 	private boolean unsigned;

@@ -7,6 +7,8 @@
  */
 package de.craftolution.craftolibrary.database.table.columns;
 
+import java.io.Serializable;
+
 import de.craftolution.craftolibrary.database.table.attributes.DoubleLenghtable;
 import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
 
@@ -16,7 +18,9 @@ import de.craftolution.craftolibrary.database.table.attributes.Unsignable;
  * @author Fear837
  * @since 13.02.2016
  */
-public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements DoubleLenghtable<FloatColumn>, Unsignable<FloatColumn> {
+public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements Serializable, DoubleLenghtable<FloatColumn>, Unsignable<FloatColumn> {
+
+	private static final long serialVersionUID = -7176848484311225895L;
 
 	private int firstLength, secondLength;
 	private boolean unsigned;
