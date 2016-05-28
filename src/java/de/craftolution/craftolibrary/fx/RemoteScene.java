@@ -15,33 +15,24 @@ import javafx.stage.Stage;
  * @author Fear837
  * @since 20.03.2016
  */
-public class RemoteScene {
+public class RemoteScene extends Scene {
 
 	/** TODO: Documentation */
 	public static RemoteSceneBuilder builder() { return new RemoteSceneBuilder(); }
 
 	private final Stage stage;
-	private final Scene scene;
-	private final Parent container;
 	private final URL sceneFile;
 	private final URL cssFile;
 
-	RemoteScene(final Stage stage, final Scene scene, final Parent container, final URL sceneFile, final URL cssFile) {
+	RemoteScene(final Stage stage, final Parent root, final URL sceneFile, final URL cssFile) {
+		super(root);
 		this.stage = stage;
-		this.scene = scene;
-		this.container = container;
 		this.sceneFile = sceneFile;
 		this.cssFile = cssFile;
 	}
 
 	/** TODO: Documentation */
 	public Stage getStage() { return this.stage; }
-
-	/** TODO: Documentation */
-	public Scene getScene() { return this.scene; }
-
-	/** TODO: Documentation */
-	public Parent getContainer() { return this.container; }
 
 	/** TODO: Documentation */
 	public URL getSceneFile() { return this.sceneFile; }
@@ -58,7 +49,7 @@ public class RemoteScene {
 	/** TODO: Documentation */
 	public RemoteScene hide() { this.stage.hide(); return this; }
 
-	static class RemoteSceneBuilder {
+	public static class RemoteSceneBuilder {
 
 		private Stage stage;
 		private URL sceneFile;
@@ -160,17 +151,18 @@ public class RemoteScene {
 
 			final FXMLLoader loader = new FXMLLoader(this.sceneFile);
 			if (this.controller != null) { loader.setController(this.controller); }
-			final Parent container = loader.load();
+			final Parent root = loader.load();
 			this.controller = loader.getController();
 
-			final Scene scene = new Scene(container);
+			RemoteScene scene = new RemoteScene(this.stage, root, this.sceneFile, this.cssFile);
+			
 			this.stage.setScene(scene);
 
 			if (this.cssFile != null) {
 				scene.getStylesheets().add(this.cssFile.toExternalForm());
 			}
 
-			return new RemoteScene(this.stage, scene, container, this.sceneFile, this.cssFile);
+			return scene;
 		}
 
 	}

@@ -20,15 +20,15 @@ public class SceneSwapper {
 	private Scene container;
 	private final StackPane pane = new StackPane();
 
-	private RemoteScene currentScene;
-	private final List<RemoteScene> sceneList = Lists.newArrayList();
+	private Scene currentScene;
+	private final List<Scene> sceneList = Lists.newArrayList();
 
 	/** TODO: Documentation */
-	public SceneSwapper add(final RemoteScene scene) {
-		scene.getContainer().setOpacity(0.0f);
-		scene.getContainer().setDisable(true);
+	public SceneSwapper add(final Scene scene) {
+		scene.getRoot().setOpacity(0.0f);
+		scene.getRoot().setDisable(true);
 
-		this.pane.getChildren().add(scene.getContainer());
+		this.pane.getChildren().add(scene.getRoot());
 		this.sceneList.add(scene);
 		return this;
 	}
@@ -50,24 +50,24 @@ public class SceneSwapper {
 
 	/** TODO: Documentation */
 	public SceneSwapper swap(final RemoteScene newScene) {
-		for (final RemoteScene scene : this.sceneList) {
+		for (final Scene scene : this.sceneList) {
 			if (scene.equals(newScene)) {
-				scene.getContainer().setOpacity(1);
-				scene.getContainer().setDisable(false);
+				scene.getRoot().setOpacity(1);
+				scene.getRoot().setDisable(false);
 				this.currentScene = scene;
 			}
 			else {
-				scene.getContainer().setOpacity(0);
-				scene.getContainer().setDisable(true);
+				scene.getRoot().setOpacity(0);
+				scene.getRoot().setDisable(true);
 			}
 		}
 		return this;
 	}
 
 	/** TODO: Documentation */
-	public Collection<RemoteScene> getScenes() { return this.sceneList; }
+	public Collection<Scene> getScenes() { return this.sceneList; }
 
 	/** TODO: Documentation */
-	public RemoteScene getCurrentScene() { return this.currentScene; }
+	public Scene getCurrentScene() { return this.currentScene; }
 
 }
