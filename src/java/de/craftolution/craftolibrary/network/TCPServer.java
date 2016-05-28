@@ -15,7 +15,7 @@ public class TCPServer {
 	private final ServerSocket socket;
 	private boolean listening = true;
 
-	TCPServer(final int port) {
+	public TCPServer(final int port) {
 		try {
 			this.socket = new ServerSocket(port);
 

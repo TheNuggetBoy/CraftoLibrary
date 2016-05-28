@@ -7,6 +7,7 @@
  */
 package de.craftolution.craftolibrary.database.table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,9 @@ import de.craftolution.craftolibrary.database.table.columns.VarCharColumn;
  * @author Fear837
  * @since 08.02.2016
  */
-public class Table {
+public class Table implements Serializable {
+
+	private static final long serialVersionUID = 4658028722467617975L;
 
 	private final String name;
 	private final List<Column> columns;
@@ -48,7 +51,7 @@ public class Table {
 	@Nullable private final Engine engine;
 	@Nullable private final CharSet charset;
 
-	Table(final String name, final List<Column> columns, final List<Index> indices, @Nullable final String comment, @Nullable final Engine engine, @Nullable final CharSet charset) {
+	protected Table(final String name, final List<Column> columns, final List<Index> indices, @Nullable final String comment, @Nullable final Engine engine, @Nullable final CharSet charset) {
 		this.name = Check.notNullNotEmpty(name, "The name of the Table cannot be null!");
 		this.columns = Check.notNullNotEmpty(columns, "The list of columns cannot be null!");
 		this.indices = Check.notNull(indices, "The list of indices cannot be null!");
@@ -71,6 +74,11 @@ public class Table {
 
 	/** @return Returns a list of {@link Column}s this table contains. */
 	public List<Column> getColumns() { return this.columns; }
+
+	/** TODO: Documentation */
+	public Optional<Column> getColumn(String name) {
+		return getColumns().stream().filter(c -> c.getName().equals(name)).findFirst();
+	}
 
 	/** @return Returns a list of {@link Index}es this table contains. */
 	public List<Index> getIndices() { return this.indices; }
@@ -100,6 +108,46 @@ public class Table {
 		b.append(";");
 
 		return Query.of(b.toString());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((charset == null) ? 0 : charset.hashCode());
+		result = prime * result + ((columns == null) ? 0 : columns.hashCode());
+		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+		result = prime * result + ((engine == null) ? 0 : engine.hashCode());
+		result = prime * result + ((indices == null) ? 0 : indices.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Table other = (Table) obj;
+		if (charset != other.charset) return false;
+		if (columns == null) {
+			if (other.columns != null) return false;
+		}
+		else if (!columns.equals(other.columns)) return false;
+		if (comment == null) {
+			if (other.comment != null) return false;
+		}
+		else if (!comment.equals(other.comment)) return false;
+		if (engine != other.engine) return false;
+		if (indices == null) {
+			if (other.indices != null) return false;
+		}
+		else if (!indices.equals(other.indices)) return false;
+		if (name == null) {
+			if (other.name != null) return false;
+		}
+		else if (!name.equals(other.name)) return false;
+		return true;
 	}
 
 	// --- Builder ---

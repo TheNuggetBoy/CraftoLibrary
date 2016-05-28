@@ -31,6 +31,8 @@ import de.craftolution.craftolibrary.database.table.columns.VarCharColumn;
  */
 public enum DataType {
 
+	UNKNOWN (null),
+
 	BIT (null),
 
 	TINYINT (IntColumn.class),
@@ -97,6 +99,7 @@ public enum DataType {
 		this.columnClazz = columnClazz;
 	}
 
+	/** TODO: Documentation */
 	public Optional<Class<? extends Column>> getColumnClass() { return Optional.ofNullable(this.columnClazz); }
 
 	// --- Static accessors ---
@@ -120,4 +123,5 @@ public enum DataType {
 	public static Optional<DataType> valueOf(final Class<? extends Column> columnClazz) {
 		return Optional.ofNullable(DataType.columnClazzMap.get(columnClazz));
 	}
+
 }
