@@ -120,6 +120,32 @@ public class MySQL implements Database {
 	}
 
 	@Override
+	public Result<Statement> truncateTable(Table table) {
+		final QueryResult result = this.execute(Query.of("TRUNCATE TABLE `" + table.getName() + "`;"));
+		if (result.getStatement().isPresent()) {
+			if (result.getException().isPresent()) {
+				return Result.of(result.getStatement().get(), result.getException().get());
+			}
+			return Result.of(result.getStatement().get());
+		}
+		else if (result.getException().isPresent()) { return Result.ofException(result.getException().get()); }
+		else { return Result.completeFailure(); }
+	}
+
+	@Override
+	public Result<Statement> dropTable(Table table) {
+		final QueryResult result = this.execute(Query.of("DROP TABLE `" + table.getName() + "`;"));
+		if (result.getStatement().isPresent()) {
+			if (result.getException().isPresent()) {
+				return Result.of(result.getStatement().get(), result.getException().get());
+			}
+			return Result.of(result.getStatement().get());
+		}
+		else if (result.getException().isPresent()) { return Result.ofException(result.getException().get()); }
+		else { return Result.completeFailure(); }
+	}
+
+	@Override
 	public Result<Statement> createStatement() {
 		try {
 			final Statement statement = this.connection.createStatement();

@@ -65,6 +65,12 @@ public interface Database {
 	 */
 	Result<Statement> createTable(Table table);
 
+	/** TODO: Documentation */
+	Result<Statement> truncateTable(Table table);
+
+	/** TODO: Documentation */
+	Result<Statement> dropTable(Table table);
+
 	/**
 	 * Creates a {@link Statement} object for sending SQL statements to the database. SQL statements without
 	 * parameters are normally executed using {@link Statement} objects. If the SQL statement is
@@ -260,6 +266,5 @@ public interface Database {
 			return string != null && !string.isEmpty() && string.replace(" ", "").length() > 1;
 		}
 	}
-
 
 }
