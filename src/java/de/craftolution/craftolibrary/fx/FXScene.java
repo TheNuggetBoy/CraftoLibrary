@@ -30,7 +30,7 @@ public class FXScene {
 	/** The container that contains all elements of this scene. */
 	Parent container;
 	/** The controller of this scene. */
-	Optional<Controller> controller;
+	Optional<Object> controller;
 	/** The loader that reads the scene from a given resource. */
 	FXMLLoader loader;
 	/** TODO: Documentation */
@@ -45,7 +45,7 @@ public class FXScene {
 	}
 
 	/** TODO: Documentation */
-	public FXScene(final URL fxmlFile, final Controller controller) throws IOException {
+	public FXScene(final URL fxmlFile, final Object controller) throws IOException {
 		final FXMLLoader loader = new FXMLLoader(fxmlFile);
 		if (controller != null) { loader.setController(controller); }
 
@@ -58,11 +58,11 @@ public class FXScene {
 	public Parent getContainer() { return this.container; }
 
 	/** TODO: Documentation */
-	public Optional<Controller> getController() { return this.controller; }
+	public Optional<Object> getController() { return this.controller; }
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public <T extends Controller> Optional<T> getController(final Class<T> clazz) { return (Optional<T>) this.controller; }
+	public <T extends Object> Optional<T> getController(final Class<T> clazz) { return (Optional<T>) this.controller; }
 
 	/** TODO: Documentation */
 	public FXMLLoader getLoader() { return this.loader; }
