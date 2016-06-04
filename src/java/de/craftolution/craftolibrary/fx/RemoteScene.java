@@ -3,6 +3,8 @@ package de.craftolution.craftolibrary.fx;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.annotation.Nullable;
+
 import de.craftolution.craftolibrary.Check;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +24,7 @@ public class RemoteScene extends Scene {
 
 	private final Stage stage;
 	private final URL sceneFile;
-	private final URL cssFile;
+	@Nullable private final URL cssFile;
 
 	RemoteScene(final Stage stage, final Parent root, final URL sceneFile, final URL cssFile) {
 		super(root);
@@ -38,7 +40,7 @@ public class RemoteScene extends Scene {
 	public URL getSceneFile() { return this.sceneFile; }
 
 	/** TODO: Documentation */
-	public URL getCSSFile() { return this.cssFile; }
+	@Nullable public URL getCSSFile() { return this.cssFile; }
 
 	/** TODO: Documentation */
 	public RemoteScene show() { this.stage.show(); return this; }
@@ -49,12 +51,63 @@ public class RemoteScene extends Scene {
 	/** TODO: Documentation */
 	public RemoteScene hide() { this.stage.hide(); return this; }
 
+	private static URL toURL(String urlAsString) {
+		final URL url = RemoteScene.class.getClassLoader().getResource(urlAsString);
+		if (url == null) { throw new IllegalArgumentException("Failed to find a url for the resource: " + urlAsString + "!"); }
+		return url;
+	}
+
+	/** TODO: Documentation */
+	public static RemoteScene of(String sceneFile) throws IOException { return of(new Stage(), toURL(sceneFile), null, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(URL sceneFile) throws IOException { return of(new Stage(), sceneFile, null, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(String sceneFile, String cssFile) throws IOException { return of(new Stage(), toURL(sceneFile), toURL(cssFile), null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(URL sceneFile, URL cssFile) throws IOException { return of(new Stage(), sceneFile, cssFile, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(String sceneFile, String cssFile, Object controller) throws IOException { return of(new Stage(), toURL(sceneFile), toURL(cssFile), controller); }
+
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, String sceneFile) throws IOException { return of(stage, toURL(sceneFile), null, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, URL sceneFile) throws IOException { return of(stage, sceneFile, null, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, String sceneFile, String cssFile) throws IOException { return of(stage, toURL(sceneFile), toURL(cssFile), null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, URL sceneFile, URL cssFile) throws IOException { return of(stage, sceneFile, cssFile, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, String sceneFile, String cssFile, Object controller) throws IOException { return of(stage, toURL(sceneFile), toURL(cssFile), controller); }
+
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, final URL sceneFile, @Nullable final URL cssFile, @Nullable Object controller) throws IOException {
+		Check.nonNulls("The stage/sceneFile cannot be null!", stage, sceneFile);
+
+		if (stage == null) { stage = new Stage(); }
+
+		final FXMLLoader loader = new FXMLLoader(sceneFile);
+		if (controller != null) { loader.setController(controller); }
+		final Parent root = loader.load();
+		controller = loader.getController();
+
+		final RemoteScene scene = new RemoteScene(stage, root, sceneFile, cssFile);
+
+		if (cssFile != null) {
+			scene.getStylesheets().add(cssFile.toExternalForm());
+		}
+
+		stage.setScene(scene);
+
+		return scene;
+	}
+
+	/** TODO: Documentation */
 	public static class RemoteSceneBuilder {
 
 		private Stage stage;
 		private URL sceneFile;
 		private URL cssFile;
-		private Controller controller;
+		private Object controller;
 
 		RemoteSceneBuilder() { }
 
@@ -93,7 +146,7 @@ public class RemoteScene extends Scene {
 		}
 
 		/** TODO: Documentation */
-		public RemoteSceneBuilder controller(final Controller controller) {
+		public RemoteSceneBuilder controller(final Object controller) {
 			this.controller = controller;
 			return this;
 		}
@@ -154,13 +207,13 @@ public class RemoteScene extends Scene {
 			final Parent root = loader.load();
 			this.controller = loader.getController();
 
-			RemoteScene scene = new RemoteScene(this.stage, root, this.sceneFile, this.cssFile);
-			
-			this.stage.setScene(scene);
+			final RemoteScene scene = new RemoteScene(this.stage, root, this.sceneFile, this.cssFile);
 
 			if (this.cssFile != null) {
 				scene.getStylesheets().add(this.cssFile.toExternalForm());
 			}
+
+			this.stage.setScene(scene);
 
 			return scene;
 		}
