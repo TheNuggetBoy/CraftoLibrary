@@ -31,11 +31,11 @@ public class Threads {
 	static ExecutorService service = Executors.newCachedThreadPool();
 
 	private Threads() { }
-	
+
 	/** TODO: Documentation */
-	public static void sleep(Duration duration) {
+	public static void sleep(final Duration duration) {
 		try { Thread.sleep(duration.toMillis()); }
-		catch (InterruptedException e) { e.printStackTrace(); }
+		catch (final InterruptedException e) { e.printStackTrace(); }
 	}
 
 	/** TODO: Documentation */

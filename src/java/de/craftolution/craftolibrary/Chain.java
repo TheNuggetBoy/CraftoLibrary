@@ -36,7 +36,7 @@ public class Chain<E, T> extends Pair<E, T> {
 		consumer.accept(this.get());
 		return this;
 	}
-	
+
 	/** TODO: Documentation */
 	public static <E, T> Chain<E, T> of(final E value, final T next) {
 		return new Chain<E, T>(value, next);

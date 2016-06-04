@@ -46,7 +46,7 @@ public class SortedList<E> extends AbstractList<E> {
 	/** TODO: Documentation */
 	public SortedList(final Tuple<? extends E> tuple) {
 		this.internalList = new ArrayList<E>(tuple.length());
-		for (E element : tuple) { this.internalList.add(element); }
+		for (final E element : tuple) { this.internalList.add(element); }
 		this.comparator = null;
 	}
 
@@ -91,13 +91,13 @@ public class SortedList<E> extends AbstractList<E> {
 	/** TODO: Documentation */
 	public SortedList(final Tuple<? extends E> tuple, final Comparator<E> comparator) {
 		this.internalList = new ArrayList<E>(tuple.length());
-		for (E element : tuple) { this.internalList.add(element); }
+		for (final E element : tuple) { this.internalList.add(element); }
 		this.comparator = comparator;
 	}
 
 	/** TODO: Documentation */
-	public void addAll(Tuple<E> tuple) {
-		for (E element : tuple) { this.add(element); }
+	public void addAll(final Tuple<E> tuple) {
+		for (final E element : tuple) { this.add(element); }
 	}
 
 	@Override

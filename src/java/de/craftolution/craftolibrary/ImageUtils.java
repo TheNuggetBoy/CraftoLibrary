@@ -14,11 +14,11 @@ import javax.imageio.ImageIO;
 public class ImageUtils {
 
 	/** TODO: Documentation */
-	public static Image getImage(String classpath) {
+	public static Image getImage(final String classpath) {
 		try {
 			return ImageIO.read(ImageUtils.class.getResourceAsStream("/" + classpath));
 		}
-		catch (IOException e) {
+		catch (final IOException e) {
 			throw new IllegalArgumentException("The given path '" + classpath + "' doesnt exist..", e);
 		}
 	}
