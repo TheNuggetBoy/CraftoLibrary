@@ -25,12 +25,14 @@ public class RemoteScene extends Scene {
 	private final Stage stage;
 	private final URL sceneFile;
 	@Nullable private final URL cssFile;
+	@Nullable private final Object controller;
 
-	RemoteScene(final Stage stage, final Parent root, final URL sceneFile, final URL cssFile) {
+	RemoteScene(final Stage stage, final Parent root, final URL sceneFile, final URL cssFile, Object controller) {
 		super(root);
 		this.stage = stage;
 		this.sceneFile = sceneFile;
 		this.cssFile = cssFile;
+		this.controller = controller;
 	}
 
 	/** TODO: Documentation */
@@ -41,6 +43,9 @@ public class RemoteScene extends Scene {
 
 	/** TODO: Documentation */
 	@Nullable public URL getCSSFile() { return this.cssFile; }
+
+	/** TODO: Documentation */
+	@Nullable public Object getController() { return this.controller; }
 
 	/** TODO: Documentation */
 	public RemoteScene show() { this.stage.show(); return this; }
@@ -60,6 +65,8 @@ public class RemoteScene extends Scene {
 	/** TODO: Documentation */
 	public static RemoteScene of(String sceneFile) throws IOException { return of(new Stage(), toURL(sceneFile), null, null); }
 	/** TODO: Documentation */
+	public static RemoteScene of(String sceneFile, Object controller) throws IOException { return of(new Stage(), toURL(sceneFile), null, controller); }
+	/** TODO: Documentation */
 	public static RemoteScene of(URL sceneFile) throws IOException { return of(new Stage(), sceneFile, null, null); }
 	/** TODO: Documentation */
 	public static RemoteScene of(String sceneFile, String cssFile) throws IOException { return of(new Stage(), toURL(sceneFile), toURL(cssFile), null); }
@@ -70,6 +77,8 @@ public class RemoteScene extends Scene {
 
 	/** TODO: Documentation */
 	public static RemoteScene of(Stage stage, String sceneFile) throws IOException { return of(stage, toURL(sceneFile), null, null); }
+	/** TODO: Documentation */
+	public static RemoteScene of(Stage stage, String sceneFile, Object controller) throws IOException { return of(stage, toURL(sceneFile), null, controller); }
 	/** TODO: Documentation */
 	public static RemoteScene of(Stage stage, URL sceneFile) throws IOException { return of(stage, sceneFile, null, null); }
 	/** TODO: Documentation */
@@ -90,7 +99,7 @@ public class RemoteScene extends Scene {
 		final Parent root = loader.load();
 		controller = loader.getController();
 
-		final RemoteScene scene = new RemoteScene(stage, root, sceneFile, cssFile);
+		final RemoteScene scene = new RemoteScene(stage, root, sceneFile, cssFile, controller);
 
 		if (cssFile != null) {
 			scene.getStylesheets().add(cssFile.toExternalForm());
@@ -207,7 +216,7 @@ public class RemoteScene extends Scene {
 			final Parent root = loader.load();
 			this.controller = loader.getController();
 
-			final RemoteScene scene = new RemoteScene(this.stage, root, this.sceneFile, this.cssFile);
+			final RemoteScene scene = new RemoteScene(this.stage, root, this.sceneFile, this.cssFile, this.controller);
 
 			if (this.cssFile != null) {
 				scene.getStylesheets().add(this.cssFile.toExternalForm());
