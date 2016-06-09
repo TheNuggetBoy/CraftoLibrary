@@ -1,5 +1,6 @@
 package de.craftolution.craftolibrary.network;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,22 +26,26 @@ public class TCPScanner {
 
 	private final Socket socket;
 	private final Scanner scanner;
+	private final DataInputStream input;
 	private final DataOutputStream output;
 
+	/** TODO: Documentation */
 	public TCPScanner(final Socket socket) {
 		Check.notNull(socket, "The socket cannot be null!");
 		this.address = socket.getInetAddress();
 		this.port = socket.getPort();
-		
+
 		try {
 			this.socket = socket;
 			this.socket.setKeepAlive(true);
-			this.scanner = new Scanner(this.socket.getInputStream());
+			this.input = new DataInputStream(this.socket.getInputStream());
 			this.output = new DataOutputStream(this.socket.getOutputStream());
+			this.scanner = new Scanner(this.input);
 		}
 		catch (final IOException e) { throw new IllegalArgumentException("Failed to accept connection " + this.address + " on port " + this.port + "!", e); }
 	}
 
+	/** TODO: Documentation */
 	public TCPScanner(final InetAddress address, final int port) {
 		Check.notNull(address, "The address cannot be null!");
 		Check.isTrue(port > 0, "The port has to be greather than 0!");
@@ -49,12 +54,14 @@ public class TCPScanner {
 			this.port = port;
 			this.socket = new Socket(address, port);
 			this.socket.setKeepAlive(true);
-			this.scanner = new Scanner(this.socket.getInputStream());
+			this.input = new DataInputStream(this.socket.getInputStream());
 			this.output = new DataOutputStream(this.socket.getOutputStream());
+			this.scanner = new Scanner(this.input);
 		}
 		catch (final IOException e) { throw new IllegalArgumentException("Failed to connect to tcp address " + address + " on port " + port + "!", e); }
 	}
 
+	/** TODO: Documentation */
 	public TCPScanner(final String address, final int port) {
 		Check.notNullNotEmpty(address, "The address cannot be null or empty!");
 		Check.isTrue(port > 0, "The port has to be greather than 0!");
@@ -63,8 +70,9 @@ public class TCPScanner {
 			this.port = port;
 			this.socket = new Socket(address, port);
 			this.socket.setKeepAlive(true);
-			this.scanner = new Scanner(this.socket.getInputStream());
+			this.input = new DataInputStream(this.socket.getInputStream());
 			this.output = new DataOutputStream(this.socket.getOutputStream());
+			this.scanner = new Scanner(this.input);
 		}
 		catch (final IOException e) { throw new IllegalArgumentException("Failed to connect to tcp address " + address + " on port " + port + "!", e); }
 	}
@@ -129,7 +137,13 @@ public class TCPScanner {
 	// --- Reading ---
 
 	/** TODO: Documentation */
-	public boolean hasNext() { return this.scanner.hasNext(); }
+	public boolean hasNext() {
+		try { return this.input.available() > 0; }
+		catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	/** TODO: Documentation */
 	public String next() { return this.scanner.next(); }
