@@ -13,8 +13,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -43,6 +46,8 @@ public class TCPConnection implements ToStringable {
 	private final InetAddress address;
 	/** The port used for connection. */
 	private final int port;
+	/** The queue used to store packets in. */
+	private final LinkedBlockingQueue<byte[]> packetQueue = new LinkedBlockingQueue<>();
 
 	/** The socket instance used for the connection. */
 	@Nullable private Socket socket;
@@ -95,6 +100,22 @@ public class TCPConnection implements ToStringable {
 	}
 
 	/**
+	 * Initializes a new {@link TCPConnection} without using the {@link TCPConnectionBuilder}.
+	 * In this case it is neccessary to use the {@link #connect()} method.
+	 *
+	 * @param address - The address to which this instance will connect to.
+	 * @param port - The port used for the connection.
+	 */
+	public TCPConnection(final String inetAddress, final int port) throws IllegalArgumentException {
+		Check.notNull(inetAddress, "The hostAddress cannot be null!");
+		Check.isTrue(port > 0, "The port has to be greather than 0!");
+		this.listening.set(false);
+		try { this.address = InetAddress.getByName(inetAddress); }
+		catch (UnknownHostException e) { throw new IllegalArgumentException(e); }
+		this.port = port;
+	}
+
+	/**
 	 * Returns the address to which this {@link TCPConnection} is connected.
 	 *
 	 * <p> If the socket was connected prior to being closed,
@@ -104,6 +125,9 @@ public class TCPConnection implements ToStringable {
 	 * @return The remote IP address to which this socket is connected, or {@code null} if the socket is not connected.
 	 */
 	public InetAddress getInetAddress() { return this.address; }
+
+	/** TODO: Documentation */
+	public LinkedBlockingQueue<byte[]> getPackets() { return this.packetQueue; }
 
 	/**
 	 * Returns the remote port number to which this socket is connected.
@@ -287,6 +311,7 @@ public class TCPConnection implements ToStringable {
 						try { this.packetHandler.accept(realBytes); }
 						catch (final Exception e) { this.handleException(e); }
 					}
+					else { this.packetQueue.offer(realBytes); }
 				}
 			}
 		}
@@ -329,4 +354,5 @@ public class TCPConnection implements ToStringable {
 				.with("connected", this.isConnected())
 				.toString();
 	}
+
 }

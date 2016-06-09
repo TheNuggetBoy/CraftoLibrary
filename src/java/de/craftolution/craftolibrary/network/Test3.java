@@ -19,7 +19,14 @@ public class Test3 {
 		System.out.println("From client: " + scannerServerSide.nextLine() );
 
 		scannerServerSide.send("Hello Client!");
-		System.out.println("From server: " + scannerClientSide.nextLine() );
+		
+		do {
+			if (scannerClientSide.hasNext()) {
+				System.out.println("Has next!");
+				System.out.println("From server: " + scannerClientSide.nextLine() );
+			}
+		} while (!scannerClientSide.hasNext());
+		
 
 		server.close();
 		scannerClientSide.close();
