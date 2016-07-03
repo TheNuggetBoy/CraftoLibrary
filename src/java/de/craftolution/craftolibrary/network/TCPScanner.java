@@ -90,6 +90,9 @@ public class TCPScanner {
 	public int getLocalPort() { return this.socket.getLocalPort(); }
 
 	/** TODO: Documentation */
+	public boolean isConnected() { return !this.socket.isClosed(); }
+
+	/** TODO: Documentation */
 	public void close() {
 		this.scanner.close();
 		try { this.socket.close(); }
