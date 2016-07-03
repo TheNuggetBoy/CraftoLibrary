@@ -1,5 +1,6 @@
 package de.craftolution.craftolibrary.fx;
 
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
@@ -13,12 +14,7 @@ public class FXUtils {
 
 	private FXUtils() { }
 
-	/**
-	 * TODO: Documentation
-	 *
-	 * @param stage
-	 * @param canvas
-	 */
+	/** TODO: Documentation */
 	public static void autoScaleCanvas(final Stage stage, final Canvas canvas) {
 		stage.widthProperty().addListener((obj, oldValue, newValue) -> {
 			double difference = newValue.doubleValue() - oldValue.doubleValue();
@@ -36,6 +32,22 @@ public class FXUtils {
 			
 			double scale = canvas.getHeight() / oldCanvasHeight;
 			canvas.getGraphicsContext2D().scale(1.0, scale);
+		});
+	}
+
+	/** TODO: Documentation */
+	public static void autoScaleChildren(Stage stage, Parent container) {
+		final double originalWidth = stage.getWidth();
+		final double originalHeight = stage.getHeight();
+		
+		stage.widthProperty().addListener((obj, oldValue, newValue) -> {
+			double scale = newValue.doubleValue() / originalWidth;
+			container.setScaleX(scale);
+		});
+		
+		stage.heightProperty().addListener((obj, oldValue, newValue) -> {
+			double scale = newValue.doubleValue() / originalHeight;
+			container.setScaleY(scale);
 		});
 	}
 
