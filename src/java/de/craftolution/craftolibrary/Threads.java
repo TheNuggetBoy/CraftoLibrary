@@ -8,6 +8,7 @@
 package de.craftolution.craftolibrary;
 
 import java.time.Duration;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -33,9 +34,15 @@ public class Threads {
 	private Threads() { }
 
 	/** TODO: Documentation */
-	public static void sleep(final Duration duration) {
+	public static void sleep(int millis) throws CompletionException {
+		try { Thread.sleep(millis); }
+		catch (InterruptedException e) { throw new CompletionException(e); }
+	}
+
+	/** TODO: Documentation */
+	public static void sleep(final Duration duration) throws CompletionException {
 		try { Thread.sleep(duration.toMillis()); }
-		catch (final InterruptedException e) { e.printStackTrace(); }
+		catch (final InterruptedException e) { throw new CompletionException(e); }
 	}
 
 	/** TODO: Documentation */
@@ -56,6 +63,11 @@ public class Threads {
 	/** TODO: Documentation */
 	public static <T, U> void go(final T firstParameter, final U secondParameter, final BiConsumer<T, U> consumer) {
 		Threads.go(() -> consumer.accept(firstParameter, secondParameter));
+	}
+
+	/** TODO: Documentation */
+	public static <F, S, T> void go(final F firstParameter, S secondParameter, T thirdParameter, TriConsumer<F, S, T> consumer) {
+		Threads.go(() -> consumer.accept(firstParameter, secondParameter, thirdParameter));
 	}
 
 	/** TODO: Documentation */
