@@ -93,12 +93,23 @@ public class PreparedQuery<Input> {
 			else {
 				String query = this.rawQuery;
 				for (int i = 0; i < variables.length(); i++) {
-					query = query.replace("?", "'" + variables.at(i) + "'");
+					query = query.replaceFirst("\\?", "'" + variables.at(i) + "'");
 				}
 				return this.database.execute(Query.of(query));
 			}
 		}
 		catch (final SQLException e) { return new QueryResult(this.database, this.query, 0, null, null, e, this.exceptionHandler, Duration.ZERO); }
+	}
+
+	/** TODO: Documentation */
+	public Query buildQuery(Input input) {
+		final Tuple<Object> variables = this.converter.apply(input);
+
+		String query = this.rawQuery;
+		for (int i = 0; i < variables.length(); i++) {
+			query = query.replaceFirst("\\?", "'" + variables.at(i) + "'");
+		}
+		return Query.of(query);
 	}
 
 }

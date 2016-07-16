@@ -47,4 +47,9 @@ public class TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 		return this.preparedQuery.execute(Triple.of(firstInput, secondInput, thirdInput));
 	}
 
+	/** TODO: Documentation */
+	public Query buildQuery(final FirstInput firstInput, final SecondInput secondInput, final ThirdInput thirdInput) {
+		return this.preparedQuery.buildQuery(Triple.of(firstInput, secondInput, thirdInput));
+	}
+
 }

@@ -46,4 +46,9 @@ public class BiPreparedQuery<FirstInput, SecondInput> {
 		return this.preparedQuery.execute(Pair.of(firstInput, secondInput));
 	}
 
+	/** TODO: Documentation */
+	public Query buildQuery(final FirstInput firstInput, final SecondInput secondInput) {
+		return this.preparedQuery.buildQuery(Pair.of(firstInput, secondInput));
+	}
+
 }
