@@ -107,42 +107,18 @@ public class MySQL implements Database {
 	}
 
 	@Override
-	public Result<Statement> createTable(final Table table) {
-		final QueryResult result = this.execute(table.toQuery());
-		if (result.getStatement().isPresent()) {
-			if (result.getException().isPresent()) {
-				return Result.of(result.getStatement().get(), result.getException().get());
-			}
-			return Result.of(result.getStatement().get());
-		}
-		else if (result.getException().isPresent()) { return Result.ofException(result.getException().get()); }
-		else { return Result.completeFailure(); }
+	public QueryResult createTable(final Table table) {
+		return this.execute(table.toQuery());
 	}
 
 	@Override
-	public Result<Statement> truncateTable(Table table) {
-		final QueryResult result = this.execute(Query.of("TRUNCATE TABLE `" + table.getName() + "`;"));
-		if (result.getStatement().isPresent()) {
-			if (result.getException().isPresent()) {
-				return Result.of(result.getStatement().get(), result.getException().get());
-			}
-			return Result.of(result.getStatement().get());
-		}
-		else if (result.getException().isPresent()) { return Result.ofException(result.getException().get()); }
-		else { return Result.completeFailure(); }
+	public QueryResult truncateTable(Table table) {
+		return this.execute(Query.of("TRUNCATE TABLE `" + table.getName() + "`;"));
 	}
 
 	@Override
-	public Result<Statement> dropTable(Table table) {
-		final QueryResult result = this.execute(Query.of("DROP TABLE `" + table.getName() + "`;"));
-		if (result.getStatement().isPresent()) {
-			if (result.getException().isPresent()) {
-				return Result.of(result.getStatement().get(), result.getException().get());
-			}
-			return Result.of(result.getStatement().get());
-		}
-		else if (result.getException().isPresent()) { return Result.ofException(result.getException().get()); }
-		else { return Result.completeFailure(); }
+	public QueryResult dropTable(Table table) {
+		return this.execute(Query.of("DROP TABLE `" + table.getName() + "`;"));
 	}
 
 	@Override
@@ -187,7 +163,7 @@ public class MySQL implements Database {
 
 		if (!this.isConnected()) { this.connect(); }
 		if (!this.isConnected()) { return new QueryResult(this, query, -1, null, null, null, this.exceptionHandler, Duration.ZERO); }
-
+		
 		// Determine whether or not the query expects a result
 		final String rawQuery = query.toString();
 

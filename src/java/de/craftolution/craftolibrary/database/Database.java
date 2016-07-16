@@ -57,19 +57,17 @@ public interface Database {
 
 	/**
 	 * Creates the specified {@link Table} by inserting it into the database.
-	 * If the creation was successfull, the returned {@link Result} will contain a
-	 * {@link Statement} used for inserting the table.
 	 *
 	 * @param table - The table to create
-	 * @return Returns the {@link Statement} used for the creation.
+	 * @return Returns the {@link QueryResult} created.
 	 */
-	Result<Statement> createTable(Table table);
+	QueryResult createTable(Table table);
 
 	/** TODO: Documentation */
-	Result<Statement> truncateTable(Table table);
+	QueryResult truncateTable(Table table);
 
 	/** TODO: Documentation */
-	Result<Statement> dropTable(Table table);
+	QueryResult dropTable(Table table);
 
 	/**
 	 * Creates a {@link Statement} object for sending SQL statements to the database. SQL statements without
