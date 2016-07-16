@@ -1,6 +1,5 @@
 package de.craftolution.craftolibrary.database;
 
-import java.sql.Statement;
 import java.time.Duration;
 import java.util.Queue;
 import java.util.Timer;
@@ -10,7 +9,6 @@ import java.util.function.Consumer;
 
 import com.google.common.collect.Queues;
 
-import de.craftolution.craftolibrary.Result;
 import de.craftolution.craftolibrary.Scheduled;
 import de.craftolution.craftolibrary.Stopwatch;
 import de.craftolution.craftolibrary.database.query.Query;
@@ -50,7 +48,7 @@ public class StatisticRecorder extends TimerTask {
 					.addCreatedAt()
 					.build();
 
-			final Result<Statement> result = this.database.createTable(table);
+			final QueryResult result = this.database.createTable(table);
 			if (!result.getException().isPresent()) {
 				this.logger.accept("Disabling the StatisticRecorder because failed to create the database table " + StatisticRecorder.TABLE_NAME + ".");
 				this.recording.set(false);

@@ -108,6 +108,8 @@ public abstract class AbstractColumn<V, T> implements Serializable, Column {
 
 		b.append(' ');
 
+		if (definitions.unsigned) { b.append("UNSIGNED "); }
+
 		if (this.nullable) { b.append("NULL "); }
 		else { b.append("NOT NULL "); }
 
@@ -118,14 +120,14 @@ public abstract class AbstractColumn<V, T> implements Serializable, Column {
 			if (standard.equals("CURRENT_TIMESTAMP") || Check.isDouble(standard)) {
 				b.append(standard.replace("'", ""));
 			}
+			else if (standard.equals("true")) { b.append('1'); }
+			else if (standard.equalsIgnoreCase("false")) { b.append('0'); }
 			else { b.append('\'').append(standard.replace("'", "")).append('\''); }
 
 			b.append(' ');
 		}
 
 		if (definitions.onUpdate != null) { b.append("ON UPDATE ").append(definitions.onUpdate).append(' '); }
-
-		if (definitions.unsigned) { b.append("UNSIGNED "); }
 
 		if (definitions.autoIncrement) { b.append("AUTO_INCREMENT "); }
 
