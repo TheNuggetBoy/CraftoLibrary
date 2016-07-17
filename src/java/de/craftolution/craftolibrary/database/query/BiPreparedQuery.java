@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 import de.craftolution.craftolibrary.Pair;
 import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.Database;
-import de.craftolution.craftolibrary.database.QueryResult;
 
 /**
  * TODO: Documentation
@@ -42,7 +41,7 @@ public class BiPreparedQuery<FirstInput, SecondInput> {
 	public void close() { this.preparedQuery.close(); }
 
 	/** TODO: Documentation */
-	public QueryResult execute(final FirstInput firstInput, final SecondInput secondInput) {
+	public PreparedQueryResult<Pair<FirstInput, SecondInput>> execute(final FirstInput firstInput, final SecondInput secondInput) {
 		return this.preparedQuery.execute(Pair.of(firstInput, secondInput));
 	}
 

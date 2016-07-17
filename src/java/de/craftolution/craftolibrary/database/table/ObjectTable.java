@@ -35,6 +35,8 @@ import de.craftolution.craftolibrary.database.table.object.TableMeta;
 
 public class ObjectTable<T> extends Table {
 
+	private static final long serialVersionUID = -4165445330445020714L;
+
 	ObjectTable(String name, List<Column> columns, List<Index> indices, String comment, Engine engine, CharSet charset) {
 		super(name, columns, indices, comment, engine, charset);
 	}

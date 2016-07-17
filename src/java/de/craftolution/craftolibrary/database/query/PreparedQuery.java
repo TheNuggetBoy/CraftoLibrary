@@ -29,13 +29,13 @@ import de.craftolution.craftolibrary.database.QueryResult;
  */
 public class PreparedQuery<Input> {
 
-	private final Database database;
-	private final Query query;
-	private final Function<Input, Tuple<Object>> converter;
-	private final String rawQuery;
-	private final Consumer<Exception> exceptionHandler;
+	final Database database;
+	final Query query;
+	final Function<Input, Tuple<Object>> converter;
+	final String rawQuery;
+	final Consumer<Exception> exceptionHandler;
 
-	@Nullable private PreparedStatement statement;
+	@Nullable PreparedStatement statement;
 
 	/** TODO: Documentation */
 	public PreparedQuery(final Database database, final Query query, final Function<Input, Tuple<Object>> converter, final Consumer<Exception> exceptionHandler) {
@@ -64,7 +64,7 @@ public class PreparedQuery<Input> {
 	}
 
 	/** TODO: Documentation */
-	public QueryResult execute(final Input input) {
+	public PreparedQueryResult<Input> execute(final Input input) {
 		final Tuple<Object> variables = this.converter.apply(input);
 
 		try {
@@ -88,17 +88,22 @@ public class PreparedQuery<Input> {
 					duration = System.nanoTime() - start;
 				}
 
-				return new QueryResult(this.database, this.query, this.statement.getUpdateCount(), this.statement, this.statement.getResultSet(), null, this.exceptionHandler, Duration.ofNanos(duration));
+				return new PreparedQueryResult<Input>(this.database, this.query, this.statement.getUpdateCount(), this.statement, this.statement.getResultSet(), null, this.exceptionHandler, 
+						Duration.ofNanos(duration), input, variables, false, this);
 			}
 			else {
 				String query = this.rawQuery;
 				for (int i = 0; i < variables.length(); i++) {
 					query = query.replaceFirst("\\?", "'" + variables.at(i) + "'");
 				}
-				return this.database.execute(Query.of(query));
+
+				final Query realQuery = Query.of(query);
+				final QueryResult result = this.database.execute(realQuery);
+				return new PreparedQueryResult<Input>(this.database, realQuery, result.getAffectedRows(), result.getStatement().orElse(null), result.getResultSet().orElse(null), result.getException().orElse(null), 
+						this.exceptionHandler, result.getExecutionDuration(), input, variables, true, this);
 			}
 		}
-		catch (final SQLException e) { return new QueryResult(this.database, this.query, 0, null, null, e, this.exceptionHandler, Duration.ZERO); }
+		catch (final SQLException e) { return new PreparedQueryResult<Input>(this.database, this.query, 0, null, null, e, this.exceptionHandler, Duration.ZERO, input, variables, false, this); }
 	}
 
 	/** TODO: Documentation */

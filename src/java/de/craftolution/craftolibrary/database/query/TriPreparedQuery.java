@@ -13,7 +13,6 @@ import de.craftolution.craftolibrary.TriFunction;
 import de.craftolution.craftolibrary.Triple;
 import de.craftolution.craftolibrary.Tuple;
 import de.craftolution.craftolibrary.database.Database;
-import de.craftolution.craftolibrary.database.QueryResult;
 
 /**
  * TODO: Documentation
@@ -43,7 +42,7 @@ public class TriPreparedQuery<FirstInput, SecondInput, ThirdInput> {
 	public void close() { this.preparedQuery.close(); }
 
 	/** TODO: Documentation */
-	public QueryResult execute(final FirstInput firstInput, final SecondInput secondInput, final ThirdInput thirdInput) {
+	public PreparedQueryResult<Triple<FirstInput, SecondInput, ThirdInput>> execute(final FirstInput firstInput, final SecondInput secondInput, final ThirdInput thirdInput) {
 		return this.preparedQuery.execute(Triple.of(firstInput, secondInput, thirdInput));
 	}
 
