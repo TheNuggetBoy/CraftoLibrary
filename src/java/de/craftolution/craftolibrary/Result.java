@@ -41,6 +41,9 @@ public class Result<T> implements NullableSupplier<T> {
 	public Optional<Exception> getException() { return Optional.ofNullable(this.exception); }
 
 	/** TODO: Documentation */
+	public boolean isPresent() { return this.object != null; }
+
+	/** TODO: Documentation */
 	public static <T> Result<T> of(@Nullable final T object, @Nullable final Exception exception) {
 		return new Result<T>(object, exception);
 	}
