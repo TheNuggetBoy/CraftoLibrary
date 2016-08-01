@@ -23,6 +23,7 @@ public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements S
 	private static final long serialVersionUID = -7176848484311225895L;
 
 	private int firstLength, secondLength;
+	private boolean lengthSet;
 	private boolean unsigned;
 
 	@Override
@@ -35,12 +36,14 @@ public class FloatColumn extends AbstractColumn<Float, FloatColumn> implements S
 	public FloatColumn length(final int firstLength, final int secondLength) {
 		this.firstLength = firstLength;
 		this.secondLength = secondLength;
+		this.lengthSet = true;
 		return this;
 	}
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.unsigned(this.unsigned).length(this.firstLength, this.secondLength);
+		if (lengthSet) { builder.length(this.firstLength, this.secondLength); }
+		return builder.unsigned(this.unsigned);
 	}
 
 }

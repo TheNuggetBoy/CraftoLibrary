@@ -23,6 +23,7 @@ public class DoubleColumn extends AbstractColumn<Double, DoubleColumn> implement
 	private static final long serialVersionUID = -5058360214696423143L;
 
 	private int firstLength, secondLength;
+	private boolean lengthSet;
 	private boolean unsigned;
 
 	@Override
@@ -35,12 +36,14 @@ public class DoubleColumn extends AbstractColumn<Double, DoubleColumn> implement
 	public DoubleColumn length(final int firstLength, final int secondLength) {
 		this.firstLength = firstLength;
 		this.secondLength = secondLength;
+		this.lengthSet = true;
 		return this;
 	}
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.unsigned(this.unsigned).length(this.firstLength, this.secondLength);
+		if (lengthSet) { builder.length(this.firstLength, this.secondLength); }
+		return builder.unsigned(this.unsigned);
 	}
 
 }

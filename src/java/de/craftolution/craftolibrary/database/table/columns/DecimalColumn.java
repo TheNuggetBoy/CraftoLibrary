@@ -17,6 +17,7 @@ public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> impleme
 	private static final long serialVersionUID = 5438254254144890570L;
 
 	private int firstLength, secondLength;
+	private boolean lengthSet;
 	private boolean unsigned;
 
 	@Override
@@ -29,12 +30,14 @@ public class DecimalColumn extends AbstractColumn<Double, DecimalColumn> impleme
 	public DecimalColumn length(final int firstLength, final int secondLength) {
 		this.firstLength = firstLength;
 		this.secondLength = secondLength;
+		this.lengthSet = true;
 		return this;
 	}
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.unsigned(this.unsigned).length(this.firstLength, this.secondLength);
+		if (lengthSet) { builder.length(this.firstLength, this.secondLength); }
+		return builder.unsigned(this.unsigned);
 	}
 
 }
