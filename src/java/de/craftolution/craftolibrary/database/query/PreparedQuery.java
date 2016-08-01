@@ -44,6 +44,9 @@ public class PreparedQuery<Input> {
 		this.converter = converter;
 		this.rawQuery = query.toString();
 		this.exceptionHandler = exceptionHandler;
+
+		final Result<PreparedStatement> stmnt = this.database.prepareStatement(query);
+		if (stmnt.isPresent()) { this.statement = stmnt.get(); }
 	}
 
 	/** TODO: Documentation */
