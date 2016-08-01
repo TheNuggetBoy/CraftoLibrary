@@ -133,7 +133,7 @@ public class MySQL implements Database {
 	@Override
 	public Result<PreparedStatement> prepareStatement(final Query query) {
 		try {
-			final PreparedStatement statement = this.connection.prepareStatement(query.toString());
+			final PreparedStatement statement = this.connection.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
 			return Result.of(statement);
 		}
 		catch (final SQLException e) { return Result.ofException(e); }
