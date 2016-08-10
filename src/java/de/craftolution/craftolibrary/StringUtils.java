@@ -34,6 +34,7 @@ import de.craftolution.craftolibrary.ToStringable.ToStringBuilder;
  */
 public class StringUtils {
 
+	public static final String RIGHT_POINTER = String.valueOf('\u00BB');
 	public static final String BULLET = String.valueOf('\u25cf'); //String.valueOf((char) 9679);
 	public static final String BACKSLASH = "\\";
 	public static final String MASKED_BACKSLASH = StringUtils.BACKSLASH + StringUtils.BACKSLASH;

@@ -146,10 +146,28 @@ public class QueryResult implements Serializable {
 	public boolean wasSuccess() { return this.getAffectedRows() > 0 && !this.getException().isPresent(); }
 
 	/** TODO: Documentation */
-	public boolean ifSuccess(final Runnable runnable) { if (this.wasSuccess()) { Check.notNull(runnable, "The runnable cannot be null!").run(); } return this.wasSuccess(); }
+	public QueryResult ifSuccess(final Runnable runnable) { if (this.wasSuccess()) { Check.notNull(runnable, "The runnable cannot be null!").run(); } return this; }
 
 	/** TODO: Documentation */
-	public boolean ifSuccess(final Consumer<QueryResult> consumer) { if (this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this.wasSuccess(); }
+	public QueryResult ifSuccess(final Consumer<QueryResult> consumer) { if (this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this; }
+
+	/** TODO: Documentation */
+	public QueryResult ifFailure(final Runnable runnable) { if (!this.wasSuccess()) { Check.notNull(runnable, "The consumer cannot be null!").run(); } return this; }
+
+	/** TODO: Documentation */
+	public QueryResult ifFailure(Consumer<QueryResult> consumer) { if (!this.wasSuccess()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); } return this; }
+
+	/** TODO: Documentation */
+	public QueryResult ifException(final Runnable runnable) { 
+		if (this.getException().isPresent()) { Check.notNull(runnable, "The consumer cannot be null!").run(); }
+		return this;
+	}
+
+	/** TODO: Documentation */
+	public QueryResult ifException(Consumer<QueryResult> consumer) { 
+		if (this.getException().isPresent()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); }
+		return this;
+	}
 
 	/** TODO: Documentation */
 	public boolean handle(final Consumer<Optional<Exception>> errorHandler, final Consumer<QueryResult> successHandler) {
