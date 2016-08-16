@@ -24,9 +24,9 @@ public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Ser
 
 	private static final long serialVersionUID = -7129709002071992844L;
 
-	private int length;
-	private boolean unsigned;
-	private boolean autoIncrement;
+	private Integer length;
+	private Boolean unsigned;
+	private Boolean autoIncrement;
 
 	@Override
 	protected IntColumn instance() { return this; }
@@ -42,12 +42,16 @@ public class IntColumn extends AbstractColumn<Integer, IntColumn> implements Ser
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		if (this.length <= 3) { builder.type(DataType.TINYINT); }
-		else if (this.length <= 5) { builder.type(DataType.SMALLINT); }
-		else if (this.length <= 7) { builder.type(DataType.MEDIUMINT); }
-		else if (this.length <= 11) { builder.type(DataType.INT); }
-		else { builder.type(DataType.BIGINT); }
-		return builder.length(this.length).unsigned(this.unsigned).autoIncrement(this.autoIncrement);
+		if (this.length != null) {
+			if (this.length <= 3) { builder.type(DataType.TINYINT); }
+			else if (this.length <= 5) { builder.type(DataType.SMALLINT); }
+			else if (this.length <= 7) { builder.type(DataType.MEDIUMINT); }
+			else if (this.length <= 11) { builder.type(DataType.INT); }
+			else { builder.type(DataType.BIGINT); }
+		} else { builder.type(DataType.INT); }
+		if (unsigned != null) { builder.unsigned(this.unsigned); }
+		if (autoIncrement != null) { builder.autoIncrement(autoIncrement); }
+		return builder;
 	}
 
 }

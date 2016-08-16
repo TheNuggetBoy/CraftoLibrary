@@ -21,7 +21,7 @@ public class VarCharColumn extends AbstractColumn<CharSequence, VarCharColumn> i
 
 	private static final long serialVersionUID = 645353242551077057L;
 
-	private int length;
+	private Integer length;
 
 	@Override
 	protected VarCharColumn instance() { return this; }
@@ -31,7 +31,8 @@ public class VarCharColumn extends AbstractColumn<CharSequence, VarCharColumn> i
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.length(this.length);
+		if (length != null) { builder.length(this.length); }
+		return builder;
 	}
 
 }

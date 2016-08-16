@@ -15,7 +15,7 @@ public class CharColumn extends AbstractColumn<CharSequence, CharColumn> impleme
 
 	private static final long serialVersionUID = 5673983052359940949L;
 
-	private int length;
+	private Integer length;
 
 	@Override
 	protected CharColumn instance() { return this; }
@@ -25,7 +25,8 @@ public class CharColumn extends AbstractColumn<CharSequence, CharColumn> impleme
 
 	@Override
 	protected ColumnDefinitionBuilder define(final ColumnDefinitionBuilder builder) {
-		return builder.length(this.length);
+		if (length != null) { builder.length(this.length); }
+		return builder;
 	}
 
 }
