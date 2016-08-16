@@ -29,7 +29,9 @@ public class Tuple<T> extends ImmutableTuple<T> {
 
 	private static final Tuple<?> EMPTY = new Tuple<Object>(new Object[]{});
 
-	Tuple(final T[] tokens) { super(tokens); }
+	Tuple(final T[] tokens) { 
+		super(tokens);
+	}
 
 	/**
 	 * Removes all of the elements from this array by setting them to {@code null}.
@@ -115,7 +117,7 @@ public class Tuple<T> extends ImmutableTuple<T> {
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> of(final int length, final T defaultElement) {
+	public static <T> Tuple<T> ofDefault(final int length, final T defaultElement) {
 		final Object[] array = new Object[length];
 		for (int i = 0; i < length; i++) { array[i] = defaultElement; }
 		return new Tuple<T>((T[]) array);
@@ -123,7 +125,7 @@ public class Tuple<T> extends ImmutableTuple<T> {
 
 	/** TODO: Documentation */
 	@SuppressWarnings("unchecked")
-	public static <T> Tuple<T> of(final int length, final Function<Integer, T> elementProvider) {
+	public static <T> Tuple<T> ofProvider(final int length, final Function<Integer, T> elementProvider) {
 		final Object[] array = new Object[length];
 		for (int i = 0; i < length; i++) { array[i] = elementProvider.apply(i); }
 		return new Tuple<T>((T[]) array);
