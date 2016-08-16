@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import de.craftolution.craftolibrary.Check;
 import de.craftolution.craftolibrary.Stopwatch;
 import de.craftolution.craftolibrary.database.query.Query;
+import de.craftolution.craftolibrary.database.table.QueryException;
 
 /**
  * A {@code QueryResult} pretty much serves as a container of
@@ -167,6 +168,12 @@ public class QueryResult implements Serializable {
 	public QueryResult ifException(Consumer<QueryResult> consumer) { 
 		if (this.getException().isPresent()) { Check.notNull(consumer, "The consumer cannot be null!").accept(this); }
 		return this;
+	}
+
+	/** TODO: Documentation */
+	public QueryResult ifExceptionThrow(String message) throws QueryException {
+		if (this.getException().isPresent()) { throw new QueryException(this, message); }
+		else { return this; }
 	}
 
 	/** TODO: Documentation */
